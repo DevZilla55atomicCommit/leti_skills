@@ -15,9 +15,9 @@ Quote back, from the project files (not memory):
 
 If any file is missing or counts disagree: STOP, report what's missing, do not write code.
 
-## 1. Session budget (anti auto-compact-thrash)
+## 1. Session budget (never compact — reboot from files instead)
 - **ONE milestone per session, then STOP and report.** Never chain milestones in a single session.
-- Keep each session under ~40 tool calls. If `/context` passes 60%, run `/compact` immediately — do not push through.
+- Keep each session under ~40 tool calls. Context is lossy when compacted ("Document & Clear" pattern): past ~60% context, STOP the session, update `PROJECT-STATUS.md`, and start a fresh session that reads the files back. `/compact` only if you must continue mid-milestone — it degrades precision and is never the first resort.
 - Fresh session per milestone. State lives in files (`docs/PLAN.md`, `PROJECT-STATUS.md`), never in your head across sessions.
 
 ## 2. Source-of-truth order (read before coding)
