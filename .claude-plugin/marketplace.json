@@ -1,0 +1,20 @@
+{
+  "name": "leti-skills",
+  "owner": {
+    "name": "Alfred",
+    "url": "https://github.com/DevZilla55atomicCommit"
+  },
+  "metadata": {
+    "description": "Alfred's Claude Code skill library — reusable build protocols, briefs, and verifiers.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "web-project-base",
+      "source": "./plugins/web-project-base",
+      "description": "Milestone-gated Next.js one-pager builds: project-build skill, design brief, checklists, asset verifier.",
+      "version": "1.0.0",
+      "strict": true
+    }
+  ]
+}

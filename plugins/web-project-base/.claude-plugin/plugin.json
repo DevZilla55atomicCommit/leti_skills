@@ -1,0 +1,11 @@
+{
+  "name": "web-project-base",
+  "description": "Milestone-gated Next.js one-pager builds: project-build skill, design brief, checklists, asset verifier.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Alfred",
+    "url": "https://github.com/DevZilla55atomicCommit"
+  },
+  "license": "MIT",
+  "skills": "./skills/"
+}
