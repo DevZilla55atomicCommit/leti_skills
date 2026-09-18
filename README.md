@@ -51,3 +51,54 @@ cp -r hermes/apollo/* ~/.hermes/profiles/apollo/skills/
 ```
 
 > **Note**: These are Hermes-format skills (SKILL.md + refs/), not Claude Code plugins. They are backed up here for portability across machines, not for installation via `plugin install`.
+
+---
+
+## Claude Code Skills Backup
+Full `~/.claude/skills/` directory backed up — includes local skills + resolved symlinks to external sources (mattpocock_skills, ai-teacher).
+
+### Structure
+```
+claude/
+└── skills/         # 155 skills (128 local + 27 resolved symlinks)
+```
+
+### Categories
+- **Frontend/React/Next.js**: `nextjs-master`, `nextjs-architect`, `react-mastery`, `react-patterns`, `shadcn`, `tailwind-master`, `tailwindcss`, `motion`, `motion-react`, `vercel-optimize`
+- **Components/Design**: `building-components`, `css-craftsman`, `interface-design`, `canvas-design`, `brand-*`, `frontend-design-direction`, `landing-page-design`
+- **Backend/API**: `nodejs-backend`, `create-node-api`, `api-designer`, `graphql-expert`, `clerk-*`, `supabase`, `stripe-*`
+- **Testing/QA**: `vitest`, `testing-arsenal`, `qa-test-planner`, `test-antipatterns`, `webapp-testing`, `playwright` (in codex)
+- **Debugging/Workflow**: `systematic-debugging`, `debugging-detective`, `executing-plans`, `creating-spec`, `git-workflow`, `delivery-gate`, `loop-design-check`
+- **AI/Tools**: `mcp-builder`, `context7`, `nano-banana-pro`, `nano-banana-prompting`, `web-artifacts-builder`, `skill-creator`
+- **External (resolved)**: mattpocock_skills (27 skills), ai-teacher (2 skills)
+
+### Restoring
+```bash
+cp -r claude/skills/* ~/.claude/skills/
+```
+
+---
+
+## Codex Skills Backup
+Full `~/.codex/skills/` directory backed up.
+
+### Structure
+```
+codex/
+└── skills/         # 40 skills
+```
+
+### Categories
+- **Deployment**: `vercel-deploy`, `netlify-deploy`, `cloudflare-deploy`, `render-deploy`, `migrate-to-codex`
+- **Figma**: `figma`, `figma-*` (8 skills for design→code)
+- **Notion**: `notion-knowledge-capture`, `notion-meeting-intelligence`, `notion-research-documentation`, `notion-spec-to-implementation`
+- **Testing**: `playwright`, `playwright-interactive`, `screenshot`
+- **Security**: `security-best-practices`, `security-threat-model`, `security-ownership-map`, `sentry`
+- **AI/ML**: `chatgpt-apps`, `speech`, `transcribe`, `jupyter-notebook`, `openai-docs`
+- **GitHub**: `gh-fix-ci`, `gh-address-comments`, `linear`
+- **Misc**: `define-goal`, `cli-creator`, `hatch-pet`, `yeet`, `aspnet-core`, `pdf`, `winui-app`
+
+### Restoring
+```bash
+cp -r codex/skills/* ~/.codex/skills/
+```
