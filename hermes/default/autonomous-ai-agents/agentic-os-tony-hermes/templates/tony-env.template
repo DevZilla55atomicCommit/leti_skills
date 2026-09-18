@@ -1,0 +1,187 @@
+# TONY Agent Configuration — Complete Template
+# Copy to .env and fill in your values
+
+# =============================================================================
+# CORE SERVER
+# =============================================================================
+PORT=8787
+TONY_DATA_DIR=./data
+
+# =============================================================================
+# LLM PROVIDER CHAIN (priority order)
+# =============================================================================
+# Primary provider: nvidia | ollama | groq | gemini | openai | anthropic | jan | mock
+TONY_LLM_PROVIDER=ollama
+
+# --- NVIDIA NIM (Cloud, Fast) ---
+NVIDIA_API_KEY=
+NVIDIA_BASE_URL=https://integrate.api.nvidia.com/v1
+NVIDIA_MODEL=meta/llama-3.1-70b-instruct
+
+# --- Ollama (Local, Free, Private) ---
+OLLAMA_ENABLED=true
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=qwen3.5:4b-mlx
+
+# --- Groq (Cloud, Fast, Free Tier) ---
+GROQ_API_KEY=
+GROQ_MODEL=llama-3.3-70b-versatile
+GROQ_BASE_URL=https://api.groq.com/openai/v1
+
+# --- Google AI Studio / Gemini ---
+GOOGLE_AI_API_KEY=
+GEMINI_MODEL=gemini-2.0-flash
+GEMINI_BASE_URL=https://generativelanguage.googleapis.com/v1beta
+
+# --- OpenAI ---
+OPENAI_API_KEY=
+OPENAI_MODEL=gpt-4o-mini
+
+# --- Anthropic / Claude ---
+ANTHROPIC_API_KEY=
+ANTHROPIC_MODEL=claude-sonnet-4-20250514
+
+# --- Jan.ai (Local OpenAI-compat) ---
+JAN_ENABLED=true
+JAN_API_URL=http://localhost:1337/v1
+# JAN_MODEL=
+
+# =============================================================================
+# VOICE (STT + TTS)
+# =============================================================================
+# Deepgram STT
+DEEPGRAM_API_KEY=
+DEEPGRAM_MODEL=nova-2
+
+# ElevenLabs TTS (paid voice) — falls back to edge-tts if key missing
+ELEVENLABS_API_KEY=
+ELEVENLABS_VOICE_ID=21m00Tcm4TlvDq8ikWAM
+ELEVENLABS_MODEL_ID=eleven_multilingual_v2
+
+# Local TTS (edge-tts, free)
+TONY_TTS_LOCAL_VOICE=en-US-GuyNeural
+
+# Voice processing
+TONY_VOICE_NOISE_CANCEL=true
+TONY_VOICE_MIN_CONFIDENCE=0.55
+TONY_VOICE_HIGHPASS_HZ=180
+TONY_VOICE_VAD_MULT=3.2
+
+# Always-on listening (browser mic permission required)
+TONY_ALWAYS_LISTEN=true
+
+# =============================================================================
+# AGENTIC BRAIN — OBSIDIAN + GRAPHIFY
+# =============================================================================
+OBSIDIAN_VAULT_PATH=./vault
+OBSIDIAN_BRAIN_FOLDER=Agentic Brain
+
+# =============================================================================
+# MCP INTEGRATIONS (optional — add keys to enable)
+# =============================================================================
+PERPLEXITY_API_KEY=
+PERPLEXITY_MODEL=sonar
+FIRECRAWL_API_KEY=
+QUICKBOOKS_CLIENT_ID=
+QUICKBOOKS_CLIENT_SECRET=
+QUICKBOOKS_REFRESH_TOKEN=
+QUICKBOOKS_REALM_ID=
+QUICKBOOKS_SANDBOX=true
+HIGGSFIELD_API_KEY=
+HIGGSFIELD_BASE_URL=https://platform.higgsfield.ai
+
+# Playwright MCP (free, local browser automation)
+PLAYWRIGHT_MCP_URL=http://localhost:8931/mcp
+PLAYWRIGHT_MCP_PORT=8931
+PLAYWRIGHT_MCP_HEADLESS=true
+
+# Extended MCPs
+OPENWIKI_MCP_URL=
+OPENWIKI_DOCS_URL=http://localhost:8090
+SCRAPER_MEDIA_MCP_URL=
+MOTIONGRAPH_MCP_URL=
+
+# Local-first: use graphify/repos/fetch when paid MCP keys missing
+TONY_LOCAL_FIRST=true
+
+# =============================================================================
+# OFFLINE MODE
+# =============================================================================
+TONY_OFFLINE_AUTO=true
+TONY_OFFLINE_FORCE=false
+
+# =============================================================================
+# TASK RECORDER (replay workflows: "repeat <name>")
+# =============================================================================
+TONY_AUTO_RECORD_TASKS=true
+TONY_TASK_MIN_STEPS=2
+
+# =============================================================================
+# GOAL-DRIVEN EXECUTION
+# =============================================================================
+TONY_GOAL_MAX_ROUNDS=10
+TONY_GOAL_AUTO_RUN=true
+
+# =============================================================================
+# AGENT BEHAVIOR
+# =============================================================================
+TONY_MAX_ITERATIONS=12
+TONY_AUTO_REFLECT=true
+TONY_WORKSPACE_ROOT=.
+TONY_SELF_HEAL=true
+TONY_SELF_HEAL_RETRIES=1
+
+# =============================================================================
+# COMPANION MODE (wake phrase, habits, mood-aware personality)
+# =============================================================================
+TONY_COMPANION_MODE=true
+TONY_USER_NAME=Alfred
+# TONY_WAKE_PHRASES=wake up tony,wake up Tony Daddy's Home
+TONY_COMPANION_LLM_GREETING=true
+TONY_COMPANION_EMPATHY=true
+
+# =============================================================================
+# SECURITY
+# =============================================================================
+TONY_API_TOKEN=change_me_tony_gateway_token
+
+# =============================================================================
+# DESKTOP AUTOMATION (pyautogui bridge)
+# =============================================================================
+TONY_DESKTOP_ENABLED=true
+# TONY_DESKTOP_PATH=./integrations/repos/tony-ai
+TONY_AUTOMATION_ENABLED=true
+
+# =============================================================================
+# SHELL SAFETY (set true ONLY for trusted dev machines)
+# =============================================================================
+TONY_SHELL_UNSAFE=false
+
+# =============================================================================
+# 24/7 DAEMON (continuous gateway + goal ticks + graph rebuild)
+# =============================================================================
+TONY_DAEMON_ENABLED=false
+TONY_DAEMON_AUTO_GOALS=true
+TONY_DAEMON_INTERVAL_MS=300000
+TONY_DAEMON_GRAPH_MS=3600000
+
+# =============================================================================
+# CONTEXT WINDOW (prevent LLM token overflow)
+# =============================================================================
+TONY_MAX_CONTEXT_TOKENS=100000
+TONY_TOOL_RESULT_MAX_CHARS=4000
+TONY_EPISODE_MAX_CHARS=6000
+TONY_HISTORY_TURNS=12
+
+# =============================================================================
+# INTEGRATIONS
+# =============================================================================
+SIGNALMINT_API_URL=http://localhost:5000
+SIGNALMINT_EMAIL=super_admin@signalmint.local
+SIGNALMINT_PASSWORD=password123
+GITHUB_TOKEN=
+
+# =============================================================================
+# HERMES AGENT BRIDGE (if Hermes exposes MCP)
+# =============================================================================
+# HERMES_MCP_URL=http://localhost:XXXX/mcp

@@ -1,0 +1,197 @@
+# Agent Squad Template — Reusable Definition
+
+*Use this template to define new agent squads. Copy and modify for each project/session.*
+
+---
+
+## Squad Definition Schema
+
+```yaml
+# Required fields for each agent
+agents:
+  - name: string              # Unique agent identifier (kebab-case)
+    domain: string            # Human-readable domain description
+    model: string             # Model assignment (support primary/fallback)
+    tools: string[]           # Tool names from Hermes toolset
+    skills: string[]          # Skill names (support wildcards: davinci-resolve/*)
+    prompt_focus: string      # Core instruction added to agent's system prompt
+    # Optional:
+    # fallback_model: string   # Fallback if primary unavailable
+    # priority: integer        # Delegation priority (lower = first)
+    # max_concurrent: integer  # Max parallel tasks for this agent
+```
+
+---
+
+## Current Session Squad (4-Agent)
+
+```yaml
+agents:
+  - name: video-grader
+    domain: "DaVinci Resolve grading, video effects, reel analysis"
+    model: "qwen3.5:4b (local) / nemotron-3-ultra:cloud (complex)"
+    tools:
+      - computer_use
+      - terminal
+      - read_file
+      - write_file
+      - patch
+      - search_files
+      - vision_analyze
+    skills:
+      - davinci-resolve/*
+      - creative/davinci-resolve-techniques/*
+      - video-effects/*
+      - instagram-reels-davinci-pipeline
+      - local-vision-pipeline-vault-integration
+    prompt_focus: "Hybrid workflow: CDL API for primary grade, computer_use for UI (tabs, buttons, viewer, nodes). Never claim computer_use drives color wheels/curves/qualifier HSL on macOS."
+
+  - name: code-architect
+    domain: "Next.js, React, TypeScript, APIs, architecture"
+    model: "nemotron-3-ultra:cloud / gpt-oss:120b-cloud"
+    tools:
+      - terminal
+      - read_file
+      - write_file
+      - patch
+      - search_files
+      - git
+      - github
+      - browser_exec
+    skills:
+      - software-development/*
+      - webdev-instructor
+      - coding-workflow
+      - project-conventions
+      - tdd-workflow
+      - nextjs-build-workflow
+    prompt_focus: "TDD, clean architecture, Alfred's project conventions, terminal-first workflow."
+
+  - name: creative-director
+    domain: "Photography, videography, UI/UX, storyboards, brand"
+    model: "nemotron-3-ultra:cloud"
+    tools:
+      - terminal
+      - read_file
+      - write_file
+      - patch
+      - search_files
+      - browser_exec
+      - flux-image-generation
+    skills:
+      - creative/*
+      - design/*
+      - ui-ux-pro-max
+      - videography/*
+      - portrait-creative-direction
+    prompt_focus: "Actionable creative briefs, not vague suggestions. Bridge technical execution + artistic vision."
+
+  - name: forex-analyst
+    domain: "FX technical + macro analysis, automated alerting"
+    model: "nemotron-3-ultra:cloud"
+    tools:
+      - terminal
+      - read_file
+      - write_file
+      - search_files
+      - browser_exec
+      - jupyter-live-kernel
+    skills:
+      - forex-technical-analysis
+      - forex-macro-fundamentals
+      - terminal-alerting
+      - trading-journal
+    prompt_focus: "Structured trade setups: entry, stop, targets, risk%, timeframe, conviction. Maintain journal in Obsidian vault."
+```
+
+---
+
+## Delegation Patterns
+
+### Parallel (Independent Domains)
+
+```python
+delegate_task(tasks=[
+    {"goal": "Grade clip C001 with teal-orange look", "context": "...", "role": "leaf"},  # → video-grader
+    {"goal": "Build Next.js component for video gallery", "context": "...", "role": "leaf"},  # → code-architect
+    {"goal": "Create storyboard for product launch video", "context": "...", "role": "leaf"},  # → creative-director
+])
+```
+
+### Sequential (Dependent Workflow)
+
+```python
+# 1. creative-director → creative brief
+brief = delegate_task(goal="Create creative brief for product launch video", ...)
+
+# 2. code-architect → delivery tool
+tool = delegate_task(goal="Build video gallery component per brief", context=brief, ...)
+
+# 3. video-grader → grade assets
+graded = delegate_task(goal="Grade 5 clips per brief look", context=brief, ...)
+
+# 4. code-architect → integrate
+delegate_task(goal="Integrate graded clips into gallery", context={"brief": brief, "clips": graded}, ...)
+```
+
+### Hybrid (Creative Brief → Parallel Execution → Integration)
+
+```python
+# Phase 1: Creative direction (single agent)
+brief = delegate_task(goal="Design visual system for portfolio site", role="leaf")  # creative-director
+
+# Phase 2: Parallel build (multiple agents)
+results = delegate_task(tasks=[
+    {"goal": "Build Next.js portfolio per brief", "context": brief, "role": "leaf"},  # code-architect
+    {"goal": "Grade hero video clips per brief", "context": brief, "role": "leaf"},    # video-grader
+    {"goal": "Create storyboard for case study videos", "context": brief, "role": "leaf"},  # creative-director
+])
+
+# Phase 3: Integration (single agent)
+delegate_task(goal="Assemble portfolio with graded video + storyboard", context={"brief": brief, "results": results}, role="leaf")  # code-architect
+```
+
+---
+
+## Adding New Agents
+
+### Checklist
+
+- [ ] Domain doesn't overlap existing agents
+- [ ] Model assignment matches workload (see model-capability-matrix.md)
+- [ ] Tool set is minimal for domain (security + focus)
+- [ ] Skills exist or are documented for creation
+- [ ] Prompt focus is specific and actionable
+- [ ] Delegation patterns documented for common workflows
+
+### Example: Adding a "DevOps Engineer" Agent
+
+```yaml
+  - name: devops-engineer
+    domain: "CI/CD, infrastructure, deployment, monitoring"
+    model: "qwen3.5:4b (local) / nemotron-3-ultra:cloud (complex)"
+    tools:
+      - terminal
+      - read_file
+      - write_file
+      - patch
+      - search_files
+      - git
+      - github
+    skills:
+      - devops/*
+      - macos-launch-agent-management
+      - cron-job-validation
+      - disk-space-monitoring
+      - hermes-profile-sync-management
+    prompt_focus: "Infrastructure as code, automated deployments, monitoring/alerting. Terminal-first, reproducible configs."
+```
+
+---
+
+## Skill Inheritance Rules
+
+1. **Wildcards work**: `davinci-resolve/*` matches all skills under that prefix
+2. **Explicit > implicit**: List critical skills explicitly; wildcards for bulk
+3. **No circular deps**: Agent skills must not create circular dependencies
+4. **Version pin**: Note skill versions if breaking changes are possible

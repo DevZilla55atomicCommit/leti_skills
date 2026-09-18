@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#1a3c5e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Come Follow Me: "[LESSON_TITLE]" - [SCRIPTURE_REFERENCES]</title>
+    <style>
+        /* ========================================
+           CSS CUSTOM PROPERTIES (THEME SYSTEM)
+           ======================================== */
+        :root {
+            /* Light Theme (Default) */
+            --bg-primary: #fdfbf7;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f5f0e8;
+            --bg-card: #ffffff;
+            --bg-toolbar: rgba(255, 255, 255, 0.95);
+            --text-primary: #1a3c5e;
+            --text-secondary: #2c5f7c;
+            --text-muted: #5a7a8a;
+            --text-on-accent: #ffffff;
+            --accent-primary: #d4a537;
+            --accent-secondary: #b8952e;
+            --accent-light: #fef9f0;
+            --border-color: #e8e0d4;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --font-base: 16px;
+            --font-sm: 14px;
+            --font-lg: 18px;
+            --font-xl: 22px;
+            --font-2xl: 28px;
+            --line-height: 1.7;
+            --tap-target: 48px;
+            --toolbar-height: 60px;
+            --transition-fast: 150ms ease;
+            --transition-normal: 250ms ease;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0f1a22;
+            --bg-secondary: #15232d;
+            --bg-tertiary: #1a2a36;
+            --bg-card: #1a2a36;
+            --bg-toolbar: rgba(21, 35, 45, 0.95);
+            --text-primary: #f0f4f7;
+            --text-secondary: #b8d0e0;
+            --text-muted: #7a9bae;
+            --text-on-accent: #0f1a22;
+            --accent-primary: #e8c55a;
+            --accent-secondary: #d4b04a;
+            --accent-light: #2a3a25;
+            --border-color: #2a3f4a;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.5);
+        }
+
+        /* ========================================
+           RESET & BASE
+           ======================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: var(--font-base);
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        @media (min-width: 375px) {
+            html { font-size: 17px; }
+        }
+
+        @media (min-width: 428px) {
+            html { font-size: 18px; }
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: var(--line-height);
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            min-height: 100vh;
+            padding-bottom: calc(var(--toolbar-height) + env(safe-area-inset-bottom) + 24px);
+            transition: background-color var(--transition-normal), color var(--transition-normal);
+        }
+
+        /* ========================================
+           STICKY TOOLBAR
+           ======================================== */
+        .toolbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--toolbar-height);
+            background: var(--bg-toolbar);
+            backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            z-index: 1000;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .toolbar-left, .toolbar-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toolbar-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toolbar-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: var(--tap-target);
+            height: var(--tap-target);
+            min-width: var(--tap-target);
+            border: none;
+            border-radius: var(--radius-sm);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .toolbar-btn:active {
+            transform: scale(0.95);
+        }
+
+        .toolbar-btn:hover, .toolbar-btn:focus-visible {
+            background: var(--accent-light);
+            color: var(--accent-primary);
+            outline: none;
+        }
+
+        .toolbar-btn:focus-visible {
+            box-shadow: 0 0 0 3px var(--accent-primary);
+        }
+
+        .toolbar-btn svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            fill: none;
+        }
+
+        .lesson-title {
+            font-size: var(--font-sm);
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+        }
+
+        .progress-ring {
+            position: relative;
+            width: 40px;
+            height: 40px;
+        }
+
+        .progress-ring svg {
+            transform: rotate(-90deg);
+            width: 100%;
+            height: 100%;
+        }
+
+        .progress-ring__circle {
+            fill: none;
+            stroke: var(--border-color);
+            stroke-width: 3;
+        }
+
+        .progress-ring__progress {
+            fill: none;
+            stroke: var(--accent-primary);
+            stroke-width: 3;
+            stroke-linecap: round;
+            transition: stroke-dashoffset var(--transition-normal);
+        }
+
+        .progress-ring__text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* ========================================
+           MAIN CONTENT
+           ======================================== */
+        main {
+            padding-top: calc(var(--toolbar-height) + 16px);
+            padding-bottom: 24px;
+            max-width: 100%;
+        }
+
+        .content-wrapper {
+            padding: 0 16px;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        /* ========================================
+           HEADER
+           ======================================== */
+        .lesson-header {
+            text-align: center;
+            padding: 24px 0;
+            border-bottom: 2px solid var(--accent-primary);
+            margin-bottom: 24px;
+        }
+
+        .lesson-header h1 {
+            font-size: var(--font-2xl);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .lesson-meta {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            font-size: var(--font-sm);
+            color: var(--text-muted);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: var(--bg-tertiary);
+            border-radius: 100px;
+        }
+
+        .meta-item svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--accent-primary);
+        }
+
+        /* ========================================
+           SECTIONS (COLLAPSIBLE)
+           ======================================== */
+        .section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            margin-bottom: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow var(--transition-normal), border-color var(--transition-normal);
+        }
+
+        .section:focus-within {
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent-primary);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            min-height: var(--tap-target);
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        .section-header:hover {
+            background: var(--accent-light);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: var(--font-lg);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .section-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--accent-light);
+            border-radius: var(--radius-sm);
+            color: var(--accent-primary);
+        }
+
+        .section-icon svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+        }
+
+        .section-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: var(--tap-target);
+            height: var(--tap-target);
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: transform var(--transition-normal), color var(--transition-fast);
+        }
+
+        .section-toggle[aria-expanded="true"] {
+            transform: rotate(180deg);
+        }
+
+        .section-toggle:hover, .section-toggle:focus-visible {
+            color: var(--accent-primary);
+            background: var(--accent-light);
+        }
+
+        .section-toggle:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px var(--accent-primary);
+        }
+
+        .section-toggle svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            fill: none;
+        }
+
+        .section-content {
+            padding: 20px;
+            display: none;
+            animation: slideDown var(--transition-normal) ease-out;
+        }
+
+        .section[open] .section-content {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========================================
+           TYPOGRAPHY
+           ======================================== */
+        .section-content h2 {
+            font-size: var(--font-xl);
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--accent-light);
+        }
+
+        .section-content h3 {
+            font-size: var(--font-lg);
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 20px 0 12px;
+        }
+
+        .section-content p {
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        .section-content ul, .section-content ol {
+            margin: 12px 0 16px 24px;
+        }
+
+        .section-content li {
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        .section-content a {
+            color: var(--accent-primary);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color var(--transition-fast);
+            padding-bottom: 1px;
+        }
+
+        .section-content a:hover, .section-content a:focus-visible {
+            border-bottom-color: var(--accent-primary);
+        }
+
+        .section-content a:focus-visible {
+            outline: none;
+            border-radius: 2px;
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .scripture-ref {
+            display: inline-block;
+            padding: 2px 8px;
+            background: var(--accent-light);
+            color: var(--accent-primary);
+            border-radius: 4px;
+            font-size: var(--font-sm);
+            font-weight: 600;
+            margin: 0 2px;
+            text-decoration: none;
+            border: none;
+        }
+
+        .scripture-ref:hover {
+            background: var(--accent-primary);
+            color: var(--text-on-accent);
+        }
+
+        blockquote {
+            border-left: 4px solid var(--accent-primary);
+            padding-left: 16px;
+            margin: 16px 0;
+            font-style: italic;
+            color: var(--text-muted);
+            background: var(--bg-tertiary);
+            padding: 16px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        }
+
+        .callout {
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            margin: 16px 0;
+            border-left: 4px solid;
+        }
+
+        .callout-insight {
+            background: #eef7ff;
+            border-color: #3b82f6;
+            color: #1e3a5f;
+        }
+
+        .callout-application {
+            background: #f0fdf4;
+            border-color: #22c55e;
+            color: #14532d;
+        }
+
+        .callout-promise {
+            background: #fefce8;
+            border-color: #eab308;
+            color: #713f12;
+        }
+
+        [data-theme="dark"] .callout-insight {
+            background: #1e3a5f;
+            color: #93c5fd;
+        }
+
+        [data-theme="dark"] .callout-application {
+            background: #14532d;
+            color: #86efac;
+        }
+
+        [data-theme="dark"] .callout-promise {
+            background: #713f12;
+            color: #fde047;
+        }
+
+        /* ========================================
+           REFLECTION INPUT (LOCALSTORAGE)
+           ======================================== */
+        .reflection-prompt {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .reflection-prompt label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .reflection-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            font-family: inherit;
+            font-size: var(--font-base);
+            line-height: var(--line-height);
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            resize: vertical;
+            transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+        }
+
+        .reflection-textarea:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .reflection-textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        .reflection-saved {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            margin-top: 8px;
+            background: var(--accent-light);
+            color: var(--accent-primary);
+            border-radius: var(--radius-sm);
+            font-size: var(--font-sm);
+            font-weight: 500;
+        }
+
+        .reflection-saved.visible {
+            display: flex;
+        }
+
+        .reflection-saved svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            fill: none;
+        }
+
+        .word-count {
+            text-align: right;
+            font-size: var(--font-sm);
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        /* ========================================
+           GOSPEL LIBRARY DEEP LINKS
+           ======================================== */
+        .deep-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 16px 0;
+        }
+
+        .deep-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 100px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: var(--font-sm);
+            font-weight: 500;
+            min-height: var(--tap-target);
+            transition: all var(--transition-fast);
+        }
+
+        .deep-link:hover, .deep-link:focus-visible {
+            background: var(--accent-light);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .deep-link:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .deep-link svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--accent-primary);
+        }
+
+        /* ========================================
+           NAVIGATION (TOC)
+           ======================================== */
+        .toc-overlay {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 320px;
+            height: 100vh;
+            background: var(--bg-secondary);
+            border-left: 1px solid var(--border-color);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            transition: right var(--transition-normal);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .toc-overlay.open {
+            right: 0;
+        }
+
+        .toc-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            background: var(--bg-secondary);
+            z-index: 1;
+        }
+
+        .toc-title {
+            font-size: var(--font-lg);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .toc-close {
+            width: var(--tap-target);
+            height: var(--tap-target);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+        }
+
+        .toc-close:hover, .toc-close:focus-visible {
+            background: var(--bg-tertiary);
+            color: var(--accent-primary);
+        }
+
+        .toc-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        .toc-item {
+            display: block;
+            padding: 14px 16px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            margin-bottom: 4px;
+            min-height: var(--tap-target);
+            transition: background-color var(--transition-fast), color var(--transition-fast);
+        }
+
+        .toc-item:hover, .toc-item:focus-visible {
+            background: var(--accent-light);
+            color: var(--accent-primary);
+        }
+
+        .toc-item:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .toc-item.active {
+            background: var(--accent-light);
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        .toc-item .toc-indicator {
+            float: right;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--border-color);
+            margin-top: 6px;
+        }
+
+        .toc-item.active .toc-indicator {
+            background: var(--accent-primary);
+        }
+
+        .toc-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 1999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity var(--transition-normal), visibility var(--transition-normal);
+        }
+
+        .toc-backdrop.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* ========================================
+           PRINT STYLES (PDF OUTPUT)
+           ======================================== */
+        @media print {
+            .toolbar, .toc-overlay, .toc-backdrop, .section-toggle, .reflection-textarea, .deep-links, .word-count {
+                display: none !important;
+            }
+
+            body {
+                background: white !important;
+                color: #1a3c5e !important;
+                padding: 0;
+                font-size: 12pt;
+                line-height: 1.6;
+            }
+
+            main {
+                padding-top: 0;
+            }
+
+            .content-wrapper {
+                padding: 0;
+                max-width: none;
+            }
+
+            .lesson-header {
+                page-break-after: avoid;
+                border-bottom: 3px solid #d4a537;
+                padding: 40px 0;
+            }
+
+            .lesson-header h1 {
+                font-size: 28pt;
+                color: #1a3c5e;
+            }
+
+            .section {
+                break-inside: avoid;
+                page-break-inside: avoid;
+                border: 1px solid #e8e0d4;
+                box-shadow: none;
+                margin-bottom: 24px;
+            }
+
+            .section-header {
+                background: #f5f0e8;
+                border-bottom: 1px solid #e8e0d4;
+                padding: 16px 20px;
+            }
+
+            .section-content {
+                display: block !important;
+                padding: 24px;
+            }
+
+            .section-content h2 {
+                font-size: 16pt;
+                color: #2c5f7c;
+                border-bottom: 2px solid #fef9f0;
+            }
+
+            .callout {
+                break-inside: avoid;
+            }
+
+            .scripture-ref {
+                background: #fef9f0;
+                color: #d4a537;
+                border: 1px solid #d4a537;
+            }
+
+            a {
+                color: #1a3c5e !important;
+                text-decoration: underline;
+            }
+
+            @page {
+                margin: 2cm;
+                size: letter;
+            }
+        }
+
+        /* ========================================
+           ACCESSIBILITY
+           ======================================== */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        @media (prefers-contrast: high) {
+            :root {
+                --accent-primary: #b8860b;
+                --border-color: #000;
+            }
+            [data-theme="dark"] {
+                --accent-primary: #ffd700;
+                --border-color: #fff;
+            }
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* ========================================
+           FOOTER
+           ======================================== */
+        .lesson-footer {
+            text-align: center;
+            padding: 32px 16px;
+            color: var(--text-muted);
+            font-size: var(--font-sm);
+            border-top: 1px solid var(--border-color);
+            margin-top: 24px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    <!-- ========================================
+         STICKY TOOLBAR
+         ======================================== -->
+    <header class="toolbar" role="banner">
+        <div class="toolbar-left">
+            <button class="toolbar-btn" id="toc-toggle" aria-label="Table of Contents" aria-expanded="false" aria-controls="toc-overlay">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+            <button class="toolbar-btn" id="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false">
+                <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </button>
+        </div>
+        <div class="toolbar-center">
+            <div class="progress-ring" role="img" aria-label="Reading progress: 0%">
+                <svg>
+                    <circle class="progress-ring__circle" cx="20" cy="20" r="18"></circle>
+                    <circle class="progress-ring__progress" cx="20" cy="20" r="18" stroke-dasharray="113.1" stroke-dashoffset="113.1"></circle>
+                </svg>
+                <span class="progress-ring__text">0%</span>
+            </div>
+            <h2 class="lesson-title" id="toolbar-title">[LESSON_TITLE]</h2>
+        </div>
+        <div class="toolbar-right">
+            <button class="toolbar-btn" id="print-btn" aria-label="Print or save as PDF">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- ========================================
+         TOC OVERLAY
+         ======================================== -->
+    <div class="toc-backdrop" id="toc-backdrop" aria-hidden="true"></div>
+    <nav class="toc-overlay" id="toc-overlay" role="navigation" aria-label="Table of Contents">
+        <div class="toc-header">
+            <h2 class="toc-title">Sections</h2>
+            <button class="toc-close" id="toc-close" aria-label="Close table of contents">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+        <div class="toc-list" id="toc-list" role="listbox"></div>
+    </nav>
+
+    <!-- ========================================
+         MAIN CONTENT
+         ======================================== -->
+    <main role="main">
+        <div class="content-wrapper">
+            <!-- Lesson Header -->
+            <header class="lesson-header">
+                <h1 id="lesson-title">[LESSON_TITLE]</h1>
+                <div class="lesson-meta">
+                    <span class="meta-item" id="meta-date">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        <span>[WEEK_DATE]</span>
+                    </span>
+                    <span class="meta-item" id="meta-scripture">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        <span>[SCRIPTURE_REFERENCES]</span>
+                    </span>
+                </div>
+            </header>
+
+            <!-- Section 1: Scripture -->
+            <section class="section" id="section-scripture" aria-labelledby="scripture-heading">
+                <header class="section-header">
+                    <div class="section-title" id="scripture-heading">
+                        <div class="section-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        </div>
+                        Scripture Passage
+                    </div>
+                    <button class="section-toggle" aria-expanded="true" aria-controls="scripture-content">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                </header>
+                <div class="section-content" id="scripture-content" role="region" aria-label="Scripture passage content">
+                    <!-- Injected by Helios -->
+                    <div id="scripture-body">[SCRIPTURE_CONTENT]</div>
+                    <div class="deep-links" id="scripture-links" role="list" aria-label="Gospel Library links">
+                        <!-- Deep links injected here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Commentary -->
+            <section class="section" id="section-commentary" aria-labelledby="commentary-heading">
+                <header class="section-header">
+                    <div class="section-title" id="commentary-heading">
+                        <div class="section-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                        </div>
+                        Commentary & Insights
+                    </div>
+                    <button class="section-toggle" aria-expanded="false" aria-controls="commentary-content">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                </header>
+                <div class="section-content" id="commentary-content" role="region" aria-label="Commentary and insights">
+                    <!-- Injected by Helios -->
+                    <div id="commentary-body">[COMMENTARY_CONTENT]</div>
+                    <div class="deep-links" id="commentary-links" role="list" aria-label="Scholarly resource links">
+                        <!-- Deep links injected here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Reflection -->
+            <section class="section" id="section-reflection" aria-labelledby="reflection-heading">
+                <header class="section-header">
+                    <div class="section-title" id="reflection-heading">
+                        <div class="section-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                        </div>
+                        Personal Reflection
+                    </div>
+                    <button class="section-toggle" aria-expanded="false" aria-controls="reflection-content">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                </header>
+                <div class="section-content" id="reflection-content" role="region" aria-label="Personal reflection questions and notes">
+                    <div class="reflection-prompt" id="reflection-1">
+                        <label for="reflection-input-1">What impressed you most from this week's study?</label>
+                        <textarea class="reflection-textarea" id="reflection-input-1" placeholder="Write your thoughts here... (saved automatically)" aria-describedby="word-count-1"></textarea>
+                        <div class="word-count" id="word-count-1">0 words</div>
+                        <div class="reflection-saved" id="reflection-saved-1" aria-live="polite">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span>Saved</span>
+                        </div>
+                    </div>
+                    <div class="reflection-prompt" id="reflection-2">
+                        <label for="reflection-input-2">How can you apply this to your life this week?</label>
+                        <textarea class="reflection-textarea" id="reflection-input-2" placeholder="Write your application here... (saved automatically)" aria-describedby="word-count-2"></textarea>
+                        <div class="word-count" id="word-count-2">0 words</div>
+                        <div class="reflection-saved" id="reflection-saved-2" aria-live="polite">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span>Saved</span>
+                        </div>
+                    </div>
+                    <div class="reflection-prompt" id="reflection-3">
+                        <label for="reflection-input-3">What questions do you have for further study?</label>
+                        <textarea class="reflection-textarea" id="reflection-input-3" placeholder="Write your questions here... (saved automatically)" aria-describedby="word-count-3"></textarea>
+                        <div class="word-count" id="word-count-3">0 words</div>
+                        <div class="reflection-saved" id="reflection-saved-3" aria-live="polite">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span>Saved</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: Application -->
+            <section class="section" id="section-application" aria-labelledby="application-heading">
+                <header class="section-header">
+                    <div class="section-title" id="application-heading">
+                        <div class="section-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+                        </div>
+                        Application & Action
+                    </div>
+                    <button class="section-toggle" aria-expanded="false" aria-controls="application-content">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                </header>
+                <div class="section-content" id="application-content" role="region" aria-label="Application and action items">
+                    <!-- Injected by Helios -->
+                    <div id="application-body">[APPLICATION_CONTENT]</div>
+                    <div class="deep-links" id="application-links" role="list" aria-label="Related resource links">
+                        <!-- Deep links injected here -->
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- ========================================
+         FOOTER
+         ======================================== -->
+    <footer class="lesson-footer" role="contentinfo">
+        <p>Come Follow Me Study Guide — Generated [GENERATION_DATE]</p>
+        <div class="footer-links">
+            <a href="https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-individuals-and-families" target="_blank" rel="noopener">Official Manual</a>
+            <a href="https://byustudies.byu.edu/come-follow-me" target="_blank" rel="noopener">BYU Studies</a>
+            <a href="https://followhim.co" target="_blank" rel="noopener">followHIM Podcast</a>
+        </div>
+    </footer>
+
+    <!-- ========================================
+         JAVASCRIPT
+         ======================================== -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ========================================
+            // STATE MANAGEMENT
+            // ========================================
+            const state = {
+                theme: 'light',
+                sections: ['scripture', 'commentary', 'reflection', 'application'],
+                reflections: {},
+                scrollProgress: 0
+            };
+
+            const STORAGE_KEY = 'cfm_study_guide_';
+            const LESSON_ID = '[LESSON_ID]'; // Will be replaced by Helios
+
+            // ========================================
+            // DOM ELEMENTS
+            // ========================================
+            const elements = {
+                html: document.documentElement,
+                themeToggle: document.getElementById('theme-toggle'),
+                themeIconSun: document.querySelector('.icon-sun'),
+                themeIconMoon: document.querySelector('.icon-moon'),
+                tocToggle: document.getElementById('toc-toggle'),
+                tocOverlay: document.getElementById('toc-overlay'),
+                tocBackdrop: document.getElementById('toc-backdrop'),
+                tocClose: document.getElementById('toc-close'),
+                tocList: document.getElementById('toc-list'),
+                printBtn: document.getElementById('print-btn'),
+                progressRing: document.querySelector('.progress-ring__progress'),
+                progressText: document.querySelector('.progress-ring__text'),
+                toolbarTitle: document.getElementById('toolbar-title'),
+                reflectionTextareas: document.querySelectorAll('.reflection-textarea'),
+                reflectionSaved: document.querySelectorAll('.reflection-saved'),
+                wordCounts: document.querySelectorAll('.word-count'),
+                sections: document.querySelectorAll('.section')
+            };
+
+            const CIRCUMFERENCE = 2 * Math.PI * 18; // 113.1
+
+            // ========================================
+            // INITIALIZATION
+            // ========================================
+            function init() {
+                loadTheme();
+                loadReflections();
+                buildTOC();
+                setupEventListeners();
+                updateProgress();
+                updateToolbarTitle();
+            }
+
+            // ========================================
+            // THEME MANAGEMENT
+            // ========================================
+            function loadTheme() {
+                const saved = localStorage.getItem('cfm_theme');
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                state.theme = saved || (prefersDark ? 'dark' : 'light');
+                applyTheme(state.theme);
+            }
+
+            function applyTheme(theme) {
+                state.theme = theme;
+                elements.html.setAttribute('data-theme', theme);
+                localStorage.setItem('cfm_theme', theme);
+                updateThemeIcons();
+            }
+
+            function updateThemeIcons() {
+                const isDark = state.theme === 'dark';
+                elements.themeIconSun.style.display = isDark ? 'block' : 'none';
+                elements.themeIconMoon.style.display = isDark ? 'none' : 'block';
+                elements.themeToggle.setAttribute('aria-pressed', isDark);
+                elements.themeToggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+            }
+
+            function toggleTheme() {
+                applyTheme(state.theme === 'light' ? 'dark' : 'light');
+            }
+
+            // ========================================
+            // REFLECTION LOCALSTORAGE
+            // ========================================
+            function loadReflections() {
+                const key = STORAGE_KEY + LESSON_ID;
+                try {
+                    const saved = localStorage.getItem(key);
+                    if (saved) {
+                        state.reflections = JSON.parse(saved);
+                        elements.reflectionTextareas.forEach((textarea, i) => {
+                            const id = textarea.id;
+                            if (state.reflections[id]) {
+                                textarea.value = state.reflections[id];
+                                updateWordCount(textarea, elements.wordCounts[i]);
+                                showSavedIndicator(elements.reflectionSaved[i]);
+                            }
+                        });
+                    }
+                } catch (e) {
+                    console.warn('Failed to load reflections:', e);
+                }
+            }
+
+            function saveReflection(textarea) {
+                const id = textarea.id;
+                state.reflections[id] = textarea.value;
+                const key = STORAGE_KEY + LESSON_ID;
+                try {
+                    localStorage.setItem(key, JSON.stringify(state.reflections));
+                } catch (e) {
+                    console.warn('Failed to save reflection:', e);
+                }
+            }
+
+            function updateWordCount(textarea, wordCountEl) {
+                const text = textarea.value.trim();
+                const count = text ? text.split(/\s+/).length : 0;
+                wordCountEl.textContent = `${count} word${count !== 1 ? 's' : ''}`;
+            }
+
+            function showSavedIndicator(el) {
+                el.classList.add('visible');
+                clearTimeout(el._hideTimer);
+                el._hideTimer = setTimeout(() => el.classList.remove('visible'), 2000);
+            }
+
+            function handleReflectionInput(e) {
+                const textarea = e.target;
+                const index = Array.from(elements.reflectionTextareas).indexOf(textarea);
+                updateWordCount(textarea, elements.wordCounts[index]);
+                saveReflection(textarea);
+                showSavedIndicator(elements.reflectionSaved[index]);
+            }
+
+            // ========================================
+            // TABLE OF CONTENTS
+            // ========================================
+            function buildTOC() {
+                elements.tocList.innerHTML = '';
+                state.sections.forEach((sectionId, index) => {
+                    const section = document.getElementById(`section-${sectionId}`);
+                    if (!section) return;
+
+                    const titleEl = section.querySelector('.section-title');
+                    if (!titleEl) return;
+
+                    const title = titleEl.textContent.trim();
+                    const link = document.createElement('a');
+                    link.href = `#section-${sectionId}`;
+                    link.className = 'toc-item';
+                    link.dataset.section = sectionId;
+                    link.setAttribute('role', 'option');
+                    link.setAttribute('aria-selected', 'false');
+                    link.innerHTML = `<span>${title}</span><span class="toc-indicator" aria-hidden="true"></span>`;
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        closeTOC();
+                        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        updateActiveTOC(sectionId);
+                    });
+                    elements.tocList.appendChild(link);
+                });
+            }
+
+            function updateActiveTOC(activeId) {
+                document.querySelectorAll('.toc-item').forEach(item => {
+                    const isActive = item.dataset.section === activeId;
+                    item.classList.toggle('active', isActive);
+                    item.setAttribute('aria-selected', isActive);
+                });
+            }
+
+            function openTOC() {
+                elements.tocOverlay.classList.add('open');
+                elements.tocBackdrop.classList.add('visible');
+                elements.tocToggle.setAttribute('aria-expanded', 'true');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeTOC() {
+                elements.tocOverlay.classList.remove('open');
+                elements.tocBackdrop.classList.remove('visible');
+                elements.tocToggle.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            }
+
+            function toggleTOC() {
+                if (elements.tocOverlay.classList.contains('open')) {
+                    closeTOC();
+                } else {
+                    openTOC();
+                }
+            }
+
+            // ========================================
+            // SCROLL PROGRESS
+            // ========================================
+            function updateProgress() {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                state.scrollProgress = docHeight > 0 ? scrollTop / docHeight : 0;
+                const offset = CIRCUMFERENCE * (1 - state.scrollProgress);
+                elements.progressRing.style.strokeDashoffset = offset;
+                elements.progressText.textContent = `${Math.round(state.scrollProgress * 100)}%`;
+            }
+
+            function updateToolbarTitle() {
+                const titleEl = document.getElementById('lesson-title');
+                if (titleEl) {
+                    elements.toolbarTitle.textContent = titleEl.textContent;
+                }
+            }
+
+            // ========================================
+            // SECTION TOGGLE
+            // ========================================
+            function setupSectionToggles() {
+                document.querySelectorAll('.section-toggle').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const section = btn.closest('.section');
+                        const isOpen = section.hasAttribute('open');
+                        if (isOpen) {
+                            section.removeAttribute('open');
+                            btn.setAttribute('aria-expanded', 'false');
+                        } else {
+                            section.setAttribute('open', '');
+                            btn.setAttribute('aria-expanded', 'true');
+                        }
+                        updateProgress();
+                    });
+                });
+            }
+
+            // ========================================
+            // EVENT LISTENERS
+            // ========================================
+            function setupEventListeners() {
+                // Theme toggle
+                elements.themeToggle.addEventListener('click', toggleTheme);
+
+                // TOC
+                elements.tocToggle.addEventListener('click', toggleTOC);
+                elements.tocClose.addEventListener('click', closeTOC);
+                elements.tocBackdrop.addEventListener('click', closeTOC);
+
+                // Print
+                elements.printBtn.addEventListener('click', () => window.print());
+
+                // Reflections
+                elements.reflectionTextareas.forEach(textarea => {
+                    textarea.addEventListener('input', handleReflectionInput);
+                });
+
+                // Section toggles
+                setupSectionToggles();
+
+                // Scroll progress
+                let scrollTimeout;
+                window.addEventListener('scroll', () => {
+                    if (scrollTimeout) cancelAnimationFrame(scrollTimeout);
+                    scrollTimeout = requestAnimationFrame(updateProgress);
+                }, { passive: true });
+
+                // Keyboard: Escape closes TOC
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && elements.tocOverlay.classList.contains('open')) {
+                        closeTOC();
+                    }
+                });
+
+                // IntersectionObserver for active TOC item
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+                            updateActiveTOC(entry.target.id.replace('section-', ''));
+                        }
+                    });
+                }, { rootMargin: '-20% 0px -60% 0px', threshold: [0, 0.5, 1] });
+
+                elements.sections.forEach(section => observer.observe(section));
+
+                // Handle hash navigation
+                window.addEventListener('hashchange', () => {
+                    const hash = window.location.hash.slice(1);
+                    if (hash.startsWith('section-')) {
+                        const section = document.getElementById(hash);
+                        if (section) {
+                            section.setAttribute('open', '');
+                            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            updateActiveTOC(hash.replace('section-', ''));
+                        }
+                    }
+                });
+            }
+
+            // ========================================
+            // DEEP LINK INJECTION HELPER (for Helios)
+            // ========================================
+            window.CFMTemplate = {
+                setLessonData: function(data) {
+                    // Update title
+                    document.getElementById('lesson-title').textContent = data.title || '[LESSON_TITLE]';
+                    document.getElementById('toolbar-title').textContent = data.title || '[LESSON_TITLE]';
+
+                    // Update meta
+                    document.getElementById('meta-date').querySelector('span:last-child').textContent = data.weekDate || '[WEEK_DATE]';
+                    document.getElementById('meta-scripture').querySelector('span:last-child').textContent = data.scriptures || '[SCRIPTURE_REFERENCES]';
+
+                    // Update content sections
+                    if (data.scripture) document.getElementById('scripture-body').innerHTML = data.scripture;
+                    if (data.commentary) document.getElementById('commentary-body').innerHTML = data.commentary;
+                    if (data.application) document.getElementById('application-body').innerHTML = data.application;
+
+                    // Update deep links
+                    function renderLinks(containerId, links) {
+                        const container = document.getElementById(containerId);
+                        if (!container || !links?.length) return;
+                        container.innerHTML = links.map(link => `
+                            <a href="${link.url}" class="deep-link" target="_blank" rel="noopener" role="listitem">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                                ${link.label}
+                            </a>
+                        `).join('');
+                    }
+
+                    renderLinks('scripture-links', data.scriptureLinks);
+                    renderLinks('commentary-links', data.commentaryLinks);
+                    renderLinks('application-links', data.applicationLinks);
+
+                    // Update lesson ID for localStorage
+                    if (data.lessonId) {
+                        LESSON_ID = data.lessonId;
+                        loadReflections();
+                    }
+
+                    // Rebuild TOC after content injection
+                    buildTOC();
+                },
+
+                getReflections: function() {
+                    return { ...state.reflections };
+                },
+
+                clearReflections: function() {
+                    state.reflections = {};
+                    const key = STORAGE_KEY + LESSON_ID;
+                    localStorage.removeItem(key);
+                    elements.reflectionTextareas.forEach((textarea, i) => {
+                        textarea.value = '';
+                        updateWordCount(textarea, elements.wordCounts[i]);
+                        elements.reflectionSaved[i].classList.remove('visible');
+                    });
+                }
+            };
+
+            // Initialize when DOM ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+# Ride-Hailing Gazetteer Template (Tonga)
+
+## Structure
+```
+place_id: "<OSM ID>"
+name: "<Local Name>"
+lat: <latitude>
+lon: <longitude>
+district: "<Village/District>"
+road: "<Road Name>"
+landmarks: ["<Landmark 1>", "<Landmark 2>", ...]
+aliases: ["<Alt Name 1>", "<Alt Name 2>", ...]
+category: "hotel|restaurant|government|school|fuel|airport|university|other"
+```
+
+## Example (Airport)
+```yaml
+place_id: "100320"
+name: "Fua'amotu International Airport"
+lat: -21.2421623
+lon: -175.1443418
+district: "Fua'amotu"
+road: "Hala Taupi"
+landmarks: ["Airport", "Fua'amotu"]
+aliases: ["Fuaamotu Airport"]
+category: "airport"
+```
+
+## Usage
+1. Populate `gazetteer.yaml` with one entry per POI.
+2. Load into app via `gazetteer.load('gazetteer.yaml')`.
+3. Resolve user input (e.g., "airport") to `place_id` or coordinates.
+4. Use coordinates for routing / pickup mapping.

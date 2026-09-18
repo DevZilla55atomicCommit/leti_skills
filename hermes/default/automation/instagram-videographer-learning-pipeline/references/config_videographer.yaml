@@ -1,0 +1,210 @@
+# Processing
+batch_size: 10
+max_concurrent: 1
+delay_between_urls: 3.0
+delay_between_batches: 30.0
+timeout_seconds: 120
+max_retries: 2
+
+# Resume / dedup
+resume_enabled: true
+dedup_by_code: true
+
+# Content Type Detection
+content_types:
+  - name: "Reel"
+    url_pattern: "/reel/"
+    is_video: true
+  - name: "Post/Carousel"
+    url_pattern: "/p/"
+    is_video: false
+  - name: "TV/IGTV"
+    url_pattern: "/tv/"
+    is_video: true
+
+# Discipline Categories with keyword matching
+categories:
+  # DaVinci Resolve Specific
+  - name: "Video Effects & Transitions"
+    keywords: ["cut out", "whip pan", "match cut", "morph", "dissolve", "wipe", "slide", "push", "iris", "transition", "glitch", "vhs", "film damage", "halation", "film burn", "light leaks", "crt", "particles", "explosion", "fire", "smoke", "sci-fi", "energy", "magic", "portal", "lower third", "kinetic type", "title", "animated text", "speed ramp", "time remap", "freeze frame", "slo-mo", "frame blend", "green screen", "rotoscope", "matte", "keying", "alpha", "chroma key", "luma key"]
+    folder: "Video_Effects/"
+    subcategories:
+      - name: "Transitions"
+        keywords: ["cut out", "whip pan", "match cut", "morph", "dissolve", "wipe", "slide", "push", "iris"]
+        folder: "Video_Effects/transitions/"
+      - name: "Compositing"
+        keywords: ["green screen", "rotoscope", "matte", "keying", "alpha", "chroma key", "luma key"]
+        folder: "Video_Effects/compositing/"
+      - name: "Motion Graphics"
+        keywords: ["lower third", "kinetic type", "title", "lowerthird", "animated text", "callout"]
+        folder: "Video_Effects/motion-graphics/"
+      - name: "VFX"
+        keywords: ["particles", "explosion", "fire", "smoke", "sci-fi", "energy", "magic", "portal"]
+        folder: "Video_Effects/vfx/"
+      - name: "Text Effects"
+        keywords: ["kinetic type", "3d text", "callout", "subtitle", "typewriter"]
+        folder: "Video_Effects/text-effects/"
+      - name: "Stylization"
+        keywords: ["glitch", "vhs", "film damage", "halation", "film burn", "light leaks", "crt"]
+        folder: "Video_Effects/stylization/"
+      - name: "Time Effects"
+        keywords: ["speed ramp", "time remap", "freeze frame", "slo-mo", "frame blend"]
+        folder: "Video_Effects/time-effects/"
+
+  - name: "Color Grading & Color Science"
+    keywords: ["color grade", "color grading", "white balance", "exposure", "cst", "gamut", "primary", "log", "lut", "cinematic", "teal", "orange", "film", "halation", "glow", "kodak", "fujifilm", "s-log3", "slog3", "sony", "s-gamut", "apple log", "apple log 2", "pro res", "prores", "skin tone", "face refinement", "vectorscope", "kodak 2383", "2383", "film emulation", "cineon", "logc", "color compressor", "depth map", "relight", "magic mask", "parade", "vectorscope", "waveform", "rgb parade"]
+    folder: "Color Grading & Looks/"
+
+  - name: "Camera Theory & Color Science"
+    keywords: ["raw vs log", "dynamic range", "sensor", "bit depth", "log curve", "gamma curve", "camera theory", "raw workflow", "log workflow", "exposure latitude", "highlight rolloff", "noise floor", "transfer function", "raw", "braw", "prores raw", "r3d", "arriraw", "dual gain", "native iso", "eiso", "exposure index", "aces", "dawinci wide gamut", "dwg", "rcm", "cst", "color space transform", "gamut mapping", "sensor science", "debayer", "highlight rolloff"]
+    folder: "Camera Theory/"
+
+  # Videographer Disciplines (11 granular categories)
+  - name: "Cinematography & Camera Technique"
+    keywords: ["static shot", "camera movement", "dolly", "slider", "gimbal", "steadycam", "handheld", "tripod", "cinematography", "camera technique", "establishing shot", "master shot", "coverage", "shot list", "storyboard", "aspect ratio", "scope", "anamorphic", "2.39:1", "16:9", "4:3"]
+    folder: "Videographer/Cinematography/"
+
+  - name: "Camera Movement"
+    keywords: ["dolly", "slider", "gimbal", "steadycam", "handheld", "tripod", "crane", "jib", "drone", "aerial", "tracking shot", "push in", "pull out", "truck", "pedestal", "arc", "orbit", "follow shot", "lead room", "head room"]
+    folder: "Videographer/Camera Movement/"
+
+  - name: "Lenses & Optics"
+    keywords: ["lens", "focal length", "aperture", "depth of field", "bokeh", "anamorphic", "spherical", "wide angle", "telephoto", "prime lens", "zoom lens", "focus pulling", "rack focus", "follow focus", "t-stop", "f-stop", "breathing", "flare", "coating", "vignetting", "distortion", "sharpness", "contrast"]
+    folder: "Videographer/Lenses & Optics/"
+
+  - name: "Lighting & Exposure"
+    keywords: ["lighting", "key light", "fill light", "back light", "rim light", "hair light", "three point", "motivated lighting", "natural light", "available light", "golden hour", "blue hour", "magic hour", "hard light", "soft light", "diffusion", "bounce", "negative fill", "flag", "cto", "ctb", "gel", "color temperature", "kelvin", "white balance", "exposure", "incident meter", "spot meter", "zebra", "false color", "waveform", "histogram", "dynamic range", "latitude", "contrast ratio", "key to fill", "practical", "practical lighting", "led", "hmi", "tungsten", "fluorescent", "daylight", "tungsten balanced", "mixed lighting"]
+    folder: "Videographer/Lighting/"
+
+  - name: "Composition & Visual Storytelling"
+    keywords: ["composition", "framing", "rule of thirds", "golden ratio", "fibonacci", "leading lines", "symmetry", "asymmetry", "balance", "negative space", "visual weight", "depth", "layers", "foreground", "middleground", "background", "frame within frame", "natural frame", "perspective", "vanishing point", "forced perspective", "scale", "juxtaposition", "contrast", "repetition", "pattern", "rhythm", "visual storytelling", "shot types", "close up", "medium shot", "wide shot", "extreme close up", "establishing shot", "insert", "cutaway", "reaction shot", "pov", "point of view", "over the shoulder", "two shot", "three shot", "group shot", "master shot", "coverage"]
+    folder: "Videographer/Composition/"
+
+  - name: "Production Workflow & Directing"
+    keywords: ["pre production", "production", "post production", "shot list", "storyboard", "call sheet", "schedule", "budget", "crew", "director", "dp", "cinematographer", "gaffer", "key grip", "script supervisor", "continuity", "slate", "clapper", "timecode", "sync", "dailies", "rushes", "assembly", "rough cut", "fine cut", "picture lock", "sound design", "mix", "color grade", "deliverables", "codec", "container", "proxies", "offline", "online", "conform", "xml", "aaf", "edl", "roundtrip"]
+    folder: "Videographer/Production/"
+
+  - name: "Post-Production Workflow"
+    keywords: ["editing", "timeline", "assembly", "rough cut", "fine cut", "picture lock", "sound design", "mix", "color grade", "color correction", "vfx", "compositing", "motion graphics", "titles", "lower thirds", "captions", "export", "deliverables", "codec", "container", "proxies", "offline", "online", "conform", "xml", "aaf", "edl", "roundtrip", "da vinci", "resolve", "premiere", "final cut", "avid"]
+    folder: "Videographer/Post-Production/"
+
+  - name: "VFX & Compositing"
+    keywords: ["vfx", "visual effects", "compositing", "green screen", "blue screen", "rotoscope", "rotoscoping", "matte", "keying", "chroma key", "luma key", "alpha", "tracking", "matchmove", "camera tracking", "object tracking", "planar tracking", "particles", "simulation", "cgi", "3d", "integration", "plate", "clean plate", "set extension", "matte painting", "after effects", "nuke", "fusion", "resolve fusion"]
+    folder: "Videographer/VFX & Compositing/"
+
+  - name: "Audio & Sound"
+    keywords: ["audio", "sound", "microphone", "mic", "lavalier", "shotgun", "boom", "field recorder", "sync sound", "dual system", "timecode", "room tone", "ambience", "foley", "adr", "dialogue", "music", "score", "sound design", "mix", "loudness", "true peak", "lufs", "dynamic range", "noise reduction", "izotope", "rx", "fairlight", "pro tools", "logic", "reaper"]
+    folder: "Videographer/Audio & Sound/"
+
+  - name: "Business & Career"
+    keywords: ["freelance", "client", "contract", "invoice", "rate", "day rate", "half day", "quote", "proposal", "portfolio", "reel", "showreel", "marketing", "branding", "networking", "crew", "hiring", "assistant", "gaffer", "key grip", "dp", "director", "producer", "production company", "llc", "insurance", "permits", "location", "scouting", "budget", "schedule"]
+    folder: "Videographer/Business & Career/"
+
+  # Photography / Lightroom (Route to Photography/)
+  - name: "Photography & Lightroom"
+    keywords: ["lightroom mobile", "lr mobile", "lightroom tutorial", "point curve", "tone curve", "rgb curve", "color grading panel", "hsl panel", "calibration panel", "masking", "adaptive preset", "creative profile", "magimir", "snapseed", "vsco", "picsart", "facetune", "airbrush", "meitu", "beautyplus", "mobile editing", "iphone editing", "mobile photography", "photo editing", "mobile curves", "photo editing curves", "mobile photo editing", "photography", "portrait", "landscape", "street photography", "exposure", "aperture", "shutter speed", "iso", "white balance", "raw photo", "jpeg", "histogram"]
+    folder: "Photography/Lightroom/"
+
+# Skip patterns (promo, meme, non-educational, etc.)
+skip_patterns:
+  - "promo"
+  - "preset pack"
+  - "lightroom"          # Note: now routes to Photography/Lightroom/ instead of skip
+  - "meme"
+  - "magimir"
+  - "mobile"             # Note: now routes to Photography/Lightroom/ instead of skip
+  - "app"
+  - "smartphone"
+  - "iphone editing"
+  - "lightroom mobile"
+  - "snapseed"
+  - "vsco"
+  - "picsart"
+  - "facetune"
+  - "airbrush"
+  - "meitu"
+  - "beautyplus"
+  - "lead magnet"
+  - "dm for link"
+  - "comment.*tutorial"
+  - "guide.*promo"
+  - "masterclass promo"
+  - "lut pack"
+  - "buy now"
+  - "link in bio"
+  - "discount"
+  - "sale"
+  - "mobile curves"
+  - "photo editing curves"
+  - "mobile photo editing"
+  - "meme"
+  - "joke"
+  - "funny"
+  - "parody"
+
+# Camera Theory (reclassify, don't skip)
+camera_theory_keywords:
+  - "raw vs log"
+  - "dynamic range"
+  - "sensor"
+  - "bit depth"
+  - "log curve"
+  - "gamma curve"
+  - "camera theory"
+  - "raw workflow"
+  - "log workflow"
+  - "exposure latitude"
+  - "highlight rolloff"
+  - "noise floor"
+  - "transfer function"
+  - "bit depth"
+  - "exposure latitude"
+  - "highlight rolloff"
+  - "noise floor"
+
+# Lightroom/Mobile Editing Keywords (Route to Photography/Lightroom/)
+lightroom_mobile_keywords:
+  - "lightroom mobile"
+  - "lr mobile"
+  - "mobile editing"
+  - "iphone editing"
+  - "mobile photography"
+  - "photo editing"
+  - "tone curve"
+  - "point curve"
+  - "rgb curve"
+  - "color grading panel"
+  - "calibration panel"
+  - "hsl panel"
+  - "masking"
+  - "adaptive preset"
+  - "preset"
+  - "creative profile"
+  - "magimir"
+  - "snapseed"
+  - "vsco"
+  - "picsart"
+  - "facetune"
+  - "airbrush"
+  - "meitu"
+  - "beautyplus"
+  - "mobile curves"
+  - "photo editing curves"
+  - "mobile photo editing"
+
+# Output path (external SSD to preserve internal SSD)
+output_path: "/Volumes/Samsung LED/Instagram Downloads/"
+
+# Cleanup
+auto_cleanup: true
+cleanup_verify_retained: true
+cleanup_dry_run: false
+
+# Output exports
+exports:
+  - videographer_knowledge_base_export.json
+  - videographer_knowledge_base_export.csv
+  - skills_export.json
+  - skills_export.csv
+  - ARCHITECTURE_DIAGRAM.md
+  - ARCHITECTURE_DIAGRAM_INTERACTIVE.html

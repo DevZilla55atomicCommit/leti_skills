@@ -1,0 +1,34 @@
+# Graphify exclusions — generated/state paths (safe: filters extraction only, never deletes files)
+# App-internal state (workspace blobs, themes, plugins)
+.obsidian/
+# macOS AppleDouble files, common on ExFAT/USB drives
+._*
+**/._*
+# Sync conflict copies
+*sync-conflict*
+**/*sync-conflict*
+# Sync service metadata
+.stfolder/
+.stignore
+# Organizer/machine state, not knowledge
+.vault-organizer-state*.json
+.vault-organizer*.log
+.vault-organizer-backups/
+.vault-organizer-manifests/
+# Previous graph outputs (never index the index)
+graphify-out/
+Graphify-CodeOnly/
+Graphify-Test/
+Graphify-HermesAgent-Full/
+# Binary media (no text signal for the graph)
+*.mp4
+*.MP4
+*.mov
+*.MOV
+*.png
+*.PNG
+*.jpg
+*.JPG
+*.jpeg
+*.heic
+*.pdf

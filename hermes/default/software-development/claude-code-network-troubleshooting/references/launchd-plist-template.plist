@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.anthropic.claude-code</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>HTTPS_PROXY</key>
+        <string>http://your-proxy:port</string>
+        <key>ANTHROPIC_API_KEY</key>
+        <string>your-key-here</string>
+        <key>NODE_OPTIONS</key>
+        <string>--dns-result-order=ipv4first</string>
+    </dict>
+</dict>
+</plist>

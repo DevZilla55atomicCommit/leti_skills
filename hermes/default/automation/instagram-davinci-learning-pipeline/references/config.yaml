@@ -1,0 +1,411 @@
+# Instagram → DaVinci Learning Pipeline Configuration
+
+# Vault & Skills paths
+vault_path: "/Users/alfredkamisese/TamaZila Obsidian Vault/Hermes Agent/DaVinci_Knowledge_Base"
+photography_vault_path: "/Users/alfredkamisese/TamaZila Obsidian Vault/Hermes Agent/Photography"
+skills_dir: "~/.hermes/skills/creative"
+skills_dir: "~/.hermes/skills/creative"
+
+# Queue file
+queue_file: "Instagram_Learning_Queue.md"
+
+# Processing
+batch_size: 10
+max_concurrent: 3
+retry_attempts: 2
+timeout_seconds: 60
+
+# Classification rules
+categories:
+  - name: "Color Correction Fundamentals"
+    keywords:
+      - "white balance"
+      - "exposure"
+      - "cst"
+      - "gamut"
+      - "primary"
+      - "log"
+      - "lift"
+      - "gamma"
+      - "gain"
+      - "offset"
+      - "parade"
+      - "vectorscope"
+      - "waveform"
+      - "rgb mixer"
+      - "luma mix"
+      - "color space transform"
+      - "color temperature"
+      - "tint"
+    folder: "Color Correction Fundamentals"
+    priority: 1
+
+  - name: "Creative Grading & Looks"
+    keywords:
+      - "look"
+      - "grade"
+      - "cinematic"
+      - "teal"
+      - "orange"
+      - "film"
+      - "emulation"
+      - "lut"
+      - "halation"
+      - "glow"
+      - "haze"
+      - "split tone"
+      - "kodak"
+      - "fujifilm"
+      - "film look"
+      - "color density"
+      - "hue vs sat"
+      - "hue vs lum"
+      - "saturation curve"
+      - "color warper"
+    folder: "Creative Grading & Looks"
+    priority: 2
+
+  - name: "Camera Theory"
+    keywords:
+      - "raw"
+      - "log"
+      - "sensor"
+      - "dynamic range"
+      - "iso"
+      - "exposure index"
+      - "transfer function"
+      - "gamut mapping"
+      - "debayer"
+      - "compression"
+      - "raw vs log"
+      - "braw"
+      - "prores raw"
+      - "r3d"
+      - "arriraw"
+    folder: "Camera Theory"
+    priority: 3
+
+  - name: "Masking & Power Windows"
+    keywords:
+      - "power window"
+      - "mask"
+      - "qualifier"
+      - "magic mask"
+      - "tracking"
+      - "isolation"
+      - "window"
+      - "shape"
+      - "gradient"
+    folder: "Masking & Power Windows"
+    priority: 4
+
+  - name: "Node Structures & Templates"
+    keywords:
+      - "node"
+      - "parallel"
+      - "serial"
+      - "layer mixer"
+      - "shared node"
+      - "pipeline"
+      - "structure"
+      - "template"
+      - "node tree"
+    folder: "Node Structures & Templates"
+    priority: 5
+
+  - name: "DaVinci Resolve 20/21 Features"
+    keywords:
+      - "resolve 20"
+      - "resolve 21"
+      - "color compressor"
+      - "depth map"
+      - "relight"
+      - "magic mask"
+      - "face refinement"
+      - "color slice"
+      - "film look creator"
+    folder: "DaVinci Resolve 20"
+    priority: 6
+
+  - name: "S-Log3 / Sony Workflows"
+    keywords:
+      - "s-log3"
+      - "slog3"
+      - "sony"
+      - "s-gamut"
+      - "a7s"
+      - "fx3"
+      - "fx6"
+      - "venice"
+    folder: "Color Grading & Looks/S-Log3"
+    priority: 7
+
+  - name: "Apple Log / ProRes"
+    keywords:
+      - "apple log"
+      - "apple log 2"
+      - "pro res"
+      - "prores"
+      - "iphone"
+      - "cinematic mode"
+    folder: "Color Grading & Looks/Apple Log 2"
+    priority: 8
+
+  - name: "Skin Tones"
+    keywords:
+      - "skin tone"
+      - "skin"
+      - "face refinement"
+      - "vectorscope skin tone"
+      - "hue vs hue skin"
+    folder: "Color Grading & Looks/Skin Tones"
+    priority: 9
+
+  - name: "Kodak 2383 / Film Emulation"
+    keywords:
+      - "kodak 2383"
+      - "2383"
+      - "film emulation"
+      - "film print"
+      - "cineon"
+      - "logc"
+    folder: "Color Grading & Looks/Kodak 2383"
+    priority: 10
+
+  - name: "Photo Editing & Lightroom"
+    keywords:
+      - "lightroom"
+      - "lr mobile"
+      - "lightroom mobile"
+      - "tone curve"
+      - "point curve"
+      - "parametric curve"
+      - "rgb curve"
+      - "color grading"
+      - "color correction"
+      - "split toning"
+      - "color grading panel"
+      - "calibration panel"
+      - "hsl panel"
+      - "masking"
+      - "adaptive preset"
+      - "preset"
+      - "profile"
+      - "camera profile"
+      - "creative profile"
+      - "mobile editing"
+      - "iphone editing"
+      - "mobile photography"
+      - "photo editing"
+      - "retouching"
+      - "healing"
+      - "clone"
+      - "denoise"
+      - "sharpening"
+      - "texture"
+      - "clarity"
+      - "dehaze"
+      - "vignette"
+      - "grain"
+    folder: "Photo Editing & Lightroom"
+    priority: 11
+
+  - name: "Lightroom Mobile & Mobile Editing"
+    keywords:
+      - "lightroom mobile"
+      - "lr mobile"
+      - "mobile editing"
+      - "iphone editing"
+      - "mobile photography"
+      - "photo editing"
+      - "tone curve"
+      - "point curve"
+      - "rgb curve"
+      - "color grading panel"
+      - "calibration panel"
+      - "hsl panel"
+      - "masking"
+      - "adaptive preset"
+      - "preset"
+      - "creative profile"
+    folder: "Lightroom"
+    priority: 12
+
+  # === VIDEO EFFECTS CATEGORIES (New — for Video Effects pipeline) ===
+  - name: "Video Effects — Transitions"
+    keywords:
+      - "cut out"
+      - "cutout"
+      - "whip pan"
+      - "whip transition"
+      - "match cut"
+      - "morph cut"
+      - "morph transition"
+      - "dissolve"
+      - "wipe"
+      - "slide transition"
+      - "push transition"
+      - "iris transition"
+      - "transition tutorial"
+      - "seamless transition"
+      - "smooth transition"
+      - "mask transition"
+      - "alpha transition"
+    folder: "Video_Effects/Transitions"
+    priority: 13
+
+  - name: "Video Effects — Compositing"
+    keywords:
+      - "green screen"
+      - "blue screen"
+      - "chroma key"
+      - "luma key"
+      - "rotoscope"
+      - "rotoscoping"
+      - "matte"
+      - "alpha channel"
+      - "keying"
+      - "composite"
+      - "compositing"
+      - "fusion composite"
+      - "background removal"
+      - "sky replacement"
+    folder: "Video_Effects/Compositing"
+    priority: 14
+
+  - name: "Video Effects — Motion Graphics"
+    keywords:
+      - "lower third"
+      - "lowerthird"
+      - "kinetic type"
+      - "kinetic typography"
+      - "title animation"
+      - "animated title"
+      - "motion graphics"
+      - "mograph"
+      - "callout"
+      - "text animation"
+      - "title template"
+      - "fusion title"
+    folder: "Video_Effects/Motion_Graphics"
+    priority: 15
+
+  - name: "Video Effects — VFX"
+    keywords:
+      - "particles"
+      - "particle"
+      - "explosion"
+      - "fire effect"
+      - "smoke effect"
+      - "sci-fi effect"
+      - "energy effect"
+      - "magic effect"
+      - "portal effect"
+      - "vfx tutorial"
+      - "visual effects"
+      - "fusion vfx"
+    folder: "Video_Effects/VFX"
+    priority: 16
+
+  - name: "Video Effects — Text Effects"
+    keywords:
+      - "text effect"
+      - "3d text"
+      - "typewriter effect"
+      - "subtitle style"
+      - "caption style"
+      - "text animation"
+      - "typography animation"
+      - "fusion text"
+      - "text+"
+    folder: "Video_Effects/Text_Effects"
+    priority: 17
+
+  - name: "Video Effects — Stylization"
+    keywords:
+      - "glitch effect"
+      - "glitch transition"
+      - "vhs effect"
+      - "vhs look"
+      - "film damage"
+      - "film burn"
+      - "light leaks"
+      - "crt effect"
+      - "retro look"
+      - "analog look"
+      - "film grain"
+      - "halation"
+      - "bloom"
+      - "diffusion"
+      - "stylize"
+    folder: "Video_Effects/Stylization"
+    priority: 18
+
+  - name: "Video Effects — Time Effects"
+    keywords:
+      - "speed ramp"
+      - "speed ramping"
+      - "time remap"
+      - "time remapping"
+      - "freeze frame"
+      - "slow motion"
+      - "slo-mo"
+      - "frame blend"
+      - "optical flow"
+      - "time warp"
+      - "retime"
+    folder: "Video_Effects/Time_Effects"
+    priority: 19
+
+# Skip patterns (promo, meme, non-educational, etc.)
+skip_patterns:
+  - "promo"
+  - "preset pack"
+  - "meme"
+  - "joke"
+  - "funny"
+  - "parody"
+  - "not educational"
+  - "no tutorial"
+  - "just for fun"
+
+# Output exports
+exports:
+  - knowledge_base_export.json
+  - knowledge_base_export.csv
+  - skills_export.json
+  - skills_export.csv
+  - ARCHITECTURE_DIAGRAM.md
+  - ARCHITECTURE_DIAGRAM_INTERACTIVE.html
+
+# Skill naming
+skill_naming:
+  prefix: "davinci-resolve-"
+  separator: "-"
+  lowercase: true
+  max_length: 80
+
+# Vault file naming
+vault_naming:
+  format: "{NN}-{Title}_{Creator}_{Keywords}.md"
+  max_title_words: 8
+  separator: "_"
+
+# Browser settings
+browser:
+  headless: true
+  viewport_width: 1920
+  viewport_height: 1080
+  wait_for_network_idle: true
+  screenshot_on_error: true
+
+# Retry policy
+retry:
+  max_attempts: 3
+  backoff_base: 2
+  backoff_max: 30
+  retry_on:
+    - "timeout"
+    - "network_error"
+    - "element_not_found"
+    - "rate_limit"

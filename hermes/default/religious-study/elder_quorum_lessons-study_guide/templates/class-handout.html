@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ talk.title }} — Class Handout</title>
+    <link rel="stylesheet" href="../assets/brand/eq-colors.css">
+    <link rel="stylesheet" href="../assets/brand/eq-typography.css">
+    <link rel="stylesheet" href="../assets/brand/components.css">
+    <link rel="stylesheet" href="../assets/brand/print.css" media="print">
+    <style>
+        @page {
+            margin: 1.5cm;
+            size: letter;
+        }
+        .handout {
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 24px 32px;
+            font-family: var(--eq-font-body);
+            color: var(--eq-ink);
+            background: var(--eq-warm-white);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid var(--eq-brass);
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+        }
+        .badge {
+            background: var(--eq-dark-brass);
+            color: var(--eq-warm-white);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.7em;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .title {
+            font-family: var(--eq-font-heading);
+            font-size: 1.5em;
+            color: var(--eq-dark-brass);
+            margin: 8px 0 4px;
+        }
+        .speaker {
+            font-size: 0.95em;
+            color: var(--eq-brass);
+            font-weight: 600;
+        }
+        .core-box {
+            background: var(--eq-dark-brass);
+            color: var(--eq-warm-white);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 16px 0;
+            text-align: center;
+        }
+        .core-box h3 {
+            color: var(--eq-warm-gold);
+            margin: 0 0 8px;
+            font-size: 1em;
+        }
+        .core-box p {
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin: 0;
+        }
+        .core-box .verse {
+            color: var(--eq-light-gold);
+            font-style: italic;
+            margin-top: 8px;
+            display: block;
+            font-size: 0.9em;
+        }
+        .scripture-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 16px 0;
+        }
+        .scripture-card {
+            background: var(--eq-surface);
+            border: 1px solid var(--eq-border-light);
+            border-radius: 6px;
+            padding: 12px;
+        }
+        .scripture-card h4 {
+            font-size: 0.85em;
+            color: var(--eq-dark-brass);
+            margin: 0 0 6px;
+            font-weight: 600;
+        }
+        .scripture-card ul {
+            margin: 0;
+            padding-left: 18px;
+            font-size: 0.8em;
+            line-height: 1.5;
+        }
+        .scripture-card li { margin-bottom: 3px; }
+        .discussion-box {
+            background: var(--eq-gradient-subtle);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        .discussion-box h3 {
+            color: var(--eq-dark-brass);
+            font-size: 1em;
+            margin: 0 0 10px;
+        }
+        .discussion-box ol {
+            margin: 0;
+            padding-left: 18px;
+            font-size: 0.85em;
+            line-height: 1.6;
+        }
+        .discussion-box li { margin-bottom: 6px; }
+        .challenge-box {
+            background: var(--eq-gradient-primary);
+            color: var(--eq-dark-brass);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+            text-align: center;
+        }
+        .challenge-box h3 {
+            color: var(--eq-dark-brass);
+            margin: 0 0 8px;
+            font-size: 1em;
+        }
+        .challenge-box ol {
+            margin: 0;
+            padding-left: 18px;
+            text-align: left;
+            font-size: 0.85em;
+            line-height: 1.6;
+        }
+        .challenge-box li { margin-bottom: 4px; }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 12px;
+            border-top: 1px solid var(--eq-border-light);
+            font-size: 0.75em;
+            color: var(--eq-ink-muted);
+        }
+        @media print {
+            .handout { background: white !important; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="handout">
+        <header class="header">
+            <span class="badge">{{ talk.conference }}</span>
+            <h1 class="title">{{ talk.title }}</h1>
+            <p class="speaker">{{ talk.speaker }}{% if talk.speaker_calling %}, {{ talk.speaker_calling }}{% endif %}</p>
+            <p style="font-size: 0.85em; color: var(--eq-ink-muted); margin: 8px 0 0;">{{ talk.session }} • {{ talk.date }}</p>
+        </header>
+
+        <section class="core-box">
+            <h3>The Core Message</h3>
+            <p>{{ core_message.one_sentence }}</p>
+            <span class="verse">"{{ core_message.key_verse_text }}" ({{ core_message.key_verse_ref }})</span>
+        </section>
+
+        <h2 style="font-size: 1.1em; color: var(--eq-dark-brass); margin: 20px 0 12px; padding-left: 10px; border-left: 3px solid var(--eq-brass);">Key Scriptures by Theme</h2>
+        <div class="scripture-grid">
+            {% for thread in doctrinal_threads %}
+            <article class="scripture-card thread-{{ loop.index }}" style="border-top: 3px solid var(--thread-color);">
+                <h4>{{ thread.short_name }}</h4>
+                <ul>
+                    {% for ref in thread.key_scriptures %}
+                    <li>{{ ref }}</li>
+                    {% endfor %}
+                </ul>
+            </article>
+            {% endfor %}
+        </div>
+
+        <section class="discussion-box">
+            <h3>Discussion Questions</h3>
+            <ol>
+                {% for q in discussion_questions %}
+                <li>{{ q.question }}</li>
+                {% endfor %}
+            </ol>
+        </section>
+
+        <section class="challenge-box">
+            <h3>Putting It First — This Week's Challenge</h3>
+            <p style="margin: 0 0 10px; font-size: 0.9em;">{{ application_challenge.intro }}</p>
+            <ol>
+                {% for step in application_challenge.steps %}
+                <li>{{ step }}</li>
+                {% endfor %}
+            </ol>
+        </section>
+
+        <footer class="footer">
+            <p>Source: {{ talk.title }} by {{ talk.speaker }}, {{ talk.conference }} ({{ talk.date }})</p>
+            <p>Prepared {{ generation_date }} for Elder's Quorum • Take home, study, apply</p>
+        </footer>
+    </div>
+</body>
+</html>

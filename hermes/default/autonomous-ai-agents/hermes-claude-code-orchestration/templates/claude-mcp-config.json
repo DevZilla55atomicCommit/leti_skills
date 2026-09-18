@@ -1,0 +1,71 @@
+# Claude Code MCP Configuration for Hermes
+
+Use this to connect Claude Code to Hermes MCP server.
+
+## Option 1: Direct Command (stdio)
+
+Add to `~/.claude/settings.json` under `"mcpServers"`:
+
+```json
+{
+  "mcpServers": {
+    "hermes": {
+      "command": "hermes",
+      "args": ["mcp", "serve"]
+    }
+  }
+}
+```
+
+Or via CLI:
+```bash
+claude mcp add hermes -- hermes mcp serve
+```
+
+## Option 2: Explicit Path (if hermes not in PATH)
+
+```json
+{
+  "mcpServers": {
+    "hermes": {
+      "command": "/Users/alfredkamisese/.local/bin/hermes",
+      "args": ["mcp", "serve"]
+    }
+  }
+}
+```
+
+## Option 3: With Verbose Logging
+
+```json
+{
+  "mcpServers": {
+    "hermes": {
+      "command": "hermes",
+      "args": ["mcp", "serve", "--verbose"]
+    }
+  }
+}
+```
+
+## Verification
+
+After adding, test in Claude Code:
+```bash
+# List MCP servers
+claude mcp list
+
+# Should show:
+# hermes: stdio hermes mcp serve
+
+# Test connection
+# In Claude Code chat:
+"Use mcp_hermes_conversations_list to show my conversations"
+```
+
+## Notes
+
+- Hermes must be running `hermes mcp serve` for the connection to work
+- The server uses stdio transport (not HTTP)
+- Tools appear with prefix `mcp_hermes_*`
+- Restart Claude Code after adding MCP server

@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="The Lord Delivers His People — Personal Study Guide">
+<title>The Lord Delivers His People — Come, Follow Me</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Helios' Hues - 6 question colors */
+  --helios-1: #e85d2a;  /* Ember Orange */
+  --helios-2: #d4a83c;  /* Solar Gold */
+  --helios-3: #4a9e4f;  /* Verdant Green */
+  --helios-4: #3a7bc8;  /* Azure Blue */
+  --helios-5: #8b5fb8;  /* Amethyst Purple */
+  --helios-6: #c84a6a;  /* Rose Crimson */
+
+  /* Base Colors */
+  --color-gold: #c9a84c;
+  --color-brass: #b8963e;
+  --color-dark-brass: #8b7330;
+  --color-warm-white: #fdfbf7;
+  --color-light-gold: #f5ebe0;
+  --color-ink: #1f2a2e;
+  --color-ink-soft: #3d4a4d;
+  --color-scripture: #0d5d3a;
+  --color-border: #e8e4dc;
+  --color-bg: #faf9f6;
+  --color-card: #ffffff;
+  --color-shadow: rgba(31, 42, 46, 0.08);
+  --color-focus: #c9a84c;
+
+  --font-heading: 'Crimson Pro', Georgia, serif;
+  --font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 350ms ease;
+
+  /* Mobile-first sizing */
+  --base-font-size: 16pt;
+  --line-height: 1.7;
+  --tap-target: 48px;
+}
+
+[data-theme="dark"] {
+  --helios-1: #f57c4a;
+  --helios-2: #e4c05c;
+  --helios-3: #6acc6f;
+  --helios-4: #6aa8e8;
+  --helios-5: #b88df8;
+  --helios-6: #f87aa8;
+
+  --color-gold: #d4b85c;
+  --color-brass: #c4a452;
+  --color-dark-brass: #a68a42;
+  --color-warm-white: #1f2a2e;
+  --color-light-gold: #2d3a3d;
+  --color-ink: #fdfbf7;
+  --color-ink-soft: #e8e4dc;
+  --color-scripture: #4ade80;
+  --color-border: #3d4a4d;
+  --color-bg: #162023;
+  --color-card: #1f2a2e;
+  --color-shadow: rgba(0, 0, 0, 0.3);
+  --color-focus: #d4b85c;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--base-font-size);
+  line-height: var(--line-height);
+  color: var(--color-ink);
+  background: var(--color-bg);
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--color-scripture); text-decoration: none; transition: color var(--transition-fast); }
+a:hover { color: var(--color-gold); text-decoration: underline; }
+a:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; border-radius: 2px; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+/* Layout - Single Column */
+.page { min-height: 100vh; display: flex; flex-direction: column; }
+.main { flex: 1; padding: var(--space-lg) var(--space-md); width: 100%; max-width: 100%; }
+
+/* Hero - Mike Malm 'Similitude' Artwork */
+.hero {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: var(--space-xl);
+  background: linear-gradient(135deg, var(--color-light-gold) 0%, var(--color-warm-white) 100%);
+  border: 1px solid var(--color-border);
+  aspect-ratio: 4/3;
+}
+.hero-artwork {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(31,42,46,0.15) 0%, rgba(31,42,46,0.05) 30%, rgba(31,42,46,0) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--space-xl);
+  padding-bottom: var(--space-lg);
+}
+.conference-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-warm-white);
+  background: rgba(201, 168, 76, 0.9);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 100px;
+  margin-bottom: var(--space-sm);
+  width: fit-content;
+  backdrop-filter: blur(4px);
+}
+.talk-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 5vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: #ffffff;
+  margin-bottom: var(--space-xs);
+  text-shadow: 0 2px 12px rgba(0,0,0,0.6), 0 0 4px rgba(0,0,0,0.8);
+}
+.speaker-name {
+  font-size: clamp(1rem, 3vw, 1.125rem);
+  color: rgba(253, 251, 247, 0.9);
+  font-weight: 400;
+}
+.speaker-title { color: var(--color-gold); font-weight: 500; }
+.session-info { font-size: 0.875rem; color: rgba(253, 251, 247, 0.8); margin-top: var(--space-xs); }
+
+/* Toolbar - Sticky Bottom on Mobile */
+.toolbar {
+  position: sticky;
+  bottom: 0;
+  z-index: 100;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-md);
+  background: var(--color-card);
+  border-top: 1px solid var(--color-border);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  box-shadow: 0 -2px 16px var(--color-shadow);
+  margin: calc(var(--space-lg) * -1) calc(var(--space-md) * -1) var(--space-xl);
+  padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom));
+}
+.search-wrapper { flex: 1; min-width: 160px; position: relative; }
+.search-input {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  padding-left: 2.75rem;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--color-ink);
+  background: var(--color-warm-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  min-height: var(--tap-target);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.search-input:focus { outline: none; border-color: var(--color-gold); box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.2); }
+.search-icon {
+  position: absolute;
+  left: var(--space-md);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  stroke: var(--color-ink-soft);
+  pointer-events: none;
+}
+.search-input:focus + .search-icon { stroke: var(--color-gold); }
+.search-clear {
+  position: absolute;
+  right: var(--space-md);
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-xs);
+  color: var(--color-ink-soft);
+  min-width: var(--tap-target);
+  min-height: var(--tap-target);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-fast), visibility var(--transition-fast);
+}
+.search-input:not(:placeholder-shown) + .search-icon + .search-clear { opacity: 1; visibility: visible; }
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap-target);
+  height: var(--tap-target);
+  border: 1px solid var(--color-border);
+  background: var(--color-warm-white);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: var(--color-ink);
+  transition: all var(--transition-fast);
+}
+.theme-toggle:hover { background: var(--color-light-gold); border-color: var(--color-gold); }
+.theme-toggle:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+.theme-toggle svg { width: 22px; height: 22px; }
+.print-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-warm-white);
+  background: var(--color-ink);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  min-height: var(--tap-target);
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+.print-btn:hover { background: var(--color-dark-brass); transform: translateY(-1px); }
+.print-btn:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+.print-btn svg { width: 18px; height: 18px; }
+
+/* Table of Contents - Tap-Friendly */
+.toc {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-xl);
+  overflow: hidden;
+  box-shadow: 0 2px 8px var(--color-shadow);
+}
+.toc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  background: var(--color-light-gold);
+  border-bottom: 1px solid var(--color-border);
+  cursor: pointer;
+  min-height: var(--tap-target);
+}
+.toc-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-heading);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+.toc-icon { width: 22px; height: 22px; stroke: var(--color-gold); flex-shrink: 0; }
+.toc-chevron { width: 20px; height: 20px; stroke: var(--color-ink-soft); transition: transform var(--transition-normal); flex-shrink: 0; }
+.toc.open .toc-chevron { transform: rotate(180deg); }
+.toc-list {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-slow), padding var(--transition-normal);
+  padding: 0 var(--space-lg);
+  list-style: none;
+}
+.toc.open .toc-list { max-height: 1000px; padding: var(--space-md) var(--space-lg); }
+.toc-item {
+  display: block;
+  padding: var(--space-sm) var(--space-md);
+  margin: var(--space-xs) calc(var(--space-md) * -1);
+  border-radius: var(--radius-md);
+  color: var(--color-ink);
+  font-size: 1rem;
+  line-height: 1.5;
+  border-left: 4px solid transparent;
+  transition: all var(--transition-fast);
+  min-height: var(--tap-target);
+  display: flex;
+  align-items: center;
+}
+.toc-item:hover, .toc-item:focus { background: var(--color-light-gold); border-left-color: var(--color-gold); }
+.toc-item.active { background: rgba(201, 168, 76, 0.12); border-left-color: var(--color-gold); font-weight: 500; }
+.toc-item::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-border);
+  margin-right: var(--space-sm);
+  flex-shrink: 0;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+.toc-item.active::before { background: var(--color-gold); transform: scale(1.2); }
+
+/* Highlight Callouts - Pinpoint Must-Grasp Concepts */
+.highlight-callouts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+.callout {
+  position: relative;
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+  border-left: 6px solid;
+  background: var(--color-card);
+  box-shadow: 0 2px 12px var(--color-shadow);
+  overflow: hidden;
+}
+.callout::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 6px;
+  background: inherit;
+}
+.callout-1 { border-left-color: var(--helios-1); }
+.callout-2 { border-left-color: var(--helios-2); }
+.callout-3 { border-left-color: var(--helios-3); }
+.callout-4 { border-left-color: var(--helios-4); }
+.callout-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 100px;
+  color: var(--color-warm-white);
+  margin-bottom: var(--space-sm);
+}
+.callout-1 .callout-badge { background: var(--helios-1); }
+.callout-2 .callout-badge { background: var(--helios-2); color: var(--color-warm-white); }
+.callout-3 .callout-badge { background: var(--helios-3); }
+.callout-4 .callout-badge { background: var(--helios-4); }
+.callout-title {
+  font-family: var(--font-heading);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-bottom: var(--space-sm);
+}
+.callout-text { color: var(--color-ink-soft); font-size: 1rem; line-height: 1.6; }
+
+/* Section Cards - Collapsible Q&A */
+.section-card {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-lg);
+  overflow: hidden;
+  box-shadow: 0 2px 8px var(--color-shadow);
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  background: var(--color-light-gold);
+  border-bottom: 1px solid var(--color-border);
+  cursor: pointer;
+  user-select: none;
+  min-height: var(--tap-target);
+  transition: background var(--transition-fast);
+}
+.section-header:hover { background: var(--color-gold); color: var(--color-warm-white); }
+.section-header:focus-visible { outline: 3px solid var(--color-focus); outline-offset: -2px; }
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-heading);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+.section-icon { width: 22px; height: 22px; stroke: var(--color-gold); flex-shrink: 0; }
+.section-chevron { width: 20px; height: 20px; stroke: var(--color-ink-soft); transition: transform var(--transition-normal); flex-shrink: 0; }
+.section-card.open .section-chevron { transform: rotate(180deg); }
+.section-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-slow), padding var(--transition-normal);
+  padding: 0 var(--space-lg);
+}
+.section-card.open .section-content { max-height: 5000px; padding: var(--space-lg); }
+
+/* Question Color Coding - 6 Helios Hues */
+.question-1 .section-header { background: linear-gradient(90deg, var(--helios-1) 0%, color-mix(in srgb, var(--helios-1) 70%, black) 100%); }
+.question-1 .section-header * { color: var(--color-warm-white); }
+.question-1 .section-icon { stroke: var(--color-warm-white); }
+.question-2 .section-header { background: linear-gradient(90deg, var(--helios-2) 0%, var(--color-dark-brass) 100%); }
+.question-2 .section-header * { color: var(--color-warm-white); }
+.question-2 .section-icon { stroke: var(--color-warm-white); }
+.question-3 .section-header { background: linear-gradient(90deg, var(--helios-3) 0%, color-mix(in srgb, var(--helios-3) 70%, black) 100%); }
+.question-3 .section-header * { color: var(--color-warm-white); }
+.question-3 .section-icon { stroke: var(--color-warm-white); }
+.question-4 .section-header { background: linear-gradient(90deg, var(--helios-4) 0%, color-mix(in srgb, var(--helios-4) 70%, black) 100%); }
+.question-4 .section-header * { color: var(--color-warm-white); }
+.question-4 .section-icon { stroke: var(--color-warm-white); }
+.question-5 .section-header { background: linear-gradient(90deg, var(--helios-5) 0%, color-mix(in srgb, var(--helios-5) 70%, black) 100%); }
+.question-5 .section-header * { color: var(--color-warm-white); }
+.question-5 .section-icon { stroke: var(--color-warm-white); }
+.question-6 .section-header { background: linear-gradient(90deg, var(--helios-6) 0%, color-mix(in srgb, var(--helios-6) 70%, black) 100%); }
+.question-6 .section-header * { color: var(--color-warm-white); }
+.question-6 .section-icon { stroke: var(--color-warm-white); }
+
+/* Q&A Content */
+.qa-pair { margin-bottom: var(--space-lg); padding-bottom: var(--space-lg); border-bottom: 1px solid var(--color-border); }
+.qa-pair:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+.question-text {
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-bottom: var(--space-md);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+}
+.question-text .scripture-ref { font-size: 0.875em; vertical-align: baseline; }
+.answer-text { color: var(--color-ink-soft); line-height: 1.7; }
+.answer-text p { margin-bottom: var(--space-md); }
+.answer-text p:last-child { margin-bottom: 0; }
+.answer-text .scripture-ref {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  color: var(--color-scripture);
+  font-weight: 500;
+  background: rgba(13, 93, 58, 0.08);
+  padding: 0.125em 0.375em;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+[data-theme="dark"] .answer-text .scripture-ref { background: rgba(74, 222, 128, 0.15); }
+
+/* Scripture Links - Gospel Library */
+.scripture-ref a,
+.gospel-link {
+  color: var(--color-scripture);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.scripture-ref a:hover,
+.gospel-link:hover { color: var(--helios-2); }
+.scripture-ref a::after,
+.gospel-link::after { content: ' ↗'; font-size: 0.75em; opacity: 0.7; }
+
+/* Summary Content - Markdown-style */
+.summary-content {
+  line-height: 1.7;
+  color: var(--color-ink);
+}
+
+.summary-content h1,
+.summary-content h2,
+.summary-content h3,
+.summary-content h4 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--color-ink);
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-sm);
+}
+
+.summary-content h1 { font-size: 1.5rem; border-bottom: 2px solid var(--color-gold); padding-bottom: var(--space-xs); }
+.summary-content h2 { font-size: 1.25rem; color: var(--color-dark-brass); }
+.summary-content h3 { font-size: 1.1rem; color: var(--color-brass); }
+.summary-content h4 { font-size: 1rem; color: var(--color-ink-soft); }
+
+.summary-content p {
+  margin-bottom: var(--space-md);
+  line-height: 1.7;
+}
+
+.summary-content ul,
+.summary-content ol {
+  margin: var(--space-md) 0;
+  padding-left: var(--space-xl);
+}
+
+.summary-content li {
+  margin-bottom: var(--space-xs);
+  line-height: 1.6;
+}
+
+.summary-content strong {
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.summary-content em {
+  font-style: italic;
+  color: var(--color-ink-soft);
+}
+
+.summary-content code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: rgba(13, 93, 58, 0.08);
+  padding: 0.125em 0.375em;
+  border-radius: var(--radius-sm);
+  color: var(--color-scripture);
+}
+
+.summary-content blockquote {
+  border-left: 4px solid var(--color-gold);
+  padding-left: var(--space-md);
+  margin: var(--space-md) 0;
+  color: var(--color-ink-soft);
+  font-style: italic;
+}
+
+.summary-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--space-md) 0;
+  font-size: 0.9rem;
+}
+
+.summary-content th,
+.summary-content td {
+  border: 1px solid var(--color-border);
+  padding: var(--space-sm) var(--space-md);
+  text-align: left;
+}
+
+.summary-content th {
+  background: var(--color-light-gold);
+  font-weight: 600;
+}
+
+.summary-content hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: var(--space-xl) 0;
+}
+
+/* Print styles for summary */
+@media print {
+  .summary-content h1,
+  .summary-content h2,
+  .summary-content h3 {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+  
+  .summary-content table {
+    page-break-inside: avoid;
+  }
+}
+
+/* Resources */
+.resource-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.resource-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--color-warm-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+.resource-item:hover { border-color: var(--color-gold); transform: translateX(4px); }
+.resource-icon { width: 24px; height: 24px; stroke: var(--color-gold); flex-shrink: 0; margin-top: 2px; }
+.resource-info { flex: 1; min-width: 0; }
+.resource-title { font-weight: 600; color: var(--color-ink); margin-bottom: var(--space-xs); }
+.resource-meta { font-size: 0.8125rem; color: var(--color-ink-soft); }
+.resource-link { font-size: 0.8125rem; font-weight: 500; color: var(--color-scripture); }
+
+/* Reflections */
+.reflection-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.reflection-card {
+  padding: var(--space-lg);
+  background: var(--color-warm-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--color-gold);
+}
+.reflection-question { font-weight: 600; color: var(--color-ink); margin-bottom: var(--space-sm); }
+.reflection-space {
+  min-height: 80px;
+  padding: var(--space-md);
+  background: var(--color-card);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--color-ink-soft);
+  resize: vertical;
+  width: 100%;
+  transition: border-color var(--transition-fast);
+}
+.reflection-space:focus { outline: none; border-color: var(--color-gold); border-style: solid; }
+
+/* Footer */
+.footer {
+  margin-top: var(--space-2xl);
+  padding: var(--space-xl) var(--space-md);
+  text-align: center;
+  color: var(--color-ink-soft);
+  font-size: 0.875rem;
+  border-top: 1px solid var(--color-border);
+}
+.footer a { color: var(--color-scripture); }
+
+/* Print Styles - Mobile PDF Optimized */
+@media print {
+  @page {
+    size: auto;
+    margin: 0;
+  }
+  html { font-size: 12pt; }
+  body { background: var(--color-warm-white) !important; color: var(--color-ink) !important; }
+  .hero { height: auto; min-height: 0; max-height: none; page-break-after: avoid; break-after: avoid; border: none; background: none; box-shadow: none; }
+  .hero::before { display: none; }
+  .hero-content { padding: 0; justify-content: flex-start; }
+  .hero-artwork { max-height: 30vh; }
+  .hero-overlay { position: static; background: none; padding: 0; }
+  .conference-badge { background: var(--color-gold) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .talk-title { color: var(--color-ink) !important; text-shadow: none; font-size: 22pt; }
+  .speaker-name, .session-info { color: var(--color-ink-soft) !important; }
+  .toolbar, .theme-toggle, .print-btn, .search-wrapper { display: none !important; }
+  .section-card { break-inside: avoid; page-break-inside: avoid; border: 1px solid var(--color-border); box-shadow: none; background: var(--color-card) !important; }
+  .section-header { background: var(--color-light-gold) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .section-header * { color: var(--color-ink) !important; }
+  .section-content { max-height: none !important; padding: 1rem 1.5rem !important; display: block !important; }
+  .section-chevron { display: none; }
+  .question-1 .section-header { background: linear-gradient(90deg, var(--helios-1) 0%, color-mix(in srgb, var(--helios-1) 70%, black) 100%) !important; }
+  .question-1 .section-header * { color: white !important; }
+  .question-2 .section-header { background: linear-gradient(90deg, var(--helios-2) 0%, var(--color-dark-brass) 100%) !important; }
+  .question-2 .section-header * { color: white !important; }
+  .question-3 .section-header { background: linear-gradient(90deg, var(--helios-3) 0%, color-mix(in srgb, var(--helios-3) 70%, black) 100%) !important; }
+  .question-3 .section-header * { color: white !important; }
+  .question-4 .section-header { background: linear-gradient(90deg, var(--helios-4) 0%, color-mix(in srgb, var(--helios-4) 70%, black) 100%) !important; }
+  .question-4 .section-header * { color: white !important; }
+  .question-5 .section-header { background: linear-gradient(90deg, var(--helios-5) 0%, color-mix(in srgb, var(--helios-5) 70%, black) 100%) !important; }
+  .question-5 .section-header * { color: white !important; }
+  .question-6 .section-header { background: linear-gradient(90deg, var(--helios-6) 0%, color-mix(in srgb, var(--helios-6) 70%, black) 100%) !important; }
+  .question-6 .section-header * { color: white !important; }
+  .callout-1 { border-left-color: var(--helios-1) !important; }
+  .callout-2 { border-left-color: var(--helios-2) !important; }
+  .callout-3 { border-left-color: var(--helios-3) !important; }
+  .callout-4 { border-left-color: var(--helios-4) !important; }
+  .callout-1 .callout-badge { background: var(--helios-1) !important; }
+  .callout-2 .callout-badge { background: var(--helios-2) !important; }
+  .callout-3 .callout-badge { background: var(--helios-3) !important; }
+  .callout-4 .callout-badge { background: var(--helios-4) !important; }
+  .qa-pair { page-break-inside: avoid; break-inside: avoid; }
+  .callout { break-inside: avoid; page-break-inside: avoid; }
+  .resource-item, .reflection-card { break-inside: avoid; page-break-inside: avoid; background: var(--color-warm-white) !important; border: 1px solid var(--color-border) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .reflection-space { border: 1px solid var(--color-border) !important; background: var(--color-card) !important; min-height: 60px; }
+  .footer { border-top: 1px solid var(--color-border); color: var(--color-ink-soft); }
+  a { text-decoration: none; color: var(--color-scripture) !important; }
+  a::after { content: none !important; }
+  .gospel-link::after { content: none !important; }
+  .scripture-ref a::after { content: none !important; }
+  .summary-section { page-break-inside: avoid; break-inside: avoid; }
+  .no-print { display: none !important; }
+}
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+.section-card { animation: fadeIn var(--transition-normal) ease both; }
+.section-card:nth-child(1) { animation-delay: 50ms; }
+.section-card:nth-child(2) { animation-delay: 100ms; }
+.section-card:nth-child(3) { animation-delay: 150ms; }
+.section-card:nth-child(4) { animation-delay: 200ms; }
+.section-card:nth-child(5) { animation-delay: 250ms; }
+.section-card:nth-child(6) { animation-delay: 300ms; }
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  :root {
+    --color-border: currentColor;
+    --color-shadow: currentColor;
+  }
+  .section-header { border: 2px solid currentColor; }
+  .resource-item, .reflection-card { border-width: 2px; }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  :root { --base-font-size: 16pt; --space-xl: 1.5rem; --space-lg: 1rem; }
+  .main { padding: var(--space-lg) var(--space-md); }
+  .toolbar { flex-direction: column; align-items: stretch; }
+  .search-wrapper { min-width: 0; }
+  .theme-toggle, .print-btn { width: 100%; justify-content: center; }
+}
+</style>
+
+    <style>
+    :root {
+      --color-scripture: #0d5d3a;
+      --color-gold: #b8963e;
+      --color-dark-brass: #8b7330;
+      --color-warm-white: #fdfbf7;
+      --color-light-gold: #f5ebe0;
+      --color-ink: #1f2a2e;
+      --color-ink-soft: #3d4a4d;
+      --color-border: #e8e4dc;
+      --color-bg: #faf9f6;
+      --color-card: #ffffff;
+      --color-shadow: rgba(31, 42, 46, 0.08);
+      --color-focus: #b8963e;
+    }
+    [data-theme="dark"] {
+      --color-scripture: #4ade80;
+      --color-gold: #c4a452;
+      --color-dark-brass: #a68a42;
+      --color-warm-white: #1f2a2e;
+      --color-light-gold: #2d3a3d;
+      --color-ink: #fdfbf7;
+      --color-ink-soft: #e8e4dc;
+      --color-border: #3d4a4d;
+      --color-bg: #162023;
+      --color-card: #1f2a2e;
+      --color-shadow: rgba(0, 0, 0, 0.3);
+      --color-focus: #c4a452;
+    }
+    .question-1 .section-header { background: linear-gradient(90deg, #e85d2a 0%, color-mix(in srgb, #e85d2a 70%, black) 100%); }
+    .question-2 .section-header { background: linear-gradient(90deg, #d4a83c 0%, #8b7330 100%); }
+    .question-3 .section-header { background: linear-gradient(90deg, #4a9e4f 0%, color-mix(in srgb, #4a9e4f 70%, black) 100%); }
+    .question-4 .section-header { background: linear-gradient(90deg, #3a7bc8 0%, color-mix(in srgb, #3a7bc8 70%, black) 100%); }
+    .question-5 .section-header { background: linear-gradient(90deg, #8b5fb8 0%, color-mix(in srgb, #8b5fb8 70%, black) 100%); }
+    .question-6 .section-header { background: linear-gradient(90deg, #c84a6a 0%, color-mix(in srgb, #c84a6a 70%, black) 100%); }
+    @media print {
+      .callout-1 { border-left-color: #e85d2a !important; }
+      .callout-2 { border-left-color: #d4a83c !important; }
+      .callout-3 { border-left-color: #4a9e4f !important; }
+      .callout-4 { border-left-color: #3a7bc8 !important; }
+      .question-1 .section-header { background: linear-gradient(90deg, #e85d2a 0%, color-mix(in srgb, #e85d2a 70%, black) 100%) !important; }
+      .question-2 .section-header { background: linear-gradient(90deg, #d4a83c 0%, #8b7330 100%) !important; }
+      .question-3 .section-header { background: linear-gradient(90deg, #4a9e4f 0%, color-mix(in srgb, #4a9e4f 70%, black) 100%) !important; }
+      .question-4 .section-header { background: linear-gradient(90deg, #3a7bc8 0%, color-mix(in srgb, #3a7bc8 70%, black) 100%) !important; }
+      .question-5 .section-header { background: linear-gradient(90deg, #8b5fb8 0%, color-mix(in srgb, #8b5fb8 70%, black) 100%) !important; }
+      .question-6 .section-header { background: linear-gradient(90deg, #c84a6a 0%, color-mix(in srgb, #c84a6a 70%, black) 100%) !important; }
+    }
+    </style>
+
+</head>
+<body>
+<div class="page">
+  <main class="main">
+    <!-- Hero -->
+    <header class="hero" role="banner">
+      <img class="hero-artwork" src="https://www.churchofjesuschrist.org/media/image/adam-eve-altar-6752507" alt="The Lord Delivers His People — Mike Malm 'Similitude of the Sacrifice'" loading="eager">
+      <div class="hero-overlay">
+        <span class="conference-badge">Old Testament 2025 • January 6–12, 2025</span>
+        <h1 class="talk-title">The Lord Delivers His People</h1>
+        <p class="speaker-name">Come, Follow Me <span class="speaker-title">For Home and Church — Old Testament 2025</span></p>
+        <p class="session-info">January 6–12, 2025</p>
+      </div>
+    </header>
+
+    <!-- Talk Summary -->
+    <section class="section-card summary-section" aria-labelledby="summary-heading">
+      <header class="section-header">
+        <div class="section-title">
+          <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Talk Summary
+        </div>
+      </header>
+      <div class="section-content summary-content">
+        
+      </div>
+    </section>
+
+    <!-- Toolbar -->
+    <div class="toolbar no-print" role="search" aria-label="Study guide controls">
+      <div class="search-wrapper">
+        <input type="search" class="search-input" id="searchInput" placeholder="Search questions, scriptures, answers..." aria-label="Search study guide content">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <button class="search-clear" id="searchClear" aria-label="Clear search" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" type="button">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="print-btn no-print" id="printBtn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print / Save as PDF
+      </button>
+    </div>
+
+    <!-- Pinpoint Highlight Callouts -->
+    <section class="highlight-callouts" aria-labelledby="callouts-heading">
+      <h2 id="callouts-heading" class="sr-only">Key Concepts to Grasp</h2>
+      <article class="callout callout-1" aria-labelledby="callout-1-title">
+        <span class="callout-badge">Core Message</span>
+        <h3 class="callout-title" id="callout-1-title">God Delivers Through His Chosen Servants</h3>
+        <p class="callout-text">The Lord hears His people&#39;s cries and raises up deliverers — anciently Moses, ultimately Jesus Christ — to bring them out of bondage into covenant relationship.</p>
+        <p style="margin-top: var(--space-md);"><a class="gospel-link" href="https://www.churchofjesuschrist.org/study/scriptures/bofm/exodus/3?lang=eng&amp;id=p12" target="_blank" rel="noopener">Exodus 3:12</a></p>
+      </article>
+      <article class="callout callout-2" aria-labelledby="callout-2-title">
+        <span class="callout-badge">The Story</span>
+        <h3 class="callout-title" id="callout-2-title">The Story in Three Sentences</h3>
+        <p class="callout-text">The children of Israel multiply in Egypt but are enslaved by a new Pharaoh who fears them. Moses is born, saved from the Nile, raised in Pharaoh&#39;s court, then flees to Midian. At the burning bush, the Lord calls Moses to deliver Israel with the promise: &#34;I will be with thee.&#34;</p>
+        <p style="margin-top: var(--space-md);"><a class="gospel-link" href="https://www.churchofjesuschrist.org/study/scriptures" target="_blank" rel="noopener">Exodus 1–6</a></p>
+      </article>
+      <article class="callout callout-3" aria-labelledby="callout-3-title">
+        <span class="callout-badge">Key Doctrine</span>
+        <h3 class="callout-title" id="callout-3-title">God Remembers His Covenant</h3>
+        <p class="callout-text">The Lord remembers His covenant with Abraham, Isaac, and Jacob.</p>
+        <p style="margin-top: var(--space-md);"><a class="gospel-link" href="https://www.churchofjesuschrist.org/study/scriptures/bofm/exodus/2?lang=eng&amp;id=p24" target="_blank" rel="noopener">Exodus 2:24</a></p>
+      </article>
+      <article class="callout callout-4" aria-labelledby="callout-4-title">
+        <span class="callout-badge">Live It</span>
+        <h3 class="callout-title" id="callout-4-title">Personal Application</h3>
+        <p class="callout-text">Help learners see that God delivers His people today just as He did anciently — through chosen servants, covenant faithfulness, and the power of Jesus Christ.</p>
+      </article>
+    </section>
+
+    <!-- Table of Contents -->
+    <section class="section-card question-1" aria-labelledby="thread-1-heading">
+      <header class="section-header" onclick="toggleSection(this.parentElement)">
+        <div class="section-title">
+          <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          God Remembers His Covenant
+        </div>
+        <span class="section-badge">2 Q&A pairs</span>
+        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </header>
+      <div class="section-content">
+        <div style="display: flex; flex-direction: column; gap: var(--space-lg);">
+          <article class="qa-pair">
+            <h3 class="question-text">What does it mean that God &#34;remembered&#34; His covenant? <span class="scripture-ref"><a class="gospel-link" href="https://www.churchofjesuschrist.org/study/scriptures/bofm/exodus/2?lang=eng&amp;id=p24" target="_blank" rel="noopener">Exodus 2:24</a></span></h3>
+            <div class="answer-text">&lt;p&gt;&lt;strong&gt;Simple Answer:&lt;/strong&gt; God&#39;s &#34;remembering&#34; means He is ready to act on His promises — not that He forgot.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;What to Ponder:&lt;/strong&gt; When have you felt God &#34;remember&#34; you in a difficult time?&lt;/p&gt;</div>
+          </article>
+          <article class="qa-pair">
+            <h3 class="question-text">How does the burning bush reveal God&#39;s nature? <span class="scripture-ref"><a class="gospel-link" href="https://www.churchofjesuschrist.org/study/scriptures/bofm/exodus/3?lang=eng&amp;id=p2" target="_blank" rel="noopener">Exodus 3:2–6</a></span></h3>
+            <div class="answer-text">&lt;p&gt;&lt;strong&gt;Simple Answer:&lt;/strong&gt; God is holy, self-existent (I AM), and condescends to call Moses personally.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;What to Ponder:&lt;/strong&gt; What &#34;holy ground&#34; moments have changed your direction?&lt;/p&gt;</div>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="section-card question-2" aria-labelledby="thread-2-heading">
+      <header class="section-header" onclick="toggleSection(this.parentElement)">
+        <div class="section-title">
+          <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          Moses&#39; Reluctance and God&#39;s Assurance
+        </div>
+        <span class="section-badge">1 Q&A pairs</span>
+        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </header>
+      <div class="section-content">
+        <div style="display: flex; flex-direction: column; gap: var(--space-lg);">
+          <article class="qa-pair">
+            <h3 class="question-text">Why did Moses resist his calling? <span class="scripture-ref"><a class="gospel-link" href="https://www.churchofjesuschrist.org/study/scriptures/bofm/exodus/4?lang=eng&amp;id=p1" target="_blank" rel="noopener">Exodus 4:1–17</a></span></h3>
+            <div class="answer-text">&lt;p&gt;&lt;strong&gt;Simple Answer:&lt;/strong&gt; Moses felt inadequate — not eloquent, not credible, not willing.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;What to Ponder:&lt;/strong&gt; What inadequacies do you bring to the Lord, and how does He compensate?&lt;/p&gt;</div>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="section-card question-3" aria-labelledby="thread-3-heading">
+      <header class="section-header" onclick="toggleSection(this.parentElement)">
+        <div class="section-title">
+          <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          Teaching Children
+        </div>
+        <span class="section-badge">1 Q&A pairs</span>
+        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </header>
+      <div class="section-content">
+        <div style="display: flex; flex-direction: column; gap: var(--space-lg);">
+          <article class="qa-pair">
+            <h3 class="question-text">Teaching Children: Exodus 3:14 <span class="scripture-ref"><a class="gospel-link" href="https://www.churchofjesuschrist.org/study/scriptures/bofm/exodus/3?lang=eng&amp;id=p14" target="_blank" rel="noopener">Exodus 3:14</a></span></h3>
+            <div class="answer-text">&lt;p&gt;&lt;strong&gt;Kid-Level Answer:&lt;/strong&gt; &#34;I AM&#34; means Jesus is always with us — He never changes, never leaves.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Resource:&lt;/strong&gt; Children&#39;s Songbook: &#34;I Am a Child of God&#34;&lt;/p&gt;</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resources & Further Study -->
+    <section class="section-card" aria-labelledby="resources-heading">
+      <header class="section-header" onclick="toggleSection(this.parentElement)">
+        <div class="section-title">
+          <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Resources & Further Study
+        </div>
+        <span class="section-badge">3 items</span>
+        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </header>
+      <div class="section-content">
+        <div class="resource-list">
+          <article class="resource-item">
+            <svg class="resource-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path d="M11 5v14"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M22.17 9.17a5 5 0 0 1 0 7.07"/><line x1="2" y1="22" x2="22" y2="2"/>
+            </svg>
+            <div class="resource-info">
+              <div class="resource-title">followHIM — Dr. Kerry Muhlestein</div>
+              <div class="resource-meta">Dr. Kerry Muhlestein • followHIM</div>
+              <a href="https://followhim.co/old-testament-2025" target="_blank" rel="noopener" class="resource-link">Open →</a>
+            </div>
+          </article>
+          <article class="resource-item">
+            <svg class="resource-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
+            <div class="resource-info">
+              <div class="resource-title">The Burning Bush as Temple Theophany</div>
+              <div class="resource-meta">Dr. Stephen Ricks • BYU Studies Quarterly</div>
+              <a href="https://byustudies.byu.edu" target="_blank" rel="noopener" class="resource-link">Open →</a>
+            </div>
+          </article>
+          <article class="resource-item">
+            <svg class="resource-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
+            <div class="resource-info">
+              <div class="resource-title">Full Lesson: The Lord Delivers His People</div>
+              <div class="resource-meta">The Church of Jesus Christ of Latter-day Saints • Gospel Library</div>
+              <a href="https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2025?lang=eng" target="_blank" rel="noopener" class="resource-link">Open →</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Personal Reflection -->
+    <section class="section-card no-print" aria-labelledby="reflections-heading">
+      <header class="section-header" onclick="toggleSection(this.parentElement)">
+        <div class="section-title">
+          <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/><path d="M12 21v-4"/></svg>
+          Personal Reflection
+        </div>
+        <span class="section-badge">4 prompts</span>
+        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </header>
+      <div class="section-content">
+        <div class="reflection-list">
+          <article class="reflection-card">
+            <p class="reflection-question">When have you felt God &#34;remember&#34; you in a difficult time?</p>
+            <textarea class="reflection-space" placeholder="Your thoughts..." aria-label="When have you felt God &#34;remember&#34; you in a difficult time? - your response" rows="4"></textarea>
+          </article>
+          <article class="reflection-card">
+            <p class="reflection-question">What &#34;holy ground&#34; moments have changed your direction?</p>
+            <textarea class="reflection-space" placeholder="Your thoughts..." aria-label="What &#34;holy ground&#34; moments have changed your direction? - your response" rows="4"></textarea>
+          </article>
+          <article class="reflection-card">
+            <p class="reflection-question">What inadequacies do you bring to the Lord, and how does He compensate?</p>
+            <textarea class="reflection-space" placeholder="Your thoughts..." aria-label="What inadequacies do you bring to the Lord, and how does He compensate? - your response" rows="4"></textarea>
+          </article>
+          <article class="reflection-card">
+            <p class="reflection-question">Teaching Application: Help learners see that God delivers His people today just as He did anciently — through chosen servants, covenant faithfulness, and the power of Jesus Christ.</p>
+            <textarea class="reflection-space" placeholder="Your thoughts..." aria-label="Teaching Application: Help learners see that God delivers His people today just as He did anciently — through chosen servants, covenant faithfulness, and the power of Jesus Christ. - your response" rows="4"></textarea>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <p>Personal Study Guide — The Lord Delivers His People by Come, Follow Me</p>
+    <p>Old Testament 2025 • January 6–12, 2025 • January 6–12, 2025</p>
+    <p style="margin-top: var(--space-sm);">Generated for personal study. Scripture references link to churchofjesuschrist.org.</p>
+  </footer>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // Theme Toggle
+  const themeToggle = document.getElementById('themeToggle');
+  const sunIcon = themeToggle.querySelector('.icon-sun');
+  const moonIcon = themeToggle.querySelector('.icon-moon');
+  const html = document.documentElement;
+
+  function setTheme(theme) {
+    html.setAttribute('data-theme', theme);
+    localStorage.setItem('gc-study-theme', theme);
+    sunIcon.style.display = theme === 'dark' ? 'block' : 'none';
+    moonIcon.style.display = theme === 'dark' ? 'none' : 'block';
+  }
+
+  const savedTheme = localStorage.getItem('gc-study-theme') ||
+    (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  setTheme(savedTheme);
+
+  themeToggle.addEventListener('click', () => {
+    const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+  });
+
+  // Section Toggle
+  window.toggleSection = function(card) {
+    card.classList.toggle('open');
+    card.setAttribute('aria-expanded', card.classList.contains('open'));
+  };
+
+  // TOC Toggle
+  window.toggleToc = function() {
+    const toc = document.querySelector('.toc');
+    toc.classList.toggle('open');
+  };
+
+  // TOC Item Click - Scroll to section
+  document.querySelectorAll('.toc-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const targetId = item.dataset.target;
+      const target = document.getElementById(targetId) || document.querySelector('[aria-labelledby="' + targetId + '-heading"]');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Auto-expand if it's a collapsible section
+        const card = target.closest('.section-card');
+        if (card && !card.classList.contains('open')) {
+          card.classList.add('open');
+        }
+      }
+    });
+  });
+
+  // Search/Filter
+  const searchInput = document.getElementById('searchInput');
+  const searchClear = document.getElementById('searchClear');
+  const allContent = document.querySelectorAll('.qa-pair, .callout, .resource-item, .reflection-card, .section-content');
+
+  function filterContent(query) {
+    const terms = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
+    let visibleCount = 0;
+
+    allContent.forEach(el => {
+      const text = el.textContent.toLowerCase();
+      const match = terms.length === 0 || terms.every(t => text.includes(t));
+      el.style.display = match ? '' : 'none';
+      if (match) {
+        visibleCount++;
+        if (terms.length > 0) {
+          el.classList.add('highlight');
+        }
+      } else {
+        el.classList.remove('highlight');
+      }
+    });
+
+    // Show/hide sections based on content visibility
+    document.querySelectorAll('.section-card').forEach(card => {
+      const visible = card.querySelector('.section-content :not([style*="display: none"])');
+      card.style.display = terms.length === 0 || visible ? 'block' : 'none';
+    });
+  }
+
+  searchInput.addEventListener('input', (e) => filterContent(e.target.value));
+  searchClear.addEventListener('click', () => {
+    searchInput.value = '';
+    filterContent('');
+    searchInput.focus();
+  });
+
+  // Keyboard: Escape clears search
+  searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { searchInput.value = ''; filterContent(''); searchInput.blur(); }
+  });
+
+  // Print
+  document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+  // Auto-expand first section
+  document.querySelector('.section-card')?.classList.add('open');
+
+  // TOC Auto-expand
+  document.querySelector('.toc')?.classList.add('open');
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href').slice(1);
+      const target = document.getElementById(id);
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); target.focus(); }
+    });
+  });
+
+  // Keyboard navigation for collapsible headers
+  document.querySelectorAll('.section-header, .toc-header').forEach(h => {
+    h.setAttribute('tabindex', '0');
+    h.setAttribute('role', 'button');
+    h.setAttribute('aria-expanded', 'false');
+    h.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        h.click();
+      }
+    });
+  });
+
+  // Sync section expansion with TOC
+  function syncToc() {
+    document.querySelectorAll('.section-card').forEach((card, i) => {
+      const tocItem = document.querySelector(`.toc-item:nth-child(${i + 2})`); // +2 for callouts + resources
+      if (tocItem) {
+        tocItem.classList.toggle('active', card.classList.contains('open'));
+      }
+    });
+  }
+
+  // Observe section changes
+  const observer = new MutationObserver(syncToc);
+  document.querySelectorAll('.section-card').forEach(card => {
+    observer.observe(card, { attributes: true, attributeFilter: ['class'] });
+  });
+
+  // Auto-save reflection notes to localStorage
+  document.querySelectorAll('.reflection-space').forEach((textarea, i) => {
+    const key = 'reflection-' + i;
+    const saved = localStorage.getItem(key);
+    if (saved) textarea.value = saved;
+    textarea.addEventListener('input', () => localStorage.setItem(key, textarea.value));
+  });
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    // Ctrl/Cmd + P = Print
+    if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+      // Let browser handle print
+    }
+    // Escape = clear search
+    if (e.key === 'Escape') {
+      document.getElementById('searchInput').value = '';
+      filterContent('');
+      document.getElementById('searchInput').blur();
+    }
+    // T = toggle theme
+    if (e.key === 't' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      themeToggle.click();
+    }
+  });
+})();
+</script>
+</body>
+</html>

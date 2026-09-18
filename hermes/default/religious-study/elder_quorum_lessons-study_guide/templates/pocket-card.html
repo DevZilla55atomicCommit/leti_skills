@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ talk.title }} — Pocket Card</title>
+    <link rel="stylesheet" href="../assets/brand/eq-colors.css">
+    <link rel="stylesheet" href="../assets/brand/eq-typography.css">
+    <link rel="stylesheet" href="../assets/brand/components.css">
+    <link rel="stylesheet" href="../assets/brand/print.css" media="print">
+    <style>
+        @page {
+            size: 4in 6in;
+            margin: 0;
+        }
+        .card {
+            width: 4in;
+            height: 6in;
+            padding: 24px;
+            box-sizing: border-box;
+            background: var(--eq-warm-white);
+            font-family: var(--eq-font-body);
+            color: var(--eq-ink);
+        }
+        .card-front, .card-back {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .badge {
+            background: var(--eq-dark-brass);
+            color: var(--eq-warm-white);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.65em;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            width: fit-content;
+            margin-bottom: 12px;
+        }
+        .title {
+            font-family: var(--eq-font-heading);
+            font-size: 1.1em;
+            color: var(--eq-dark-brass);
+            line-height: 1.2;
+            margin: 0 0 8px;
+        }
+        .speaker {
+            font-size: 0.8em;
+            color: var(--eq-brass);
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .core {
+            font-size: 0.75em;
+            line-height: 1.5;
+            color: var(--eq-ink);
+            flex: 1;
+        }
+        .core strong { color: var(--eq-dark-brass); }
+        .verse {
+            font-family: var(--eq-font-mono);
+            font-size: 0.7em;
+            color: var(--eq-brass);
+            background: rgba(184,134,11,0.1);
+            padding: 6px 10px;
+            border-radius: 4px;
+            margin-top: 8px;
+            display: inline-block;
+        }
+        .threads {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-top: 12px;
+        }
+        .thread-mini {
+            background: var(--eq-surface);
+            border: 1px solid var(--eq-border-light);
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 0.65em;
+        }
+        .thread-mini .label {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-size: 0.6em;
+            margin-bottom: 4px;
+        }
+        .thread-1 .label { color: var(--eq-thread-1); }
+        .thread-2 .label { color: var(--eq-thread-2); }
+        .thread-3 .label { color: var(--eq-thread-3); }
+        .thread-4 .label { color: var(--eq-thread-4); }
+        .thread-5 .label { color: var(--eq-thread-5); }
+        .questions-mini {
+            margin-top: 12px;
+            font-size: 0.7em;
+        }
+        .q-mini {
+            margin: 6px 0;
+            padding-left: 14px;
+            position: relative;
+        }
+        .q-mini::before {
+            content: 'Q';
+            position: absolute;
+            left: 0;
+            color: var(--eq-warm-gold);
+            font-weight: 700;
+            font-family: var(--eq-font-heading);
+        }
+        @media print {
+            .card { background: white !important; }
+        }
+    </style>
+</head>
+<body>
+    <!-- FRONT -->
+    <div class="card card-front no-print">
+        <span class="badge">{{ talk.conference }}</span>
+        <h1 class="title">{{ talk.title }}</h1>
+        <p class="speaker">{{ talk.speaker }}</p>
+        
+        <div class="core">
+            <p><strong>Core:</strong> {{ core_message.one_sentence }}</p>
+            <p class="verse">"{{ core_message.key_verse_text }}" ({{ core_message.key_verse_ref }})</p>
+        </div>
+
+        <div class="threads">
+            {% for thread in doctrinal_threads %}
+            <div class="thread-mini thread-{{ loop.index }}">
+                <div class="label">{{ thread.short_name }}</div>
+                <div>{{ thread.cdl }}</div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="questions-mini">
+            {% for q in discussion_questions[:3] %}
+            <div class="q-mini">{{ q.question }}</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- BACK (for double-sided print) -->
+    <div class="card card-back print-only" style="page-break-before: always;">
+        <span class="badge">Elder's Quorum Lesson</span>
+        <h1 class="title" style="font-size: 1em;">{{ talk.title }}</h1>
+        <p class="speaker">{{ talk.speaker }} • {{ talk.date }}</p>
+        
+        <div class="core" style="font-size: 0.7em;">
+            <p><strong>Key Scriptures:</strong></p>
+            {% for thread in doctrinal_threads %}
+            {% for ref in thread.key_scriptures %}
+            <span class="verse" style="font-size: 0.65em; margin: 2px; display: inline-block;">{{ ref }}</span>
+            {% endfor %}
+            {% endfor %}
+        </div>
+
+        <div style="margin-top: 12px; font-size: 0.7em;">
+            <p><strong>Discussion Questions:</strong></p>
+            {% for q in discussion_questions %}
+            <div class="q-mini" style="margin: 4px 0;">{{ q.question }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="application-challenge" style="margin-top: 16px; padding: 12px; background: var(--eq-gradient-primary); border-radius: 6px; font-size: 0.65em;">
+            <strong>Challenge:</strong> {{ application_challenge.intro }}
+            <ol style="margin: 8px 0 0; padding-left: 16px; text-align: left;">
+                {% for step in application_challenge.steps %}
+                <li>{{ step }}</li>
+                {% endfor %}
+            </ol>
+        </div>
+
+        <footer style="margin-top: 16px; text-align: center; font-size: 0.6em; color: var(--eq-ink-muted);">
+            Prepared {{ generation_date }} • Elder's Quorum
+        </footer>
+    </div>
+</body>
+</html>

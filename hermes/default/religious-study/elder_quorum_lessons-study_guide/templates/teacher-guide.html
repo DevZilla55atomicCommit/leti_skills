@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ talk.title }} — Elder's Quorum Lesson Guide</title>
+    <link rel="stylesheet" href="../assets/brand/eq-colors.css">
+    <link rel="stylesheet" href="../assets/brand/eq-typography.css">
+    <link rel="stylesheet" href="../assets/brand/components.css">
+    <link rel="stylesheet" href="../assets/brand/print.css" media="print">
+    <style>
+        @page {
+            margin: 1.5cm;
+            size: letter;
+            @bottom-center {
+                content: "{{ talk.speaker }} • {{ talk.conference }} • {{ talk.date }}";
+                font-family: 'IBM Plex Sans', sans-serif;
+                font-size: 8pt;
+                color: #6b7b8d;
+            }
+        }
+        .page {
+            background: var(--eq-warm-white);
+            padding: 40px 50px;
+            box-shadow: 0 4px 20px rgba(26, 26, 26, 0.06);
+            border-radius: 8px;
+            min-height: 11in;
+        }
+        .hero-section {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid var(--eq-brass);
+        }
+        .conference-badge {
+            display: inline-block;
+            background: var(--eq-dark-brass);
+            color: var(--eq-warm-white);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        .speaker-portrait {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--eq-brass);
+            box-shadow: 0 0 0 4px var(--eq-warm-white), 0 4px 16px rgba(184, 134, 11, 0.3);
+            margin-bottom: 16px;
+        }
+        .talk-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2.4em;
+            color: var(--eq-dark-brass);
+            margin: 12px 0 8px;
+            line-height: 1.2;
+        }
+        .speaker-name {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.2em;
+            color: var(--eq-brass);
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+        .talk-meta {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 16px;
+            font-size: 0.9em;
+            color: var(--eq-ink-muted);
+        }
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .section-divider {
+            text-align: center;
+            margin: 36px 0;
+            color: var(--eq-brass);
+            font-size: 1.4em;
+        }
+        h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.7em;
+            color: var(--eq-dark-brass);
+            margin: 40px 0 20px;
+            padding-left: 16px;
+            border-left: 4px solid var(--eq-brass);
+            background: linear-gradient(90deg, rgba(184, 134, 11, 0.08) 0%, transparent 100%);
+            padding: 12px 16px;
+            border-radius: 0 8px 8px 0;
+        }
+        h3 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.3em;
+            color: var(--eq-warm-gold);
+            margin: 28px 0 12px;
+        }
+        h4 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.05em;
+            color: var(--eq-light-gold);
+            margin: 20px 0 8px;
+            font-weight: 600;
+        }
+        .core-message {
+            background: var(--eq-dark-brass);
+            color: var(--eq-warm-white);
+            border-radius: 12px;
+            padding: 32px;
+            margin: 24px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .core-message::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 30%, rgba(218, 165, 32, 0.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .core-message h3 {
+            color: var(--eq-warm-gold);
+            margin-top: 0;
+            position: relative;
+        }
+        .core-message p {
+            font-size: 1.15em;
+            line-height: 1.8;
+            position: relative;
+        }
+        .core-message .key-verse {
+            color: var(--eq-light-gold);
+            font-style: italic;
+            margin-top: 16px;
+            display: block;
+        }
+        .doctrine-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .doctrine-card {
+            background: var(--eq-warm-white);
+            border: 1px solid var(--eq-brass-light);
+            border-radius: 10px;
+            padding: 20px;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            position: relative;
+        }
+        .doctrine-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(184, 134, 11, 0.2);
+            border-color: var(--eq-warm-gold);
+        }
+        .doctrine-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--thread-color);
+            border-radius: 10px 10px 0 0;
+        }
+        .doctrine-card.thread-1::before { --thread-color: var(--eq-warm-gold); }
+        .doctrine-card.thread-2::before { --thread-color: var(--eq-brass); }
+        .doctrine-card.thread-3::before { --thread-color: var(--eq-dark-brass); }
+        .doctrine-card.thread-4::before { --thread-color: var(--eq-warm-white); border: 1px solid var(--eq-brass); }
+        .doctrine-card.thread-5::before { --thread-color: var(--eq-light-gold); }
+        .doctrine-thread-label {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 0.75em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--thread-color);
+            margin-bottom: 8px;
+            display: block;
+        }
+        .doctrine-card h4 {
+            margin-top: 0;
+            color: var(--eq-dark-brass);
+        }
+        .scripture-ref {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85em;
+            color: var(--eq-brass);
+            background: rgba(184, 134, 11, 0.08);
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: inline-block;
+            margin: 6px 0;
+        }
+        .talk-outline {
+            background: var(--eq-warm-white);
+            border: 1px solid var(--eq-brass-light);
+            border-radius: 10px;
+            padding: 24px;
+            margin: 20px 0;
+        }
+        .outline-section {
+            margin: 16px 0;
+            padding-left: 20px;
+            border-left: 2px solid var(--eq-brass-light);
+        }
+        .outline-section:first-child { margin-top: 0; }
+        .outline-title {
+            font-weight: 600;
+            color: var(--eq-dark-brass);
+            margin-bottom: 8px;
+        }
+        .outline-text {
+            color: var(--eq-ink);
+            line-height: 1.7;
+            font-size: 0.95em;
+        }
+        .key-quotes {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .quote-block {
+            background: linear-gradient(135deg, rgba(184, 134, 11, 0.06) 0%, rgba(218, 165, 32, 0.04) 100%);
+            border-left: 4px solid var(--eq-brass);
+            border-radius: 0 10px 10px 0;
+            padding: 20px 24px;
+            position: relative;
+        }
+        .quote-block::before {
+            content: '"';
+            font-family: 'Crimson Pro', serif;
+            font-size: 4em;
+            color: var(--eq-brass);
+            opacity: 0.3;
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            line-height: 1;
+        }
+        .quote-text {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.05em;
+            line-height: 1.7;
+            color: var(--eq-ink);
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+        .quote-ref {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8em;
+            color: var(--eq-brass);
+            margin-top: 10px;
+            display: block;
+        }
+        .resources-tabs {
+            margin: 24px 0;
+        }
+        .tab-buttons {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            border-bottom: 2px solid var(--eq-brass-light);
+            padding-bottom: 8px;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--eq-ink-muted);
+            cursor: pointer;
+            border-radius: 6px 6px 0 0;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            background: var(--eq-brass);
+            color: var(--eq-warm-white);
+        }
+        .tab-btn:hover:not(.active) {
+            background: rgba(184, 134, 11, 0.1);
+        }
+        .tab-panel {
+            display: none;
+        }
+        .tab-panel.active {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+        .resource-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+        }
+        .resource-table th {
+            background: var(--eq-dark-brass);
+            color: var(--eq-warm-white);
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        .resource-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--eq-brass-light);
+        }
+        .resource-table tr:last-child td { border-bottom: none; }
+        .resource-table tr:hover td {
+            background: rgba(184, 134, 11, 0.04);
+        }
+        .discussion-questions {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .discussion-card {
+            background: var(--eq-warm-white);
+            border: 1px solid var(--eq-brass-light);
+            border-radius: 10px;
+            padding: 20px 24px;
+            position: relative;
+        }
+        .discussion-card::before {
+            content: '?';
+            position: absolute;
+            top: -14px;
+            left: 24px;
+            background: var(--eq-warm-gold);
+            color: var(--eq-dark-brass);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        .discussion-question {
+            font-weight: 600;
+            color: var(--eq-dark-brass);
+            margin-bottom: 10px;
+            font-size: 1.02em;
+        }
+        .discussion-prompt {
+            color: var(--eq-ink);
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        .application-challenge {
+            background: linear-gradient(135deg, var(--eq-brass) 0%, var(--eq-warm-gold) 100%);
+            color: var(--eq-dark-brass);
+            border-radius: 12px;
+            padding: 28px;
+            margin: 24px 0;
+            text-align: center;
+        }
+        .application-challenge h3 {
+            color: var(--eq-dark-brass);
+            margin-top: 0;
+        }
+        .application-challenge p {
+            font-size: 1.1em;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+        .challenge-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .challenge-step {
+            background: rgba(26, 26, 26, 0.08);
+            border-radius: 8px;
+            padding: 16px;
+            font-size: 0.9em;
+        }
+        .challenge-step-number {
+            display: inline-block;
+            background: var(--eq-warm-gold);
+            color: var(--eq-dark-brass);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+        .deep-doctrine {
+            background: var(--eq-warm-white);
+            border: 1px solid var(--eq-brass-light);
+            border-radius: 10px;
+            padding: 24px;
+            margin: 20px 0;
+        }
+        .doctrine-tier {
+            margin: 20px 0;
+        }
+        .doctrine-tier h4 {
+            color: var(--eq-dark-brass);
+            border-bottom: 2px solid var(--eq-brass);
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+        }
+        .resource-list {
+            list-style: none;
+            padding: 0;
+        }
+        .resource-list li {
+            padding: 10px 0 10px 28px;
+            position: relative;
+            border-bottom: 1px solid var(--eq-brass-light);
+        }
+        .resource-list li:last-child { border-bottom: none; }
+        .resource-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--eq-brass);
+            font-weight: bold;
+        }
+        .resource-title {
+            font-weight: 600;
+            color: var(--eq-dark-brass);
+        }
+        .resource-meta {
+            font-size: 0.85em;
+            color: var(--eq-ink-muted);
+            margin-top: 2px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--eq-brass-light);
+            color: var(--eq-ink-muted);
+            font-size: 0.85em;
+        }
+        .footer a {
+            color: var(--eq-brass);
+            text-decoration: none;
+        }
+        .footer a:hover { text-decoration: underline; }
+        .page-break { page-break-after: always; }
+        .print-only { display: none; }
+        @media print {
+            .page { box-shadow: none; min-height: auto; padding: 0; }
+            .print-only { display: block; }
+            .no-print { display: none; }
+            a[href]::after { content: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <!-- HERO SECTION -->
+        <section class="hero-section">
+            <span class="conference-badge">{{ talk.conference }}</span>
+            {% if talk.speaker_photo %}
+            <img src="{{ talk.speaker_photo }}" alt="{{ talk.speaker }}" class="speaker-portrait no-print">
+            {% endif %}
+            <h1 class="talk-title">{{ talk.title }}</h1>
+            <p class="speaker-name">{{ talk.speaker }}{% if talk.speaker_calling %}, {{ talk.speaker_calling }}{% endif %}</p>
+            <div class="talk-meta">
+                <span class="meta-item">📅 {{ talk.date }}</span>
+                <span class="meta-item">📍 {{ talk.session }}</span>
+            </div>
+        </section>
+
+        <div class="section-divider">◆ ◇ ◆</div>
+
+        <!-- CORE MESSAGE -->
+        <section class="core-message">
+            <h3>The Core Message</h3>
+            <p>
+                <strong>{{ core_message.one_sentence }}</strong><br>
+                {{ core_message.supporting }}<br>
+                <span class="key-verse">"{{ core_message.key_verse_text }}" ({{ core_message.key_verse_ref }})</span>
+            </p>
+        </section>
+
+        <div class="page-break"></div>
+
+        <!-- DOCTRINAL THREADS -->
+        <h2>Doctrinal Threads — The Talk's Spectral Signature</h2>
+        <p style="color: var(--eq-ink-muted); margin-bottom: 20px;">Each thread represents a doctrinal "hue" in the talk. Thread color = saturation of scriptural density; luminance = story quotient.</p>
+
+        <div class="doctrine-grid">
+            {% for thread in doctrinal_threads %}
+            <article class="doctrine-card thread-{{ loop.index }}">
+                <span class="doctrine-thread-label">{{ thread.name }}</span>
+                <h4>{{ thread.cdl }}</h4>
+                <p style="color: var(--eq-ink); font-size: 0.95em; line-height: 1.6; margin-bottom: 12px;">{{ thread.summary }}</p>
+                <div>
+                    {% for ref in thread.key_scriptures %}
+                    <span class="scripture-ref">{{ ref }}</span>
+                    {% endfor %}
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- TALK OUTLINE -->
+        <h2>Talk Outline — Auto-Generated Structure</h2>
+        <section class="talk-outline">
+            {% for section in talk_outline %}
+            <div class="outline-section">
+                <div class="outline-title">{{ section.title }}</div>
+                <div class="outline-text">{{ section.content }}</div>
+            </div>
+            {% endfor %}
+        </section>
+
+        <div class="page-break"></div>
+
+        <!-- KEY QUOTES -->
+        <h2>Key Quotes for Discussion</h2>
+        <div class="key-quotes">
+            {% for quote in key_quotes %}
+            <blockquote class="quote-block">
+                <p class="quote-text">{{ quote.text }}</p>
+                <cite class="quote-ref">{{ quote.context }}</cite>
+            </blockquote>
+            {% endfor %}
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- RELATED RESOURCES -->
+        <h2>Related Resources for Deeper Study</h2>
+        <div class="resources-tabs">
+            <div class="tab-buttons" role="tablist">
+                <button class="tab-btn active" role="tab" data-tab="gc-talks">General Conference Talks</button>
+                <button class="tab-btn" role="tab" data-tab="gospel-topics">Gospel Topics</button>
+                <button class="tab-btn" role="tab" data-tab="byu-speeches">BYU Speeches</button>
+                <button class="tab-btn" role="tab" data-tab="scriptures">Scripture Chain</button>
+            </div>
+
+            <div class="tab-panel active" role="tabpanel" data-tab="gc-talks">
+                <table class="resource-table">
+                    <thead>
+                        <tr><th>Talk</th><th>Speaker</th><th>Conference</th><th>Connection</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for resource in resources.gc_talks %}
+                        <tr>
+                            <td class="resource-title">{{ resource.title }}</td>
+                            <td>{{ resource.speaker }}</td>
+                            <td>{{ resource.conference }}</td>
+                            <td>{{ resource.connection }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tab-panel" role="tabpanel" data-tab="gospel-topics">
+                <table class="resource-table">
+                    <thead>
+                        <tr><th>Topic</th><th>Key Insight</th><th>Link</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for resource in resources.gospel_topics %}
+                        <tr>
+                            <td class="resource-title">{{ resource.title }}</td>
+                            <td>{{ resource.insight }}</td>
+                            <td><a href="{{ resource.url }}" target="_blank">View Essay</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tab-panel" role="tabpanel" data-tab="byu-speeches">
+                <table class="resource-table">
+                    <thead>
+                        <tr><th>Title</th><th>Speaker</th><th>Date</th><th>Type</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for resource in resources.byu_speeches %}
+                        <tr>
+                            <td class="resource-title">{{ resource.title }}</td>
+                            <td>{{ resource.speaker }}</td>
+                            <td>{{ resource.date }}</td>
+                            <td>{{ resource.type }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tab-panel" role="tabpanel" data-tab="scriptures">
+                <table class="resource-table">
+                    <thead>
+                        <tr><th>Scripture</th><th>Context in Talk</th><th>Cross-Reference</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for ref in resources.scripture_chain %}
+                        <tr>
+                            <td class="scripture-ref">{{ ref.reference }}</td>
+                            <td>{{ ref.context }}</td>
+                            <td>{{ ref.cross_ref }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- DEEP DOCTRINE ADDENDUM -->
+        <h2>Deep Doctrine Addendum — Scholar & Prophet Blend</h2>
+        <section class="deep-doctrine">
+            <div class="doctrine-tier">
+                <h4>Essential — Teach This Sunday</h4>
+                <ul class="resource-list">
+                    {% for item in deep_doctrine.essential %}
+                    <li>
+                        <span class="resource-title">{{ item.title }}</span>
+                        <div class="resource-meta">{{ item.source }} — {{ item.key_point }}</div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="doctrine-tier">
+                <h4>Deepening — Personal Study</h4>
+                <ul class="resource-list">
+                    {% for item in deep_doctrine.deepening %}
+                    <li>
+                        <span class="resource-title">{{ item.title }}</span>
+                        <div class="resource-meta">{{ item.source }} — {{ item.key_point }}</div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="doctrine-tier">
+                <h4>Podcast Integration</h4>
+                <ul class="resource-list">
+                    {% for item in deep_doctrine.podcasts %}
+                    <li>
+                        <span class="resource-title">{{ item.title }}</span>
+                        <div class="resource-meta">{{ item.podcast }} — {{ item.key_point }}</div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+
+        <div class="page-break"></div>
+
+        <!-- DISCUSSION QUESTIONS -->
+        <h2>Discussion Questions for Elder's Quorum</h2>
+        <p style="color: var(--eq-ink-muted); margin-bottom: 20px;">Designed for 50-minute lesson: 5–7 min intro, 30–35 min discussion, 5–7 min application, 3 min close.</p>
+
+        <div class="discussion-questions">
+            {% for q in discussion_questions %}
+            <article class="discussion-card">
+                <p class="discussion-question">{{ q.question }}</p>
+                <p class="discussion-prompt">{{ q.prompt }}</p>
+                {% if q.scripture %}
+                <p style="margin-top: 10px; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: var(--eq-brass);">📖 {{ q.scripture }}</p>
+                {% endif %}
+            </article>
+            {% endfor %}
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- PERSONAL APPLICATION CHALLENGE -->
+        <section class="application-challenge">
+            <h3>Putting It First — This Week's Challenge</h3>
+            <p>{{ application_challenge.intro }}</p>
+            <div class="challenge-steps">
+                {% for step in application_challenge.steps %}
+                <div class="challenge-step">
+                    <span class="challenge-step-number">{{ loop.index }}</span>
+                    {{ step }}
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <div class="section-divider">◆ ◇ ◆</div>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <p><strong>Source:</strong> {{ talk.title }} by {{ talk.speaker }}, {{ talk.conference }} ({{ talk.date }})</p>
+            <p><strong>Prepared:</strong> {{ generation_date }} for Elder's Quorum Lesson</p>
+            <p><strong>Resources:</strong> Gospel Library Scriptures • General Conference Archive • BYU Speeches • Gospel Topics Essays</p>
+            <p class="print-only">Printed from {{ output_url }}</p>
+        </footer>
+    </div>
+
+    <script>
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+                btn.classList.add('active');
+                document.querySelector('.tab-panel[data-tab="' + btn.dataset.tab + '"]').classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

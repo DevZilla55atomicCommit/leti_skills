@@ -1,0 +1,111 @@
+---
+name: videographer-production-frame-by-frame-shotlist-kierzacporter
+description: "Production: Frame-by-Frame Shot List Breakdown — 7 essential shot types (Wide, Medium, Close Up, Detail, B-Roll, Action, POV) for universal scene coverage from @kierzacporter"
+version: 1.0.0
+author: Hermes Agent
+metadata:
+  hermes:
+    tags: [production, shotlist, pre-production, cinematography, shot-types, wide-shot, medium-shot, close-up, detail-shot, broll, action-shot, pov-shot, visual-storytelling, scene-coverage, film-school, director-tools]
+---
+
+# Frame-by-Frame Shot List Breakdown — Production Technique
+
+> **Source:** [@kierzacporter — Frame-by-Frame Shot List](https://www.instagram.com/p/DE7bo_xCzZc/)
+> **Creator:** @kierzacporter (Verified)
+> **Date Processed:** 2025-07-18
+> **Instagram Post Code:** DE7bo_xCzZc
+> **Content Type:** Carousel Post (7 slides)
+> **Technique Category:** Production / Shotlist / Pre-Production
+
+---
+
+## 🎯 Technique Summary
+
+Complete 7-shot framework for any video production. This shot list covers the essential building blocks of visual storytelling: establishing context, introducing characters, revealing emotion, providing detail, adding context/mood, driving action, and immersing the viewer. Universal template applicable to narrative, commercial, documentary, and social content.
+
+---
+
+## 📋 Complete Shot List
+
+| Slide | Shot Type | Purpose | Lens | Key Settings |
+|-------|-----------|---------|------|--------------|
+| 1 | **Wide Establishing Shot** | Sets location, atmosphere, leading lines | 16-24mm | f/5.6-8, tripod, golden hour |
+| 2 | **Medium Shot** | Character introduction, spatial relationship | 35-50mm | f/2.8-4, handheld/gimbal, eye-level |
+| 3 | **Close Up** | Emotion, expression, audience connection | 85-100mm | f/2-2.8, tripod/dolly, focus on eyes |
+| 4 | **Detail Shot** | Context, action beats, transition tool | 90-105mm macro | f/4-5.6, high shutter, insert lighting |
+| 5 | **B-Roll Shot** | Mood, pacing, story context | Varied | Opportunistic, 2-3 sec holds |
+| 6 | **Action Shot** | Scene transitions, pace changes, energy | Wide (gimbal) | Follow focus, rehearsed moves |
+| 7 | **POV Shot** | Immersion, subjective experience | Action cam/eye-level | Stabilize in post, motivated |
+
+---
+
+## 🏗️ Core Principles
+
+| Principle | Description |
+|-----------|-------------|
+| **Hierarchy of Information** | Wide → Medium → Close → Detail guides audience from context to intimacy |
+| **Visual Grammar** | Each shot type = specific narrative function; consistent language across projects |
+| **Pacing Control** | Shot order manipulates time perception; fast/slow, tension/release |
+| **Editorial Flexibility** | B-roll + Detail = transition toolkit; solves edit problems in post |
+| **Subjective Immersion** | POV places viewer in character; emotional identification |
+
+---
+
+## 🎬 DaVinci Resolve Timeline Structure
+
+```
+V1: Wide Establishing (3-5 sec)
+V2: Medium Shot (dialogue/action)
+V3: Close Up (emotional beats)
+V4: Detail Inserts (1-2 sec each)
+V5: B-Roll / Atmosphere (cutaway)
+V6: Action / Movement (pace change)
+V7: POV (immersion moment)
+A1-A4: Sync sound + SFX + Music
+
+Color Pipeline:
+Node 01 — CST (Camera Log → DWG)
+Node 02 — Primary Balance (Per shot type)
+Node 03 — Shot Matching (Consistency)
+Node 04 — Look LUT (Creative grade)
+Node 05 — Vignette/Texture (Per shot emphasis)
+OUTPUT
+```
+
+---
+
+## ⚠️ Common Pitfalls & Fixes
+
+| Problem | Root Cause | Solution |
+|---------|------------|----------|
+| Scene feels flat | Missing Wide or POV | Always open with establishing; close with POV |
+| Edit doesn't flow | No Detail/B-Roll inserts | Shoot 3-5 detail shots per scene minimum |
+| Pacing drags | Too many Mediums | Alternate Wide/Medium/CU; use Action for energy |
+| No emotional payoff | Weak CU coverage | Prioritize Close Up on key emotional beats |
+| Jump cuts in edit | Missing transition shots | Detail shots = natural cutaways |
+| Audience disoriented | No spatial geography | Wide + Medium must establish space before CU |
+
+---
+
+## ✅ Verification Checklist
+
+- [ ] Wide: Location clear, time of day readable, leading lines present
+- [ ] Medium: Character + environment relationship visible
+- [ ] Close Up: Eyes sharp, emotion readable, background separated
+- [ ] Detail: Tells story without dialogue, usable as transition
+- [ ] B-Roll: Supports narrative theme, not random beauty shots
+- [ ] Action: Clear beginning/middle/end of movement
+- [ ] POV: Stable, motivated, immersive (not gimmicky)
+- [ ] Coverage: 3:1 ratio minimum (3 takes per shot)
+- [ ] Continuity: Eyeline, screen direction, props match
+- [ ] Audio: Clean sync on all dialogue shots
+
+---
+
+## 🏷️ Tags
+
+`#videographer` `#production` `#shotlist` `#pre-production` `#cinematography` `#shot-types` `#wide-shot` `#medium-shot` `#close-up` `#detail-shot` `#broll` `#action-shot` `#pov-shot` `#visual-storytelling` `#scene-coverage` `#film-school` `#director-tools`
+
+---
+
+*Generated by `instagram-videographer-learning-pipeline` on 2025-07-18 from Instagram Post DE7bo_xCzZc by @kierzacporter*

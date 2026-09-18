@@ -1,0 +1,35 @@
+# Graphify exclusions — vault hygiene (safe: only affects graph extraction, never deletes notes)
+# Obsidian internals (workspace state, themes, plugins — ~48% of previous graph)
+.obsidian/
+# AppleDouble files on ExFAT USB drive
+._*
+**/._*
+# Sync conflict copies
+*sync-conflict*
+**/*sync-conflict*
+# Vault organizer state/logs/backups (machine state, not knowledge)
+.vault-organizer-state*.json
+.vault-organizer*.log
+.vault-organizer-backups/
+.vault-organizer-manifests/
+# Sync service metadata
+.stfolder/
+.stignore
+# Previous graphify outputs (never index the index)
+graphify-out/
+Graphify-CodeOnly/
+Graphify-Test/
+Graphify-HermesAgent-Full/
+2026-08-05/
+# Media binaries (no text signal for the graph)
+*.mp4
+*.MP4
+*.mov
+*.MOV
+*.png
+*.PNG
+*.jpg
+*.JPG
+*.jpeg
+*.heic
+*.pdf

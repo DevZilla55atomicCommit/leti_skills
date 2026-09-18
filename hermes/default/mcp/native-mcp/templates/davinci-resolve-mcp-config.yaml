@@ -1,0 +1,45 @@
+# DaVinci Resolve MCP Server Configuration Template
+# 
+# Copy this to ~/.hermes/config.yaml under the mcp_servers: section
+# 
+# IMPORTANT: After editing config, restart Hermes completely (Cmd+Q → relaunch)
+# 
+# Run `npx davinci-resolve-mcp doctor` to get exact paths for your system
+
+mcp_servers:
+  # Example existing server
+  time:
+    command: uvx
+    args:
+      - mcp-server-time
+
+  # DaVinci Resolve MCP Server
+  davinci-resolve:
+    # Option A: Managed install (RECOMMENDED) - use paths from `npx davinci-resolve-mcp doctor`
+    command: "/opt/homebrew/opt/python@3.11/bin/python3.11"
+    args:
+      - "/Users/alfredkamisese/Library/Application Support/davinci-resolve-mcp/src/server.py"
+    env:
+      RESOLVE_SCRIPT_API: "/Library/Application Support/Blackmagic Design/DaVinci Resolve/Developer/Scripting"
+      RESOLVE_SCRIPT_LIB: "/Applications/DaVinci Resolve/DaVinci Resolve.app/Contents/Libraries/Fusion/fusionscript.so"
+      PYTHONPATH: "/Library/Application Support/Blackmagic Design/DaVinci Resolve/Developer/Scripting/Modules"
+    # Generous timeouts for DaVinci Resolve initialization
+    timeout: 300          # 5 minutes per tool call
+    connect_timeout: 120  # 2 minutes for initial connection
+
+    # Option B: npx launcher (slower startup, auto-updates)
+    # command: npx
+    # args:
+    #   - "-y"
+    #   - davinci-resolve-mcp
+    #   - server
+    # env:
+    #   RESOLVE_SCRIPT_API: "/Library/Application Support/Blackmagic Design/DaVinci Resolve/Developer/Scripting"
+    #   RESOLVE_SCRIPT_LIB: "/Applications/DaVinci Resolve/DaVinci Resolve.app/Contents/Libraries/Fusion/fusionscript.so"
+    #   PYTHONPATH: "/Library/Application Support/Blackmagic Design/DaVinci Resolve/Developer/Scripting/Modules"
+    #   DAVINCI_RESOLVE_MCP_PYTHON: "/opt/homebrew/bin/python3.11"
+    # timeout: 300
+    # connect_timeout: 120
+
+# Global MCP discovery timeout (increase for slow-starting servers like DaVinci Resolve)
+mcp_discovery_timeout: 30.0

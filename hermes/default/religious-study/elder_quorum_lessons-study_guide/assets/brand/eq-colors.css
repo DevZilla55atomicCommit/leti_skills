@@ -1,0 +1,53 @@
+/* ============================================================================
+   ELDER'S QUORUM — BRASS-GOLD COLOR SYSTEM
+   Distinct from Come Follow Me (blue/gold). EQ = Brass/Gold/Charcoal.
+   ============================================================================ */
+
+:root {
+  /* Primary Brand Colors */
+  --eq-dark-brass: #1a1a1a;        /* Near-black charcoal — headings, dark backgrounds */
+  --eq-brass: #B8860B;             /* Classic brass — primary accent, borders, buttons */
+  --eq-warm-gold: #DAA520;         /* Warm gold — highlights, key verses, active states */
+  --eq-light-gold: #E6C87A;        /* Light gold — thread 5, secondary highlights */
+  --eq-warm-white: #F5F0E8;        /* Warm off-white — page background, card backgrounds */
+  --eq-ink: #2c3e50;               /* Dark slate — body text */
+  --eq-ink-muted: #6b7b8d;         /* Muted slate — meta, captions, secondary text */
+
+  /* Semantic Aliases */
+  --eq-primary: var(--eq-brass);
+  --eq-primary-hover: var(--eq-warm-gold);
+  --eq-background: var(--eq-warm-white);
+  --eq-surface: #FFFFFF;
+  --eq-text: var(--eq-ink);
+  --eq-text-muted: var(--eq-ink-muted);
+  --eq-border: rgba(184, 134, 11, 0.2);
+  --eq-border-light: rgba(184, 134, 11, 0.12);
+  --eq-focus: var(--eq-warm-gold);
+
+  /* Thread Colors (for doctrinal thread cards) */
+  --eq-thread-1: var(--eq-warm-gold);      /* Tithing/Consecration Law */
+  --eq-thread-2: var(--eq-brass);           /* Firstlings/Adam's Offering */
+  --eq-thread-3: var(--eq-dark-brass);      /* Double-Mindedness */
+  --eq-thread-4: var(--eq-warm-white);      /* Putting God First */
+  --eq-thread-5: var(--eq-light-gold);      /* Windows of Heaven */
+
+  /* Status Colors */
+  --eq-success: #2d7d46;
+  --eq-warning: #b8860b;
+  --eq-error: #a83232;
+  --eq-info: #2c5f7c;
+
+  /* Gradients */
+  --eq-gradient-primary: linear-gradient(135deg, var(--eq-brass) 0%, var(--eq-warm-gold) 100%);
+  --eq-gradient-subtle: linear-gradient(135deg, rgba(184, 134, 11, 0.06) 0%, rgba(218, 165, 32, 0.04) 100%);
+  --eq-gradient-hero: linear-gradient(180deg, var(--eq-warm-white) 0%, rgba(184, 134, 11, 0.03) 100%);
+}
+
+/* Print-specific color adjustments */
+@media print {
+  :root {
+    --eq-warm-white: #FFFFFF;
+    --eq-border: rgba(0, 0, 0, 0.15);
+    --eq-border-light: rgba(0, 0, 0, 0.08);
+  }
+}

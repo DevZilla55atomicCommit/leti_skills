@@ -1,0 +1,40 @@
+# ElevenLabs TTS Config Template
+
+## Minimal (copy to ~/.hermes/config.yaml under tts: section)
+
+tts:
+  provider: elevenlabs
+  use_gateway: true
+  elevenlabs:
+    voice_id: YOUR_VOICE_ID_HERE
+    model_id: eleven_multilingual_v2
+
+## Full with all options
+
+tts:
+  provider: elevenlabs
+  use_gateway: true  # Enable for Telegram/Discord/Slack voice delivery
+  elevenlabs:
+    voice_id: pNInz6obpgDQGcFmaJgB          # Your voice ID from ElevenLabs dashboard
+    model_id: eleven_multilingual_v2        # or eleven_turbo_v2_5, eleven_flash_v2_5
+    # output_format: mp3_44100_128         # Optional: mp3_44100_128, pcm_16000, pcm_22050, pcm_24000, pcm_44100
+    # voice_settings:                       # Optional: fine-tune voice
+    #   stability: 0.5
+    #   similarity_boost: 0.75
+    #   style: 0.0
+    #   use_speaker_boost: true
+
+## Multiple provider fallback (Hermes tries in order)
+
+tts:
+  provider: elevenlabs
+  use_gateway: true
+  providers:
+    elevenlabs:
+      voice_id: pNInz6obpgDQGcFmaJgB
+      model_id: eleven_multilingual_v2
+    edge:
+      voice: en-US-AriaNeural
+    openai:
+      model: tts-1-hd
+      voice: nova

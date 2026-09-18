@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Dashboard Starter</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: system-ui, sans-serif;
+            background: #0a0e1a;
+            color: #e8eef4;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        /* LAYER STACK — DO NOT CHANGE ORDER */
+        #canvas-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+        }
+        #canvas-layer canvas { pointer-events: none; }  /* Critical: lets clicks through */
+        #label-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 5; pointer-events: none;
+        }
+        #ui-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 100; pointer-events: none;
+        }
+        .panel {
+            pointer-events: auto;
+            background: rgba(10, 18, 35, 0.92);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            backdrop-filter: blur(10px);
+        }
+        .btn {
+            padding: 8px 16px; border: none; border-radius: 6px;
+            background: rgba(0, 212, 255, 0.2); color: #00d4ff;
+            border: 1px solid rgba(0, 212, 255, 0.4);
+            cursor: pointer; font-weight: 600; font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .btn:hover { background: rgba(0, 212, 255, 0.4); }
+        .btn.active { background: #00d4ff; color: #0a0e1a; }
+    </style>
+</head>
+<body>
+    <div id="canvas-layer"></div>
+    <div id="label-layer"></div>
+    <div id="ui-layer">
+        <div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:8px;">
+            <button class="btn active" onclick="setView('view1')">View 1</button>
+            <button class="btn" onclick="setView('view2')">View 2</button>
+            <button class="btn" onclick="setView('view3')">View 3</button>
+        </div>
+    </div>
+
+    <script type="importmap">
+    { "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    } }
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+        // === SETUP ===
+        const canvasLayer = document.getElementById('canvas-layer');
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.domElement.style.pointerEvents = 'none';  // CRITICAL
+        canvasLayer.appendChild(renderer.domElement);
+
+        const labelRenderer = new CSS2DRenderer();
+        labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        labelRenderer.domElement.style.position = 'absolute';
+        labelRenderer.domElement.style.top = '0';
+        labelRenderer.domElement.style.pointerEvents = 'none';
+        document.getElementById('label-layer').appendChild(labelRenderer.domElement);
+
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x0a0e1a, 0.0015);
+
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
+        camera.position.set(0, 30, 80);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true; controls.dampingFactor = 0.05;
+        controls.minDistance = 20; controls.maxDistance = 200;
+
+        // Lights
+        scene.add(new THREE.AmbientLight(0x445566, 0.6));
+        const dir = new THREE.DirectionalLight(0xffffff, 1.2);
+        dir.position.set(50, 100, 50); dir.castShadow = true; scene.add(dir);
+
+        // Ground
+        const ground = new THREE.Mesh(
+            new THREE.PlaneGeometry(400, 400),
+            new THREE.MeshStandardMaterial({ color: 0x0d1b2a, roughness: 0.9 })
+        );
+        ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+
+        // Particles
+        const particles = new THREE.Points(
+            new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(
+                new Array(3000).fill(0).map(() => (Math.random()-0.5)*300), 3
+            )),
+            new THREE.PointsMaterial({ size: 2, vertexColors: true, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending })
+        );
+        scene.add(particles);
+
+        // === VIEW MANAGEMENT ===
+        let currentView = null;
+        const viewObjects = new Map();
+
+        function clearView() {
+            viewObjects.forEach(obj => {
+                if (obj.geometry) obj.geometry.dispose();
+                if (obj.material) Array.isArray(obj.material) ? obj.material.forEach(m=>m.dispose()) : obj.material.dispose();
+                scene.remove(obj);
+            });
+            viewObjects.forEach(obj => { if (obj.element) obj.element.remove(); }); // CSS2DObjects
+            viewObjects.clear();
+        }
+
+        function makeLabel(html, pos) {
+            const div = document.createElement('div');
+            div.className = 'panel';
+            div.style.fontSize = '0.75rem'; div.style.minWidth = '120px'; div.style.textAlign = 'center';
+            div.innerHTML = html;
+            const label = new CSS2DObject(div);
+            label.position.copy(pos);
+            scene.add(label);
+            return label;
+        }
+
+        // === VIEW IMPLEMENTATIONS ===
+        function createView1() {
+            const group = new THREE.Group();
+            // Example: 3 probability pillars
+            [{x:-30, h:60, c:0x00cc44}, {x:0, h:15, c:0xffb300}, {x:30, h:15, c:0xef2b2d}]
+                .forEach(p => {
+                    const mesh = new THREE.Mesh(
+                        new THREE.BoxGeometry(18, p.h, 18),
+                        new THREE.MeshPhysicalMaterial({ color: p.c, metalness: 0.3, roughness: 0.2, clearcoat: 0.5 })
+                    );
+                    mesh.position.set(p.x, p.h/2, 0); mesh.castShadow = true;
+                    group.add(mesh);
+                    viewObjects.set(`bar-${p.x}`, makeLabel(`${(p.h/100*100).toFixed(0)}%`, new THREE.Vector3(p.x, p.h+5, 0)));
+                });
+            viewObjects.set('group', group); scene.add(group);
+        }
+
+        function createView2() {
+            const group = new THREE.Group();
+            // Example: scenario nodes
+            [0,1,2].forEach(i => {
+                const angle = (i-1)*0.6;
+                const mesh = new THREE.Mesh(
+                    new THREE.SphereGeometry(4, 16, 16),
+                    new THREE.MeshPhysicalMaterial({ color: 0x00d4ff, emissive: 0x00d4ff, emissiveIntensity: 0.3 })
+                );
+                mesh.position.set(Math.sin(angle)*30, 20, Math.cos(angle)*30-20);
+                group.add(mesh);
+            });
+            viewObjects.set('group', group); scene.add(group);
+        }
+
+        function createView3() {
+            const group = new THREE.Group();
+            // Example: comparison bars
+            [{name:'Factor 1', a:80, b:40}, {name:'Factor 2', a:60, b:70}].forEach((f,i) => {
+                const y = 10 - i*8;
+                const br = new THREE.Mesh(new THREE.BoxGeometry(f.a/100*35, 4, 3), new THREE.MeshBasicMaterial({color:0x00cc44}));
+                br.position.set(-f.a/100*35/2-2, y, 0); group.add(br);
+                const no = new THREE.Mesh(new THREE.BoxGeometry(f.b/100*35, 4, 3), new THREE.MeshBasicMaterial({color:0xef2b2d}));
+                no.position.set(f.b/100*35/2+2, y, 0); group.add(no);
+                viewObjects.set(`label-${i}`, makeLabel(f.name, new THREE.Vector3(0, y+4, 10)));
+            });
+            viewObjects.set('group', group); scene.add(group);
+        }
+
+        const viewCreators = { view1: createView1, view2: createView2, view3: createView3 };
+        function setView(v) { currentView = v; clearView(); viewCreators[v](); }
+
+        // === ANIMATE ===
+        function animate() {
+            requestAnimationFrame(animate);
+            particles.rotation.y += 0.0001;
+            controls.update();
+            renderer.render(scene, camera);
+            labelRenderer.render(scene, camera);
+        }
+
+        setView('view1');
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
