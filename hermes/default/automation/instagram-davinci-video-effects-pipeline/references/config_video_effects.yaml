@@ -1,0 +1,116 @@
+# Processing
+batch_size: 10
+max_concurrent: 3
+timeout_seconds: 120
+
+# Effect Categories with keyword matching
+categories:
+  - name: "Transitions"
+    keywords: ["cut out", "whip pan", "match cut", "morph", "dissolve", "wipe", "slide", "push", "iris"]
+    folder: "transitions"
+  - name: "Compositing"
+    keywords: ["green screen", "rotoscope", "matte", "keying", "alpha", "chroma key", "luma key"]
+    folder: "compositing"
+  - name: "Motion Graphics"
+    keywords: ["lower third", "kinetic type", "title", "lowerthird", "animated text", "callout"]
+    folder: "motion-graphics"
+  - name: "VFX"
+    keywords: ["particles", "explosion", "fire", "smoke", "sci-fi", "energy", "magic", "portal"]
+    folder: "vfx"
+  - name: "Text Effects"
+    keywords: ["kinetic type", "3d text", "callout", "subtitle style", "typewriter"]
+    folder: "text-effects"
+  - name: "Stylization"
+    keywords: ["glitch", "vhs", "film damage", "halation", "film burn", "light leaks", "crt"]
+    folder: "stylization"
+  - name: "Time Effects"
+    keywords: ["speed ramp", "time remap", "freeze frame", "slo-mo", "frame blend"]
+    folder: "time-effects"
+
+# Skip patterns (promo, meme, non-DaVinci, etc.)
+skip_patterns:
+  - "promo"
+  - "preset pack"
+  - "lightroom"
+  - "meme"
+  - "magimir"
+  - "mobile"
+  - "app"
+  - "smartphone"
+  - "iphone editing"
+  - "lightroom mobile"
+  - "snapseed"
+  - "vsco"
+  - "picsart"
+  - "facetune"
+  - "airbrush"
+  - "meitu"
+  - "beautyplus"
+  - "lead magnet"
+  - "dm for link"
+  - "comment.*tutorial"
+  - "guide.*promo"
+  - "masterclass promo"
+  - "lut pack"
+  - "buy now"
+  - "link in bio"
+  - "discount"
+  - "sale"
+  - "mobile curves"
+  - "photo editing curves"
+  - "mobile photo editing"
+
+# Camera Theory (reclassify, don't skip)
+camera_theory_keywords:
+  - "raw vs log"
+  - "dynamic range"
+  - "sensor"
+  - "bit depth"
+  - "log curve"
+  - "gamma curve"
+  - "camera theory"
+  - "raw workflow"
+  - "log workflow"
+  - "exposure latitude"
+  - "highlight rolloff"
+  - "noise floor"
+  - "transfer function"
+
+# Lightroom/Mobile Editing Keywords (Route to Photography/Lightroom/)
+lightroom_mobile_keywords:
+  - "lightroom mobile"
+  - "lr mobile"
+  - "mobile editing"
+  - "iphone editing"
+  - "mobile photography"
+  - "photo editing"
+  - "tone curve"
+  - "point curve"
+  - "rgb curve"
+  - "color grading panel"
+  - "calibration panel"
+  - "hsl panel"
+  - "masking"
+  - "adaptive preset"
+  - "preset"
+  - "creative profile"
+  - "magimir"
+  - "snapseed"
+  - "vsco"
+  - "picsart"
+  - "facetune"
+  - "airbrush"
+  - "meitu"
+  - "beautyplus"
+  - "mobile curves"
+  - "photo editing curves"
+  - "mobile photo editing"
+
+# Output exports
+exports:
+  - video_effects_export.json
+  - video_effects_export.csv
+  - skills_export.json
+  - skills_export.csv
+  - ARCHITECTURE_DIAGRAM.md
+  - ARCHITECTURE_DIAGRAM_INTERACTIVE.html

@@ -1,0 +1,19 @@
+{
+  "env": {
+    "ANTHROPIC_API_KEY": "REPLACE_WITH_YOUR_NVIDIA_API_KEY",
+    "ANTHROPIC_BASE_URL": "https://integrate.api.nvidia.com/v1"
+  },
+  "modelOverrides": {
+    "sonnet": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+    "opus": "nvidia/nemotron-3-ultra-550b-a55b",
+    "claude-sonnet-5": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+    "claude-opus-4-8": "nvidia/nemotron-3-ultra-550b-a55b"
+  },
+  "model": "sonnet",
+  "available_models": ["sonnet", "opus"],
+  "effortLevel": "medium",
+  "promptSuggestionEnabled": true,
+  "theme": "dark",
+  "verbose": true,
+  "skipDangerousModePermissionPrompt": true
+}

@@ -1,0 +1,45 @@
+---
+name: davinci-video_effect-transitions-DYL0_4GO
+description: |
+  DaVinci Resolve Transitions technique from Instagram Reel DYL0_4GOMdd
+  Category: video_effect → transitions
+  Source: https://www.instagram.com/reel/DYL0_4GOMdd/
+version: 1.0.0
+category: creative
+tags:
+  - davinci-resolve
+  - video_effect
+  - transitions
+references:
+  - "instagram_reel_id": "DYL0_4GOMdd"
+  - "source_url": "https://www.instagram.com/reel/DYL0_4GOMdd/"
+  - "category": "video_effect"
+  - "subcategory": "transitions"
+  - "analyzed_at": "2026-07-25T17:48:50.586290"
+---
+
+# davinci-video_effect-transitions-DYL0_4GO
+
+## Overview
+Technique extracted from Instagram Reel `DYL0_4GOMdd` demonstrating **transitions** in DaVinci Resolve.
+
+## Key Techniques
+
+
+## Structured Extraction
+```json
+{}
+```
+
+## Application in DaVinci Resolve
+See vault note for node structures, settings, and workflows.
+
+## Related Skills
+- `davinci-resolve-transitions`
+
+## Metadata
+- **Reel ID:** DYL0_4GOMdd
+- **Category:** video_effect
+- **Subcategory:** transitions
+- **Source:** https://www.instagram.com/reel/DYL0_4GOMdd/
+- **Analyzed:** 2026-07-25T17:48:50.586317

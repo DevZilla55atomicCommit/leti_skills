@@ -1,0 +1,17 @@
+# M4 GPU Wire Limit Fix
+
+**Problem**: Default wired memory limit (8GB) causes Metal OOM crashes when allocating >8GB GPU buffers (e.g., MLX models >7.7GB).
+
+**Fix**: Permanently raise limit to 12GB:
+```bash
+echo "iogpu.wired_limit_mb=12288" | sudo tee -a /etc/sysctl.conf
+sudo sysctl iogpu.wired_limit_mb=12288
+```
+
+**Verification**:
+```bash
+sysctl iogpu.wired_limit_mb
+# Should output: iogpu.wired_limit_mb: 12288
+```
+
+**Persistence**: Survives reboots via `/etc/sysctl.conf`.

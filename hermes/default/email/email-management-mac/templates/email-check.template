@@ -1,0 +1,19 @@
+# Email Check Template
+
+## Purpose
+Template for checking unread count across multiple accounts.
+
+## Usage
+```bash
+osascript check_unread.scpt
+```
+
+## Script Variables
+- `targetAccount`: Replace with your account name (e.g., "iCloud", "Gmail").
+- `mailboxName`: Usually "Inbox".
+
+## Example
+For Outlook/Exchange:
+```bash
+osascript -e 'tell application "Mail" to get count of messages of mailbox "Inbox" of account "Exchange"'
+```

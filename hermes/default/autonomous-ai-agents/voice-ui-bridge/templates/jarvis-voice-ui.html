@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JARVIS Voice UI — Reactive Sphere</title>
+  <script>p5.disableFriendlyErrors = true;</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js"></script>
+  <style>
+    html, body { margin: 0; padding: 0; overflow: hidden; background: #000; }
+    canvas { display: block; }
+    .ui {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 10;
+      pointer-events: none;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .ui button, .ui select, .ui input {
+      pointer-events: auto;
+      background: rgba(0, 15, 30, 0.95);
+      border: 1px solid rgba(0, 200, 255, 0.4);
+      color: #00f0ff;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      cursor: pointer;
+      backdrop-filter: blur(20px);
+      transition: all 0.15s ease;
+      box-shadow: 0 0 20px rgba(0, 200, 255, 0.1), inset 0 0 20px rgba(0, 200, 255, 0.05);
+    }
+    .ui button:hover, .ui select:hover {
+      border-color: #00f0ff;
+      background: rgba(0, 240, 255, 0.15);
+      box-shadow: 0 0 30px rgba(0, 200, 255, 0.3), inset 0 0 30px rgba(0, 200, 255, 0.1);
+    }
+    .ui button.active {
+      background: rgba(0, 240, 255, 0.3);
+      border-color: #00f0ff;
+      box-shadow: 0 0 40px rgba(0, 200, 255, 0.5), inset 0 0 40px rgba(0, 200, 255, 0.2);
+    }
+    .ui select {
+      padding: 10px 14px;
+      min-width: 160px;
+    }
+    .ui input[type="range"] {
+      width: 140px;
+      accent-color: #00f0ff;
+    }
+    .state-display {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #00f0ff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: rgba(0, 15, 30, 0.9);
+      padding: 12px 32px;
+      border-radius: 50px;
+      border: 1px solid rgba(0, 200, 255, 0.4);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 0 40px rgba(0, 200, 255, 0.2);
+      z-index: 10;
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+    .state-display.speaking {
+      border-color: #00ff88;
+      box-shadow: 0 0 60px rgba(0, 255, 136, 0.4);
+      text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+    }
+    .state-display.listening {
+      border-color: #ffcc00;
+      box-shadow: 0 0 60px rgba(255, 204, 0, 0.4);
+      text-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
+    }
+    .stats {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      color: rgba(0, 240, 255, 0.7);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      background: rgba(0, 15, 30, 0.85);
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 200, 255, 0.2);
+      backdrop-filter: blur(20px);
+      pointer-events: none;
+      line-height: 1.8;
+    }
+    .stats span { opacity: 0.8; }
+    .stats strong { color: #00f0ff; opacity: 1; }
+    .waveform {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 3px;
+      height: 60px;
+      align-items: flex-end;
+      pointer-events: none;
+      z-index: 5;
+    }
+    .waveform-bar {
+      width: 4px;
+      background: linear-gradient(180deg, #00f0ff 0%, #0088ff 100%);
+      border-radius: 2px;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+      transition: height 0.05s ease-out;
+    }
+    .ring-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 1;
+    }
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
+    @keyframes pulse-ring {
+      0% { transform: translate(-50%, -50%) scale(1); opacity: 0.4; }
+      100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+    }
+    .pulse-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 300px;
+      height: 300px;
+      border: 2px solid rgba(0, 240, 255, 0.4);
+      border-radius: 50%;
+      animation: pulse-ring 2s ease-out infinite;
+    }
+    .pulse-ring:nth-child(2) { animation-delay: 0.66s; width: 350px; height: 350px; }
+    .pulse-ring:nth-child(3) { animation-delay: 1.33s; width: 400px; height: 400px; }
+  </style>
+</head>
+<body>
+  <div class="state-display" id="stateDisplay">IDLE</div>
+  <div class="stats">
+    <span>Particles: <strong id="pCount">0</strong></span>
+    <span>FPS: <strong id="pFps">60</strong></span>
+    <span>Amplitude: <strong id="pAmp">0.00</strong></span>
+    <span>Mode: <strong id="pMode">SPEAKING</strong></span>
+  </div>
+  <div class="waveform" id="waveform"></div>
+  <div class="ring-container" id="ringContainer"></div>
+  <div class="ui">
+    <button id="btnIdle">IDLE</button>
+    <button id="btnListening" class="active">LISTENING</button>
+    <button id="btnSpeaking">SPEAKING</button>
+    <button id="btnThinking">THINKING</button>
+    <select id="modeSelect">
+      <option value="sphere">Wireframe Sphere</option>
+      <option value="particles">Particle Field</option>
+      <option value="rings">Concentric Rings</option>
+      <option value="helix">DNA Helix</option>
+      <option value="torus">Torus Knot</option>
+    </select>
+    <label><input type="range" id="sensitivity" min="0.1" max="3" value="1" step="0.1"> Sensitivity</label>
+    <label><input type="range" id="particleCount" min="500" max="15000" value="3000" step="100"> Particles</label>
+    <button id="btnTest">Test Sequence</button>
+    <button id="btnConnect" style="background: rgba(0, 255, 136, 0.2); border-color: #00ff88;">Connect Bridge</button>
+    <span id="bridgeStatus" style="color: #ffcc00; font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 10px 14px; background: rgba(0, 15, 30, 0.9); border-radius: 8px; border: 1px solid rgba(255, 204, 0, 0.3);">Bridge: Disconnected</span>
+  </div>
+<script>
+// ============================================================
+// JARVIS VOICE UI — REACTIVE 3D SPHERE
+// ============================================================
+const CONFIG = {
+  seed: 42,
+  particleCount: 3000,
+  sensitivity: 1.0,
+  visualMode: 'sphere',
+  state: 'listening', // idle, listening, speaking, thinking
+  autoCycle: false,
+  cycleIndex: 0
+};
+
+const PALETTE = {
+  bg: '#000000',
+  primary: '#00f0ff',      // cyan
+  secondary: '#0088ff',    // blue
+  accent: '#00ff88',       // mint green (speaking)
+  warning: '#ffcc00',      // amber (listening)
+  thinking: '#cc88ff',     // purple (thinking)
+  idle: '#446688',         // muted blue
+  glow: '#00ffff',
+  core: '#ffffff'
+};
+
+const STATES = {
+  idle: { color: PALETTE.idle, pulseSpeed: 0.3, pulseAmp: 0.15, rotation: 0.0005, noiseScale: 0.002 },
+  listening: { color: PALETTE.warning, pulseSpeed: 1.5, pulseAmp: 0.35, rotation: 0.0015, noiseScale: 0.004 },
+  speaking: { color: PALETTE.accent, pulseSpeed: 8, pulseAmp: 0.6, rotation: 0.003, noiseScale: 0.008 },
+  thinking: { color: PALETTE.thinking, pulseSpeed: 0.8, pulseAmp: 0.25, rotation: 0.002, noiseScale: 0.003 }
+};
+
+// ============================================================
+// GLOBAL STATE
+// ============================================================
+let particles = [];
+let sphereVertices = [];
+let rings = [];
+let helixPoints = [];
+let torusPoints = [];
+let waveformBars = [];
+let targetWaveform = [];
+let currentAmplitude = 0;
+let targetAmplitude = 0;
+let frameCount = 0;
+let lastFpsTime = 0;
+let fps = 60;
+let ringContainer;
+let pulseRings = [];
+let stateStartTime = 0;
+let currentState = 'listening';
+let previousState = 'listening';
+let stateTransition = 0;
+let transitionDuration = 500; // ms
+
+// ============================================================
+// PARTICLE CLASS (for particle field mode)
+// ============================================================
+class Particle {
+  constructor() {
+    this.reset();
+    this.baseRadius = random(120, 280);
+    this.theta = random(TAU);
+    this.phi = random(TAU);
+    this.speed = random(0.0005, 0.002);
+    this.size = random(1.5, 3.5);
+    this.opacity = random(0.3, 1);
+    this.hueOffset = random(60);
+  }
+
+  reset() {
+    this.baseRadius = random(120, 280);
+    this.theta = random(TAU);
+    this.phi = random(TAU);
+    this.speed = random(0.0005, 0.002);
+    this.size = random(1.5, 3.5);
+    this.opacity = random(0.3, 1);
+    this.hueOffset = random(60);
+  }
+
+  update(amplitude, stateConfig, time) {
+    let state = STATES[currentState];
+    
+    // Radius modulation by amplitude
+    let radiusMod = 1 + amplitude * state.pulseAmp * 1.5;
+    let radius = this.baseRadius * radiusMod;
+    
+    // Orbital motion
+    this.theta += this.speed * (1 + amplitude * 5) * state.rotation * 500;
+    this.phi += this.speed * 0.7 * (1 + amplitude * 3) * state.rotation * 500;
+    
+    // Noise-based organic movement
+    let nx = noise(this.theta * 0.5, this.phi * 0.5, time * state.noiseScale) - 0.5;
+    let ny = noise(this.phi * 0.5, time * state.noiseScale, this.theta * 0.5) - 0.5;
+    let nz = noise(time * state.noiseScale, this.theta * 0.5, this.phi * 0.5) - 0.5;
+    
+    let noiseAmp = 15 * (1 + amplitude * 2);
+    this.noiseOffset = createVector(nx, ny, nz).mult(noiseAmp);
+    
+    // Spherical to cartesian
+    let x = radius * sin(this.phi) * cos(this.theta);
+    let y = radius * sin(this.phi) * sin(this.theta);
+    let z = radius * cos(this.phi);
+    
+    this.pos = createVector(x, y, z).add(this.noiseOffset || createVector(0, 0, 0));
+    this.targetRadius = radius;
+  }
+
+  getColor(stateConfig, amplitude, depth) {
+    let state = STATES[currentState];
+    let baseCol = color(state.color);
+    let primaryCol = color(PALETTE.primary);
+    let coreCol = color(PALETTE.core);
+    
+    // Depth-based color shift (closer = brighter)
+    let depthFactor = map(depth, -300, 300, 0.5, 1.5);
+    depthFactor = constrain(depthFactor, 0.3, 2);
+    
+    // Amplitude affects brightness
+    let bright = map(amplitude, 0, 1, 0.6, 1.2) * depthFactor;
+    
+    // Interpolate between state color and primary cyan
+    let t = map(amplitude, 0, 1, 0.3, 0.8);
+    let r = lerp(baseCol.levels[0], primaryCol.levels[0], t) * bright;
+    let g = lerp(baseCol.levels[1], primaryCol.levels[1], t) * bright;
+    let b = lerp(baseCol.levels[2], primaryCol.levels[2], t) * bright;
+    
+    // Core particles get white-hot
+    if (this.baseRadius < 160) {
+      r = lerp(r, coreCol.levels[0], 0.5);
+      g = lerp(g, coreCol.levels[1], 0.5);
+      b = lerp(b, coreCol.levels[2], 0.5);
+    }
+    
+    return color(r, g, b, this.opacity * 255 * bright);
+  }
+
+  show(stateConfig, amplitude) {
+    let col = this.getColor(stateConfig, amplitude, this.pos.z);
+    noStroke();
+    fill(col);
+    push();
+    translate(this.pos.x, this.pos.y, this.pos.z);
+    // Billboards - always face camera
+    sphere(this.size * (0.8 + amplitude * 0.5));
+    pop();
+  }
+
+  isDead() {
+    return this.age >= this.life;
+  }
+
+  reset(x, y) {
+    this.pos.set(x, y);
+    this.prevPos.set(x, y);
+    this.vel.set(0, 0);
+    this.acc.set(0, 0);
+    this.age = 0;
+    this.life = random(300, 800);
+    this.hueIndex = floor(random(PALETTE.particles.length));
+  }
+}
+
+// ============================================================
+// INITIALIZATION FUNCTIONS
+// ============================================================
+function initParticles() {
+  particles = [];
+  for (let i = 0; i < CONFIG.particleCount; i++) {
+    particles.push(new Particle());
+  }
+}
+
+function initSphereVertices() {
+  sphereVertices = [];
+  let detail = 32;
+  for (let i = 0; i <= detail; i++) {
+    let lat = map(i, 0, detail, 0, PI);
+    for (let j = 0; j <= detail; j++) {
+      let lon = map(j, 0, detail, 0, TAU);
+      let x = sin(lat) * cos(lon);
+      let y = sin(lat) * sin(lon);
+      let z = cos(lat);
+      sphereVertices.push(createVector(x, y, z));
+    }
+  }
+}
+
+function initRings() {
+  rings = [];
+  let ringCount = 12;
+  for (let i = 0; i < ringCount; i++) {
+    rings.push({
+      radius: map(i, 0, ringCount - 1, 80, 280),
+      rotation: createVector(random(TAU), random(TAU), random(TAU)),
+      rotSpeed: createVector(
+        random(-0.001, 0.001),
+        random(-0.001, 0.001),
+        random(-0.001, 0.001)
+      ),
+      vertices: 64,
+      phase: random(TAU),
+      thickness: random(0.5, 2)
+    });
+  }
+}
+
+function initHelix() {
+  helixPoints = [];
+  let turns = 4;
+  let pointsPerTurn = 80;
+  let totalPoints = turns * pointsPerTurn;
+  let height = 350;
+  let radius = 150;
+  
+  for (let i = 0; i < totalPoints; i++) {
+    let t = i / totalPoints;
+    let angle = t * TAU * turns;
+    let y = map(t, 0, 1, -height/2, height/2);
+    let r = radius * (0.7 + 0.3 * sin(t * PI));
+    let x = r * cos(angle);
+    let z = r * sin(angle);
+    helixPoints.push(createVector(x, y, z));
+  }
+}
+
+function initTorusKnot() {
+  torusPoints = [];
+  let p = 3, q = 7; // torus knot parameters
+  let totalPoints = 500;
+  let R = 200, r = 60;
+  
+  for (let i = 0; i < totalPoints; i++) {
+    let t = map(i, 0, totalPoints - 1, 0, TAU * q);
+    let x = (R + r * cos(p * t)) * cos(q * t);
+    let y = (R + r * cos(p * t)) * sin(q * t);
+    let z = r * sin(p * t);
+    torusPoints.push(createVector(x, y, z));
+  }
+}
+
+function initWaveform() {
+  waveformBars = [];
+  targetWaveform = [];
+  let barCount = 64;
+  for (let i = 0; i < barCount; i++) {
+    waveformBars.push(0);
+    targetWaveform.push(0);
+  }
+  updateWaveformDOM();
+}
+
+function initPulseRings() {
+  ringContainer = select('#ringContainer');
+  ringContainer.html('');
+  pulseRings = [];
+  for (let i = 0; i < 3; i++) {
+    let ring = createDiv('');
+    ring.class('pulse-ring');
+    ring.style('width', `${300 + i * 50}px`);
+    ring.style('height', `${300 + i * 50}px`);
+    ring.style('animation-delay', `${i * 0.66}s`);
+    ringContainer.child(ring);
+    pulseRings.push(ring);
+  }
+}
+
+function updateWaveformDOM() {
+  let container = select('#waveform');
+  if (!container) return;
+  
+  // Update heights
+  let bars = container.elt.querySelectorAll('.waveform-bar');
+  if (bars.length === 0) {
+    // Create bars
+    container.html('');
+    for (let i = 0; i < waveformBars.length; i++) {
+      let bar = createDiv('');
+      bar.class('waveform-bar');
+      bar.style('height', '4px');
+      container.child(bar);
+    }
+  } else {
+    for (let i = 0; i < bars.length && i < waveformBars.length; i++) {
+      bars[i].style.height = `${max(4, waveformBars[i] * 50)}px`;
+      let opacity = 0.4 + waveformBars[i] * 0.6;
+      bars[i].style.opacity = opacity;
+    }
+  }
+}
+
+// ============================================================
+// STATE MANAGEMENT
+// ============================================================
+function setState(newState) {
+  if (newState === currentState) return;
+  previousState = currentState;
+  currentState = newState;
+  stateStartTime = millis();
+  stateTransition = 0;
+  
+  // Update UI
+  document.getElementById('stateDisplay').textContent = newState.toUpperCase();
+  document.getElementById('stateDisplay').className = 'state-display ' + newState;
+  document.getElementById('pMode').textContent = newState.toUpperCase();
+  
+  // Update button states
+  ['btnIdle', 'btnListening', 'btnSpeaking', 'btnThinking'].forEach(btn => {
+    document.getElementById(btn).classList.remove('active');
+  });
+  document.getElementById('btn' + newState.charAt(0).toUpperCase() + newState.slice(1)).classList.add('active');
+}
+
+function updateStateTransition() {
+  stateTransition = min(1, (millis() - stateStartTime) / transitionDuration);
+}
+
+function getInterpolatedState() {
+  if (stateTransition >= 1) return STATES[currentState];
+  
+  let prev = STATES[previousState];
+  let curr = STATES[currentState];
+  let t = easeOutCubic(stateTransition);
+  
+  return {
+    color: lerpColor(color(prev.color), color(curr.color), t),
+    pulseSpeed: lerp(prev.pulseSpeed, curr.pulseSpeed, t),
+    pulseAmp: lerp(prev.pulseAmp, curr.pulseAmp, t),
+    rotation: lerp(prev.rotation, curr.rotation, t),
+    noiseScale: lerp(prev.noiseScale, curr.noiseScale, t)
+  };
+}
+
+function easeOutCubic(t) {
+  return 1 - pow(1 - t, 3);
+}
+
+// ============================================================
+// AUDIO SIMULATION (for speaking state)
+// ============================================================
+function simulateAudio() {
+  let state = getInterpolatedState();
+  
+  if (currentState === 'speaking') {
+    // Generate realistic speech-like waveform
+    let time = millis() * 0.001;
+    targetAmplitude = 0;
+    
+    // Formant-like frequencies
+    for (let i = 0; i < waveformBars.length; i++) {
+      let freq = 0.5 + (i / waveformBars.length) * 8;
+      let val = 0;
+      
+      // Multiple overlapping sine waves (formants)
+      val += sin(time * freq * 12 + i * 0.3) * 0.3;
+      val += sin(time * freq * 7 + i * 0.7) * 0.25;
+      val += sin(time * freq * 19 + i * 0.1) * 0.2;
+      val += sin(time * freq * 3 + i * 1.2) * 0.15;
+      
+      // Envelope
+      let envelope = 0.5 + 0.5 * sin(time * 3 + i * 0.1);
+      val = abs(val) * envelope;
+      
+      // Add noise for breathiness
+      val += random(0.05, 0.15);
+      
+      targetWaveform[i] = pow(val, 0.6) * CONFIG.sensitivity;
+    }
+    targetAmplitude = max(...targetWaveform) * 0.7;
+  } 
+  else if (currentState === 'listening') {
+    // Ambient listening - subtle pulsing
+    let time = millis() * 0.001;
+    targetAmplitude = 0;
+    for (let i = 0; i < waveformBars.length; i++) {
+      let val = 0.15 + 0.1 * sin(time * 2 + i * 0.2) + random(0.02, 0.08);
+      targetWaveform[i] = val * CONFIG.sensitivity * 0.5;
+    }
+    targetAmplitude = 0.15 * CONFIG.sensitivity;
+  }
+  else if (currentState === 'thinking') {
+    // Thinking - rhythmic pulsing
+    let time = millis() * 0.001;
+    targetAmplitude = 0;
+    for (let i = 0; i < waveformBars.length; i++) {
+      let val = 0.1 + 0.15 * pow(sin(time * 1.5 + i * 0.15), 2) + random(0.01, 0.05);
+      targetWaveform[i] = val * CONFIG.sensitivity * 0.6;
+    }
+    targetAmplitude = 0.2 * CONFIG.sensitivity;
+  }
+  else {
+    // Idle - flat line with tiny noise
+    targetAmplitude = 0;
+    for (let i = 0; i < waveformBars.length; i++) {
+      targetWaveform[i] = random(0.01, 0.03) * CONFIG.sensitivity;
+    }
+    targetAmplitude = 0.02;
+  }
+  
+  // Smooth interpolation
+  currentAmplitude = lerp(currentAmplitude, targetAmplitude, 0.15);
+  for (let i = 0; i < waveformBars.length; i++) {
+    waveformBars[i] = lerp(waveformBars[i], targetWaveform[i], 0.2);
+  }
+  
+  document.getElementById('pAmp').textContent = currentAmplitude.toFixed(2);
+}
+
+// ============================================================
+// P5.JS LIFECYCLE
+// ============================================================
+function preload() {}
+
+function setup() {
+  createCanvas(windowWidth, windowHeight, WEBGL);
+  pixelDensity(1);
+  colorMode(RGB, 255, 255, 255, 255);
+  
+  // Initialize all visual modes
+  initParticles();
+  initSphereVertices();
+  initRings();
+  initHelix();
+  initTorusKnot();
+  initWaveform();
+  initPulseRings();
+  
+  randomSeed(CONFIG.seed);
+  noiseSeed(CONFIG.seed);
+  
+  // Start in listening state
+  setState('listening');
+  
+  updateUI();
+}
+
+function draw() {
+  frameCount++;
+  
+  // FPS
+  if (millis() - lastFpsTime > 500) {
+    fps = frameRate();
+    lastFpsTime = millis();
+    document.getElementById('pFps').textContent = round(fps);
+    document.getElementById('pCount').textContent = particles.length;
+  }
+  
+  // Update state transition
+  updateStateTransition();
+  let state = getInterpolatedState();
+  
+  // Simulate audio
+  simulateAudio();
+  
+  // Update pulse rings visibility
+  updatePulseRings(state);
+  
+  // Background
+  background(0);
+  
+  // Camera orbit
+  let camRadius = 600;
+  let camX = camRadius * sin(frameCount * 0.0003);
+  let camZ = camRadius * cos(frameCount * 0.0003);
+  let camY = 100 * sin(frameCount * 0.0002);
+  camera(camX, camY, camZ, 0, 0, 0, 0, 1, 0);
+  
+  // Render based on visual mode
+  switch (CONFIG.visualMode) {
+    case 'sphere':
+      renderWireframeSphere(state);
+      break;
+    case 'particles':
+      renderParticleField(state);
+      break;
+    case 'rings':
+      renderConcentricRings(state);
+      break;
+    case 'helix':
+      renderDNAHelix(state);
+      break
+    case 'torus':
+      renderTorusKnot(state);
+      break;
+  }
+  
+  // Core glow
+  renderCoreGlow(state);
+  
+  // Update waveform DOM
+  updateWaveformDOM();
+}
+
+function updatePulseRings(state) {
+  if (currentState === 'speaking' || currentState === 'listening') {
+    for (let ring of pulseRings) {
+      ring.style('display', 'block');
+      let opacity = map(currentAmplitude, 0, 1, 0.1, 0.6);
+      ring.style('border-color', `rgba(0, 240, 255, ${opacity})`);
+    }
+  } else {
+    for (let ring of pulseRings) {
+      ring.style('display', 'none');
+    }
+  }
+}
+
+// ============================================================
+// RENDER FUNCTIONS
+// ============================================================
+function renderWireframeSphere(state) {
+  let baseRadius = 180;
+  let pulse = sin(millis() * 0.001 * state.pulseSpeed * 2) * state.pulseAmp;
+  let radius = baseRadius * (1 + pulse * currentAmplitude * 2);
+  
+  // Multiple shell layers
+  for (let shell = 0; shell < 3; shell++) {
+    let shellRadius = radius * (1 - shell * 0.12);
+    let shellAlpha = map(shell, 0, 2, 180, 40);
+    let shellDetail = 24 - shell * 4;
+    
+    strokeWeight(0.5 + shell * 0.3);
+    
+    // Latitude lines
+    for (let i = 0; i <= shellDetail; i++) {
+      let lat = map(i, 0, shellDetail, 0, PI);
+      let r = shellRadius * sin(lat);
+      let y = shellRadius * cos(lat);
+      
+      beginShape();
+      let col = lerpColor(color(state.color), color(PALETTE.primary), currentAmplitude);
+      col.setAlpha(shellAlpha);
+      stroke(col);
+      for (let j = 0; j <= shellDetail * 2; j++) {
+        let lon = map(j, 0, shellDetail * 2, 0, TAU);
+        let x = r * cos(lon);
+        let z = r * sin(lon);
+        
+        // Noise displacement
+        let n = noise(x * 0.01, y * 0.01, z * 0.01, millis() * state.noiseScale);
+        let disp = (n - 0.5) * 8 * (1 + currentAmplitude);
+        vertex(x + disp * cos(lon), y, z + disp * sin(lon));
+      }
+      endShape();
+    }
+    
+    // Longitude lines
+    for (let j = 0; j <= shellDetail * 2; j++) {
+      let lon = map(j, 0, shellDetail * 2, 0, TAU);
+      beginShape();
+      let col = lerpColor(color(state.color), color(PALETTE.primary), currentAmplitude * 0.7);
+      col.setAlpha(shellAlpha * 0.7);
+      stroke(col);
+      for (let i = 0; i <= shellDetail; i++) {
+        let lat = map(i, 0, shellDetail, 0, PI);
+        let r = shellRadius * sin(lat);
+        let y = shellRadius * cos(lat);
+        let x = r * cos(lon);
+        let z = r * sin(lon);
+        
+        let n = noise(x * 0.01, y * 0.01, z * 0.01, millis() * state.noiseScale);
+        let disp = (n - 0.5) * 8 * (1 + currentAmplitude);
+        vertex(x + disp * cos(lon), y, z + disp * sin(lon));
+      }
+      endShape();
+    }
+  }
+  
+  // Equatorial highlight ring
+  let eqRadius = radius * 1.02;
+  strokeWeight(2);
+  let eqCol = lerpColor(color(PALETTE.accent), color(PALETTE.primary), currentAmplitude);
+  eqCol.setAlpha(150 + currentAmplitude * 100);
+  stroke(eqCol);
+  noFill();
+  beginShape();
+  for (let i = 0; i <= 64; i++) {
+    let a = map(i, 0, 64, 0, TAU);
+    let x = eqRadius * cos(a);
+    let z = eqRadius * sin(a);
+    vertex(x, 0, z);
+  }
+  endShape(CLOSE);
+}
+
+function renderParticleField(state) {
+  // Sort particles by depth for proper rendering
+  particles.sort((a, b) => b.pos.z - a.pos.z);
+  
+  // Connection lines between nearby particles
+  strokeWeight(0.3);
+  for (let i = 0; i < particles.length; i += 4) {
+    let p1 = particles[i];
+    for (let j = i + 1; j < min(i + 8, particles.length); j += 2) {
+      let p2 = particles[j];
+      let d = p5.Vector.dist(p1.pos, p2.pos);
+      if (d < 100) {
+        let alpha = map(d, 0, 100, 60 * currentAmplitude, 5);
+        let col = lerpColor(color(state.color), color(PALETTE.primary), currentAmplitude);
+        col.setAlpha(alpha);
+        stroke(col);
+        line(p1.pos.x, p1.pos.y, p1.pos.z, p2.pos.x, p2.pos.y, p2.pos.z);
+      }
+    }
+  }
+  
+  // Render particles
+  for (let p of particles) {
+    p.update(currentAmplitude, state, millis() * 0.001);
+    p.show(state, currentAmplitude);
+  }
+}
+
+function renderConcentricRings(state) {
+  let time = millis() * 0.001;
+  
+  for (let ring of rings) {
+    ring.rotation.x += ring.rotSpeed.x * (1 + currentAmplitude * 3);
+    ring.rotation.y += ring.rotSpeed.y * (1 + currentAmplitude * 3);
+    ring.rotation.z += ring.rotSpeed.z * (1 + currentAmplitude * 3);
+    
+    let pulse = sin(time * state.pulseSpeed + ring.phase) * state.pulseAmp;
+    let radius = ring.radius * (1 + pulse * currentAmplitude * 1.5);
+    let vertices = ring.vertices;
+    
+    push();
+    rotateX(ring.rotation.x);
+    rotateY(ring.rotation.y);
+    rotateZ(ring.rotation.z);
+    
+    // Main ring
+    strokeWeight(ring.thickness * (0.5 + currentAmplitude));
+    let col = lerpColor(color(state.color), color(PALETTE.primary), currentAmplitude);
+    col.setAlpha(120 + currentAmplitude * 100);
+    stroke(col);
+    noFill();
+    beginShape();
+    for (let i = 0; i <= vertices; i++) {
+      let a = map(i, 0, vertices, 0, TAU);
+      let x = radius * cos(a);
+      let y = radius * sin(a);
+      let z = sin(a * 3 + time * 2) * 15 * (1 + currentAmplitude);
+      vertex(x, y, z);
+    }
+    endShape(CLOSE);
+    
+    // Inner glow ring
+    if (currentAmplitude > 0.3) {
+      strokeWeight(1);
+      let glowCol = lerpColor(color(PALETTE.glow), color(PALETTE.accent), currentAmplitude);
+      glowCol.setAlpha(80 * currentAmplitude);
+      stroke(glowCol);
+      beginShape();
+      for (let i = 0; i <= vertices; i++) {
+        let a = map(i, 0, vertices, 0, TAU);
+        let x = radius * 0.95 * cos(a);
+        let y = radius * 0.95 * sin(a);
+        vertex(x, y, 0);
+      }
+      endShape(CLOSE);
+    }
+    pop();
+  }
+}
+
+function renderDNAHelix(state) {
+  let time = millis() * 0.001;
+  let strands = 2;
+  
+  for (let s = 0; s < strands; s++) {
+    let phaseOffset = s * PI;
+    
+    // Helix backbone
+    strokeWeight(3 * (0.7 + currentAmplitude * 0.5));
+    let backCol = lerpColor(color(state.color), color(PALETTE.primary), currentAmplitude * 0.5);
+    backCol.setAlpha(100 + currentAmplitude * 100);
+    stroke(backCol);
+    noFill();
+    beginShape();
+    for (let p of helixPoints) {
+      let x = p.x * (1 + currentAmplitude * 0.2 * sin(time * 2 + p.y * 0.01));
+      let y = p.y;
+      let z = p.z * (1 + currentAmplitude * 0.2 * sin(time * 2 + p.y * 0.01));
+      vertex(x, y, z);
+    }
+    endShape();
+    
+    // Base pairs (rungs)
+    strokeWeight(1.5);
+    let rungCol = lerpColor(color(PALETTE.accent), color(PALETTE.primary), currentAmplitude);
+    rungCol.setAlpha(180 * currentAmplitude);
+    stroke(rungCol);
+    
+    for (let i = 0; i < helixPoints.length; i += 8) {
+      let p = helixPoints[i];
+      let angle = atan2(p.z, p.x) + time * 0.5 + phaseOffset;
+      let r = sqrt(p.x * p.x + p.z * p.z) * 1.3;
+      let x1 = r * cos(angle);
+      let z1 = r * sin(angle);
+      let x2 = -x1;
+      let z2 = -z1;
+      
+      let pulseAlpha = sin(time * 8 + i * 0.2) * 0.5 + 0.5;
+      rungCol.setAlpha(180 * currentAmplitude * pulseAlpha);
+      stroke(rungCol);
+      line(x1, p.y, z1, x2, p.y, z2);
+    }
+    
+    // Nucleotide particles
+    for (let i = 0; i < helixPoints.length; i += 4) {
+      let p = helixPoints[i];
+      let angle = atan2(p.z, p.x) + time * 0.5 + phaseOffset;
+      let r = sqrt(p.x * p.x + p.z * p.z);
+      let x = r * cos(angle);
+      let z = r * sin(angle);
+      
+      push();
+      translate(x, p.y, z);
+      let size = 4 * (0.8 + currentAmplitude * 0.5);
+      let pCol = lerpColor(color(PALETTE.core), color(PALETTE.accent), currentAmplitude);
+      pCol.setAlpha(255 * currentAmplitude);
+      fill(pCol);
+      noStroke();
+      sphere(size);
+      pop();
+    }
+  }
+}
+
+function renderTorusKnot(state) {
+  let time = millis() * 0.001;
+  
+  // Tube geometry
+  strokeWeight(2);
+  let tubeCol = lerpColor(color(state.color), color(PALETTE.primary), currentAmplitude);
+  tubeCol.setAlpha(150 + currentAmplitude * 100);
+  stroke(tubeCol);
+  noFill();
+  beginShape();
+  for (let p of torusPoints) {
+    let scale = 1 + currentAmplitude * 0.3 * sin(time * 1.5);
+    vertex(p.x * scale, p.y * scale, p.z * scale);
+  }
+  endShape();
+  
+  // Particle flow along knot
+  let flowCount = 30;
+  for (let i = 0; i < flowCount; i++) {
+    let t = (frameCount * 0.01 + i / flowCount) % 1;
+    let idx = floor(t * (torusPoints.length - 1));
+    let nextIdx = (idx + 1) % torusPoints.length;
+    let interp = (t * (torusPoints.length - 1)) % 1;
+    
+    let p = p5.Vector.lerp(torusPoints[idx], torusPoints[nextIdx], interp);
+    let scale = 1 + currentAmplitude * 0.3 * sin(time * 1.5);
+    
+    push();
+    translate(p.x * scale, p.y * scale, p.z * scale);
+    let size = 6 * (0.5 + currentAmplitude);
+    let pCol = lerpColor(color(PALETTE.accent), color(PALETTE.core), currentAmplitude);
+    pCol.setAlpha(255);
+    fill(pCol);
+    noStroke();
+    sphere(size);
+    pop();
+  }
+  
+  // Wireframe outline
+  strokeWeight(0.5);
+  let wireCol = lerpColor(color(state.color), color(PALETTE.primary), currentAmplitude * 0.3);
+  wireCol.setAlpha(60);
+  stroke(wireCol);
+  beginShape();
+  for (let p of torusPoints) {
+    vertex(p.x, p.y, p.z);
+  }
+  endShape();
+}
+
+function renderCoreGlow(state) {
+  // Central core pulse
+  let pulse = sin(millis() * 0.001 * state.pulseSpeed * 4) * 0.5 + 0.5;
+  let coreSize = 20 + pulse * 30 * (1 + currentAmplitude * 2);
+  
+  // Outer glow layers
+  for (let i = 3; i >= 0; i--) {
+    let size = coreSize * (1 + i * 0.4);
+    let alpha = map(i, 0, 3, 80 * currentAmplitude, 10);
+    push();
+    noStroke();
+    let gCol = lerpColor(color(state.color), color(PALETTE.glow), currentAmplitude);
+    gCol.setAlpha(alpha);
+    fill(gCol);
+    sphere(size, 16, 16);
+    pop();
+  }
+  
+  // Core solid
+  push();
+  noStroke();
+  let coreCol = lerpColor(color(PALETTE.core), color(state.color), 1 - currentAmplitude);
+  coreCol.setAlpha(255);
+  fill(coreCol);
+  sphere(coreSize * 0.4, 16, 16);
+  pop();
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+
+// ============================================================
+// INTERACTION
+// ============================================================
+function keyPressed() {
+  if (key === '1') setState('idle');
+  if (key === '2') setState('listening');
+  if (key === '3') setState('speaking');
+  if (key === '4') setState('thinking');
+  if (key === ' ') CONFIG.autoCycle = !CONFIG.autoCycle;
+  if (key === 's' || key === 'S') saveCanvas('jarvis-ui-' + currentState, 'png');
+  if (key === 'g' || key === 'G') saveGif('jarvis-ui-' + currentState, 5);
+  if (key === 'r' || key === 'R') {
+    CONFIG.seed = floor(random(999999));
+    randomSeed(CONFIG.seed);
+    noiseSeed(CONFIG.seed);
+    initParticles();
+  }
+}
+
+function mousePressed() {
+  // Burst on click
+  for (let p of particles) {
+    let mouseVec = createVector(mouseX - width/2, mouseY - height/2, 0);
+    // Convert to 3D world space (approximate)
+    let d = dist(p.pos.x, p.pos.y, 0, 0);
+    if (d < 200) {
+      let force = p5.Vector.sub(p.pos, createVector(0, 0, 0));
+      force.normalize();
+      force.mult(20);
+      p.pos.add(force);
+    }
+  }
+}
+
+// ============================================================
+// WEBSOCKET BRIDGE CONNECTION
+// ============================================================
+let ws = null;
+let wsReconnectAttempts = 0;
+const WS_MAX_RECONNECT = 5;
+const WS_URL = 'ws://localhost:8765/ws';
+
+function connectBridge() {
+  if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) {
+    return;
+  }
+  
+  updateBridgeStatus('Connecting...', '#ffcc00');
+  
+  try {
+    ws = new WebSocket(WS_URL);
+    
+    ws.onopen = () => {
+      console.log('JARVIS Bridge connected');
+      wsReconnectAttempts = 0;
+      updateBridgeStatus('Connected', '#00ff88');
+      document.getElementById('btnConnect').textContent = 'Disconnect';
+      document.getElementById('btnConnect').style.background = 'rgba(255, 100, 100, 0.2)';
+      document.getElementById('btnConnect').style.borderColor = '#ff6464';
+    };
+    
+    ws.onmessage = (event) => {
+      try {
+        const msg = JSON.parse(event.data);
+        handleBridgeMessage(msg);
+      } catch (e) {
+        console.error('Bridge message parse error:', e);
+      }
+    };
+    
+    ws.onclose = () => {
+      console.log('JARVIS Bridge disconnected');
+      updateBridgeStatus('Disconnected', '#ff6464');
+      document.getElementById('btnConnect').textContent = 'Connect Bridge';
+      document.getElementById('btnConnect').style.background = 'rgba(0, 255, 136, 0.2)';
+      document.getElementById('btnConnect').style.borderColor = '#00ff88';
+      
+      // Auto-reconnect
+      if (wsReconnectAttempts < WS_MAX_RECONNECT) {
+        wsReconnectAttempts++;
+        setTimeout(connectBridge, 2000 * wsReconnectAttempts);
+      }
+    };
+    
+    ws.onerror = (err) => {
+      console.error('JARVIS Bridge error:', err);
+      updateBridgeStatus('Error', '#ff6464');
+    };
+  } catch (e) {
+    console.error('Failed to create WebSocket:', e);
+    updateBridgeStatus('Failed', '#ff6464');
+  }
+}
+
+function disconnectBridge() {
+  if (ws) {
+    ws.close();
+    ws = null;
+  }
+  wsReconnectAttempts = WS_MAX_RECONNECT; // Prevent auto-reconnect
+}
+
+function toggleBridge() {
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    disconnectBridge();
+  } else {
+    connectBridge();
+  }
+}
+
+function updateBridgeStatus(text, color) {
+  const statusEl = document.getElementById('bridgeStatus');
+  if (statusEl) {
+    statusEl.textContent = 'Bridge: ' + text;
+    statusEl.style.color = color;
+    statusEl.style.borderColor = color + '80';
+  }
+}
+
+function sendBridgeMessage(msg) {
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    ws.send(JSON.stringify(msg));
+  }
+}
+
+function handleBridgeMessage(msg) {
+  switch (msg.type) {
+    case 'init':
+      // Initial state sync
+      setState(msg.state);
+      currentAmplitude = msg.amplitude || 0;
+      waveformBars = msg.waveform || [];
+      break;
+      
+    case 'state_change':
+      setState(msg.state);
+      break;
+      
+    case 'audio_update':
+      currentAmplitude = msg.amplitude;
+      waveformBars = msg.waveform;
+      document.getElementById('pAmp').textContent = currentAmplitude.toFixed(2);
+      break;
+      
+    case 'pong':
+      // Heartbeat response
+      break;
+      
+    default:
+      console.log('Unknown bridge message:', msg);
+  }
+}
+
+// ============================================================
+// UI HANDLERS
+// ============================================================
+function updateUI() {
+  document.getElementById('particleCount').value = CONFIG.particleCount;
+  document.getElementById('sensitivity').value = CONFIG.sensitivity;
+  document.getElementById('modeSelect').value = CONFIG.visualMode;
+}
+
+function setParticleCount(val) {
+  CONFIG.particleCount = parseInt(val);
+  initParticles();
+  updateUI();
+}
+
+function setSensitivity(val) {
+  CONFIG.sensitivity = parseFloat(val);
+}
+
+function setVisualMode(mode) {
+  CONFIG.visualMode = mode;
+}
+
+function testSequence() {
+  let states = ['idle', 'listening', 'thinking', 'speaking', 'listening', 'idle'];
+  let delays = [0, 1000, 3000, 5000, 10000, 13000];
+  
+  states.forEach((state, i) => {
+    setTimeout(() => setState(state), delays[i]);
+  });
+}
+
+// Wire up UI
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('btnIdle').addEventListener('click', () => setState('idle'));
+  document.getElementById('btnListening').addEventListener('click', () => setState('listening'));
+  document.getElementById('btnSpeaking').addEventListener('click', () => setState('speaking'));
+  document.getElementById('btnThinking').addEventListener('click', () => setState('thinking'));
+  document.getElementById('modeSelect').addEventListener('change', (e) => setVisualMode(e.target.value));
+  document.getElementById('particleCount').addEventListener('input', (e) => setParticleCount(e.target.value));
+  document.getElementById('sensitivity').addEventListener('input', (e) => setSensitivity(e.target.value));
+  document.getElementById('btnTest').addEventListener('click', testSequence);
+  document.getElementById('btnConnect').addEventListener('click', toggleBridge);
+  
+  // Initialize p5 sketch
+  new p5();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+---
+name: davinci-video_effect-transitions-DXmVn_tE
+description: |
+  DaVinci Resolve Transitions technique from Instagram Reel DXmVn_tEzjl
+  Category: video_effect → transitions
+  Source: https://www.instagram.com/reel/DXmVn_tEzjl/
+version: 1.0.0
+category: creative
+tags:
+  - davinci-resolve
+  - video_effect
+  - transitions
+references:
+  - "instagram_reel_id": "DXmVn_tEzjl"
+  - "source_url": "https://www.instagram.com/reel/DXmVn_tEzjl/"
+  - "category": "video_effect"
+  - "subcategory": "transitions"
+  - "analyzed_at": "2026-07-25T17:48:00.333605"
+---
+
+# davinci-video_effect-transitions-DXmVn_tE
+
+## Overview
+Technique extracted from Instagram Reel `DXmVn_tEzjl` demonstrating **transitions** in DaVinci Resolve.
+
+## Key Techniques
+
+
+## Structured Extraction
+```json
+{}
+```
+
+## Application in DaVinci Resolve
+See vault note for node structures, settings, and workflows.
+
+## Related Skills
+- `davinci-resolve-transitions`
+
+## Metadata
+- **Reel ID:** DXmVn_tEzjl
+- **Category:** video_effect
+- **Subcategory:** transitions
+- **Source:** https://www.instagram.com/reel/DXmVn_tEzjl/
+- **Analyzed:** 2026-07-25T17:48:00.333635

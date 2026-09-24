@@ -1,0 +1,1 @@
+#!/usr/bin/env npx expo start --no-dev

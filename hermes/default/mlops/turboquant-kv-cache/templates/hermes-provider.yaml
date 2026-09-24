@@ -1,0 +1,23 @@
+# TurboQuant Hermes Provider Configuration
+# Paste into ~/.hermes/config.yaml under providers:
+
+providers:
+  turboquant:
+    api: http://localhost:8081/v1
+    api_key: "not-needed"
+    default_model: gemma4-12b-turbo
+    models:
+      - gemma4-12b-turbo
+    name: "TurboQuant"
+    context_length: 32768
+
+# CRITICAL: Also disable conflicting Ollama model in same config
+# Find ollama-launch provider and remove conflicting model:
+#
+# providers:
+#   ollama-launch:
+#     models:
+#       - qwen3.5:4b
+#       - gemma4:e4b
+#       # - gemma4:12b  # <-- REMOVE THIS LINE
+#       ...

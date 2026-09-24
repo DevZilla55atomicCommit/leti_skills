@@ -1,0 +1,121 @@
+{
+  "main": {
+    "id": "main-root",
+    "type": "split",
+    "children": [
+      {
+        "id": "main-tabs",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "file-explorer",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "left-root",
+    "type": "split",
+    "children": [
+      {
+        "id": "left-tabs",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "file-explorer-left",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "search-left",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "folder": null
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "bookmarks-left",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "right": {
+    "id": "right-root",
+    "type": "split",
+    "children": [
+      {
+        "id": "right-tabs",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "outline-right",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {},
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          },
+          {
+            "id": "tag-pane-right",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "count",
+                "showHierarchy": true
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left-ribbon": {
+    "hiddenIcons": {}
+  },
+  "active": "file-explorer",
+  "lastOpenFiles": []
+}

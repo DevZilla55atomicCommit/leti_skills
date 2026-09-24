@@ -1,0 +1,85 @@
+---
+name: 'primary-wheels-color-correction'
+description: 'Fundamental primary color correction using Lift/Gamma/Gain/Offset wheels for exposure, contrast, and white balance.'
+category: 'davinci-resolve-techniques'
+tags: ['color-grading', 'color-page', 'primary-wheels', 'color-correction', 'white-balance']
+---
+
+# Primary Wheels Color Correction
+
+**Category:** davinci-resolve-techniques  
+**Resolve Page:** Color  
+**Node Graph:** Serial  
+**Tags:** color-grading, color-page, primary-wheels, color-correction, white-balance
+
+---
+
+## Overview
+
+Fundamental primary color correction using Lift/Gamma/Gain/Offset wheels for exposure, contrast, and white balance.
+
+This skill covers 5 related techniques extracted from 5 Instagram Reel analyses.
+
+### Techniques Covered
+- White Balance Correction via Eyedropper Tool
+- Color Temperature Adjustment
+- Primary Wheels Adjustment
+- Color Cast Correction via Tint Adjustment
+- Basic Color Correction Adjustment
+
+---
+
+## Key Nodes & Tools
+- **Primary Wheels**
+- **White Balance Eyedropper**
+- **Temperature Balance**
+- **Tint Slider**
+
+---
+
+## Parameters & Settings
+
+### Lift
+- shadows/blacks control
+
+### Gamma
+- midtone control
+
+### Gain
+- highlights control
+
+### Offset
+- global brightness
+
+### Temperature
+- Kelvin shift (cool/warm)
+
+### Tint
+- green/magenta balance
+
+---
+
+## Typical Workflow
+1. **Import & Organize** — Add clips to timeline, create Color page version
+2. **Base Correction** — Serial Node 1: White Balance, Exposure, Contrast (Primary Wheels)
+3. **Technical Transform** — CST/LUT node for log→Rec.709 if needed
+4. **Creative Grade** — Additional serial nodes for look development
+5. **Local Adjustments** — Power Windows, Qualifiers, Magic Mask for isolation
+6. **Texture & Finish** — Film grain, halation, sharpening, noise reduction
+7. **Review & Deliver** — Toggle grades, compare versions, render
+
+---
+
+## Related Skills
+- `davinci-resolve-techniques/serial-node-grading-workflow`
+- `davinci-resolve-techniques/custom-curves-contrast-adjustment`
+- `davinci-resolve-techniques/hsl-curves-qualifier-techniques`
+- `davinci-resolve-techniques/power-windows-zone-grading`
+- `davinci-resolve-techniques/magic-mask-ai-tracking`
+- `davinci-resolve-techniques/noise-reduction-spatial-temporal`
+- `davinci-resolve-techniques/render-cache-proxy-workflow`
+
+---
+
+## Source
+Generated from 453 completed vision analyses of Instagram Reels (DaVinci Resolve techniques) — `VISION_PROGRESS.json`

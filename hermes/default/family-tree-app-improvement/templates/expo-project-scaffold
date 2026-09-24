@@ -1,0 +1,33 @@
+# Kasini App Expo Scaffold
+
+This is a pre-configured Expo project for the Kasini Family Tree App.
+
+## Getting Started
+
+1. Install Expo CLI: `npm install -g expo-cli`
+2. Install dependencies: `npm install`
+3. Start the app: `expo start`
+
+## Project Structure
+
+- `app/` - Contains React Native components
+- `assets/` - Images and audio resources
+- `src/` - Source code including schema validators
+- `App.js` - Root component
+- `package.json` - Project dependencies
+
+## Tongan Design System
+
+The project includes:
+- Custom "Kalia" font for headings
+- Tongan color palette (Kula, Kulokula, Uli, Kahikatea, Vai)
+- Ngatu pattern assets in `assets/patterns/`
+
+## Offline Support
+
+The project is configured for offline-first operation:
+- Pre-bundled map tiles for Tonga
+- Asset compression for low-bandwidth
+- Service worker registration
+
+For more details, see `src/schema/kasini-schema.js`

@@ -1,0 +1,1 @@
+When configuring MCP servers, set `rate_limit_rpm` to match your provider's limit (e.g., 40 for NVIDIA). Unknown configuration keys are logged as warnings but are ignored, so they do not break operation. This ensures you stay within API usage limits while avoiding unexpected errors.

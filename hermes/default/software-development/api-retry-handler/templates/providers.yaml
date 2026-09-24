@@ -1,0 +1,139 @@
+# Provider-specific retry configurations
+# Used by retry_wrapper.py, retry_decorator.py, and cron_monitor.py
+
+providers:
+  # NVIDIA NIM (Nemotron, Llama Nemotron)
+  nvidia-nim:
+    base_url: "https://integrate.api.nvidia.com/v1"
+    max_retries: 5
+    base_delay: 10
+    max_delay: 160
+    jitter: 0.2
+    retry_codes: [429, 500, 502, 503, 504]
+    headers:
+      Authorization: "Bearer ${NVIDIA_API_KEY}"
+    continue_prompt: "continue"
+    max_continues: 3
+    notes: "Free tier has concurrent request limits. Increase delays under load."
+
+  # OpenAI API
+  openai:
+    base_url: "https://api.openai.com/v1"
+    max_retries: 3
+    base_delay: 5
+    max_delay: 60
+    jitter: 0.2
+    retry_codes: [429, 500, 502, 503, 504]
+    headers:
+      Authorization: "Bearer ${OPENAI_API_KEY}"
+    continue_prompt: "continue"
+    max_continues: 3
+    notes: "Standard OpenAI rate limits. Respect Retry-After header when present."
+
+  # Anthropic API
+  anthropic:
+    base_url: "https://api.anthropic.com/v1"
+    max_retries: 3
+    base_delay: 5
+    max_delay: 60
+    jitter: 0.2
+    retry_codes: [429, 500, 502, 503, 504]
+    headers:
+      x-api-key: "${ANTHROPIC_API_KEY}"
+      anthropic-version: "2023-06-01"
+    continue_prompt: "continue"
+    max_continues: 3
+    notes: "Anthropic returns 429 with retry-after header. Uses /v1/messages endpoint."
+
+  # Together.ai
+  together:
+    base_url: "https://api.together.xyz/v1"
+    max_retries: 3
+    base_delay: 5
+    max_delay: 60
+    jitter: 0.2
+    retry_codes: [429, 500, 502, 503, 504]
+    headers:
+      Authorization: "Bearer ${TOGETHER_API_KEY}"
+    continue_prompt: "continue"
+    max_continues: 3
+    notes: "Good rate limits, fast responses."
+
+  # Fireworks AI
+  fireworks:
+    base_url: "https://api.fireworks.ai/inference/v1"
+    max_retries: 3
+    base_delay: 5
+    max_delay: 60
+    jitter: 0.2
+    retry_codes: [429, 500, 502, 503, 504]
+    headers:
+      Authorization: "Bearer ${FIREWORKS_API_KEY}"
+    continue_prompt: "continue"
+    max_continues: 3
+    notes: "Very fast inference, generous rate limits."
+
+  # vLLM (self-hosted)
+  vllm:
+    base_url: "http://localhost:8000/v1"
+    max_retries: 10
+    base_delay: 2
+    max_delay: 30
+    jitter: 0.1
+    retry_codes: [429, 500, 502, 503, 504]
+    headers: {}
+    continue_prompt: "continue"
+    max_continues: 5
+    notes: "Local inference, can handle more aggressive retries."
+
+  # Ollama (local)
+  ollama:
+    base_url: "http://localhost:11434/v1"
+    max_retries: 10
+    base_delay: 2
+    max_delay: 30
+    jitter: 0.1
+    retry_codes: [429, 500, 502, 503, 504]
+    headers: {}
+    continue_prompt: "continue"
+    max_continues: 5
+    notes: "Local models, very generous limits. Low latency."
+
+  # LiteLLM Proxy (gateway)
+  litellm:
+    base_url: "http://localhost:4000/v1"
+    max_retries: 5
+    base_delay: 5
+    max_delay: 120
+    jitter: 0.2
+    retry_codes: [429, 500, 502, 503, 504]
+    headers:
+      Authorization: "Bearer ${LITELLM_MASTER_KEY}"
+    continue_prompt: "continue"
+    max_continues: 3
+    notes: "Proxy layer - retries apply to upstream. Configure upstream retries in litellm config."
+
+  # Generic OpenAI-compatible
+  openai-compatible:
+    base_url: "${OPENAI_BASE_URL}"
+    max_retries: 5
+    base_delay: 10
+    max_delay: 160
+    jitter: 0.2
+    retry_codes: [429, 500, 502, 503, 504]
+    headers:
+      Authorization: "Bearer ${OPENAI_API_KEY}"
+    continue_prompt: "continue"
+    max_continues: 3
+    notes: "Generic config for any OpenAI-compatible endpoint."
+
+# Default provider (used when none specified)
+default: "nvidia-nim"
+
+# Global settings
+global:
+  log_level: "INFO"
+  log_file: "~/.hermes/logs/api-retry.log"
+  enable_cron_monitor: true
+  cron_schedule: "*/2 * * * *"
+  max_concurrent_recoveries: 3
