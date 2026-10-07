@@ -1,0 +1,100 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Manual PDF ReportLab Spec",
+  "type": "object",
+  "required": ["mode", "title", "subtitle", "palette", "sections"],
+  "properties": {
+    "mode": {
+      "type": "string",
+      "enum": ["manual", "poster"],
+      "description": "Document mode: manual (multi-page) or poster (single landscape)"
+    },
+    "page": {
+      "type": "string",
+      "enum": ["A4", "A3", "LETTER"],
+      "default": "A4"
+    },
+    "title": {
+      "type": "string",
+      "description": "Top-line title (date range, context)"
+    },
+    "subtitle": {
+      "type": "string",
+      "description": "Main heading displayed prominently under title"
+    },
+    "palette": {
+      "type": "object",
+      "required": ["bg", "ink", "accent", "gold", "warm", "teal", "red", "muted"],
+      "properties": {
+        "bg": {"type": "string", "pattern": "^#[0-9A-Fa-f]{6}$"},
+        "ink": {"type": "string", "pattern": "^#[0-9A-Fa-f]{6}$"},
+        "accent": {"type": "string", "pattern": "^#[0-9A-Fa-f]{6}$"},
+        "gold": {"type": "string", "pattern": "^#[0-9A-Fa-f]{6}$"},
+        "warm": {"type": "string", "pattern": "^#[0-9A-Fa-f]{6}$"},
+        "teal": {"type": "string", "pattern": "^#[0-9A-Fa-f]{6}$"},
+        "red": {"type": "string", "pattern": "^#[0-9A-Fa-f]{6}$"},
+        "muted": {"type": "string", "pattern": "^#[0-9A-Fa-f]{6}$"},
+        "highlight_bg": {"type": "string", "pattern": "^#[0-9A-Fa-f]{6}$"},
+        "highlight_border": {"type": "string", "pattern": "^#[0-9A-Fa-f]{6}$"},
+        "emphasis": {"type": "string", "pattern": "^#[0-9A-Fa-f]{6}$"}
+      }
+    },
+    "hero_image_path": {
+      "type": "string",
+      "description": "Optional path to hero image at top of document"
+    },
+    "hero_image_alt": {
+      "type": "string",
+      "description": "Alt text for hero image"
+    },
+    "week": {
+      "type": "integer",
+      "description": "Week number (for CFM)"
+    },
+    "scriptures": {
+      "type": "string",
+      "description": "Scripture reference string"
+    },
+    "sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["heading"],
+        "properties": {
+          "heading": {"type": "string"},
+          "color": {
+            "type": "string",
+            "enum": ["accent", "gold", "warm", "teal", "red", "muted"]
+          },
+          "summary": {"type": "string"},
+          "body": {"type": "string"},
+          "bullets": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "table": {
+            "type": "object",
+            "required": ["header", "rows"],
+            "properties": {
+              "header_color": {
+                "type": "string",
+                "enum": ["accent", "gold", "warm", "teal", "red", "muted"]
+              },
+              "header": {
+                "type": "array",
+                "items": {"type": "string"}
+              },
+              "rows": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {"type": "string"}
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

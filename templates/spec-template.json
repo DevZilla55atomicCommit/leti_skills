@@ -1,0 +1,58 @@
+{
+  "mode": "manual",
+  "page": "A4",
+  "title": "September 21–27, 2026",
+  "subtitle": "'A Marvellous Work and a Wonder': Isaiah 13–14; 22; 24–30; 35",
+  "palette": {
+    "bg": "#FAF8F3",
+    "ink": "#1A1A2E",
+    "accent": "#1B3A6B",
+    "gold": "#B8860B",
+    "warm": "#C05A2A",
+    "teal": "#0D6E6E",
+    "red": "#8B2500",
+    "muted": "#6B5B4A",
+    "highlight_bg": "#FFF3CD",
+    "highlight_border": "#FFC107",
+    "emphasis": "#C05A2A"
+  },
+  "week": 39,
+  "scriptures": "Isaiah 13–14; 22; 24–30; 35",
+  "hero_image_path": "/path/to/hero_image.jpg",
+  "sections": [
+    {
+      "heading": "Introduction",
+      "color": "accent",
+      "summary": "Sweeping prophetic arc from Babylon's fall to the Restoration — trace judgment → mercy → warning → restoration.",
+      "body": "This week's readings present a complete prophetic arc.",
+      "bullets": [
+        "Babylon's fall = type for pride of the world",
+        "Key of David = Christ's authority over life/death",
+        "Spiritual danger comes from within, not without"
+      ]
+    },
+    {
+      "heading": "Key Doctrine",
+      "color": "gold",
+      "summary": "Core messianic prophecies and their fulfillment.",
+      "body": "Isaiah contains five key messianic prophecies.",
+      "table": {
+        "header_color": "gold",
+        "header": ["Scripture", "Messianic Title", "NT/BoM/D&C Fulfillment", "Meaning & Application"],
+        "rows": [
+          ["Isaiah 22:22–23", "Key of David", "Revelation 3:7", "Christ holds authority over life, death, and salvation"],
+          ["Isaiah 28:16", "Precious Cornerstone", "1 Peter 2:6; Ephesians 2:20", "Christ is the sure foundation"]
+        ]
+      }
+    },
+    {
+      "heading": "Application Questions",
+      "color": "warm",
+      "summary": "Personal reflection prompts.",
+      "bullets": [
+        "Q: How do I recognize pride in my life? | A: The pattern is self-exaltation above God's will | S: Isaiah 14:13–14; Moses 4:1–4 | W: Recognizing the pattern helps us identify it in our own hearts",
+        "Q: When I feel spiritually drunk, how do I sober up? | A: Return to the Source of truth through scripture and prayer | S: Isaiah 1:18; 35:8 | W: Daily scripture study + prayer = spiritual sobriety test"
+      ]
+    }
+  ]
+}
